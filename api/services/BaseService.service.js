@@ -12,27 +12,27 @@ class BaseService {
   insert = async (params) => {
     const uuid = await MySQL.randomUUID(this.table);
     
-    return {uuid};
+    return {statusCode: 400};
   }
   
   // READ
   select = async (params) => {
     console.log(params);
     
-    return `SelectAll from: ${this.table} params: ${params}`;
+    return {statusCode: 400};
   }
   
   // UPDATE
   update = async (params) => {
     console.log(params);
     
-    return params;
+    return {statusCode: 400};
   }
   
   // DELETE
   delete = async (params) => {
     //TODO
-    return `DELETE ${params.id} FROM ${this.table}`;
+    return {statusCode: 405, content: `DELETE ${params.id} FROM ${this.table}`};
   }
   
 }

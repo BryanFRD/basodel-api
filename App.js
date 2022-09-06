@@ -12,6 +12,4 @@ for(const route in routers){
   app.use(`/${route}`, new routers[route]().router);
 }
 
-app.get('/:id', (req, res) => res.json({id: req.params.id}));
-
 app.listen(process.env.SERVER_PORT, () => console.log(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
