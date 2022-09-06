@@ -26,10 +26,8 @@ class BaseService {
   // CREATE
   insert = async (params) => {
     const uuid = await BaseService.getRandomUUID(this.table);
-    console.log('uuid:', uuid);
     
-    
-    return 'INSERT';
+    return {uuid};
   }
   
   // READ
