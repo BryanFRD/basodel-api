@@ -15,7 +15,9 @@ class BaseService {
     console.log('table:', table);
     
     if(table){
-      const result = await MySQL.executeQuery(`SELECT 1 FROM ${table} WHERE id=${uuid.toString()}`);
+      const sql = `SELECT 1 FROM ${table} WHERE id=${uuid.toString()}`;
+      console.log('sql:', sql);
+      const result = await MySQL.executeQuery(sql);
       console.log('result:', result);
     }
     

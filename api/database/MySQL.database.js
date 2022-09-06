@@ -14,7 +14,6 @@ class MySQL {
         database: process.env.DB_NAME
       });
     }
-    console.log('connectionPool:', MySQL.connectionPool);
     
     return MySQL.connectionPool;
   }
