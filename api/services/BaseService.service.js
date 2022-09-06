@@ -12,13 +12,12 @@ class BaseService {
   static getRandomUUID = async (table) => {
     const uuid = generateUUID();
     
-    console.log('table:', table);
-    
     if(table){
-      const sql = `SELECT 1 FROM ${table} WHERE id=${uuid.toString()}`;
-      console.log('sql:', sql);
+      const sql = `SELECT 1 FROM ${table} WHERE id='${uuid.toString()}'`;
       const result = await MySQL.executeQuery(sql);
-      console.log('result:', result);
+      
+      if(result.length)
+        return this.getRandomUUID(table);
     }
     
     return uuid;
@@ -26,7 +25,9 @@ class BaseService {
   
   // CREATE
   insert = async (params) => {
-    const uuid = BaseService.getRandomUUID(this.table);
+    const uuid = await BaseService.getRandomUUID(this.table);
+    console.log('uuid:', uuid);
+    
     
     return 'INSERT';
   }
