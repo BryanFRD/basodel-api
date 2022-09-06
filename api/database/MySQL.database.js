@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const { v4: generateUUID } = require('uuid');
 
 class MySQL {
   
@@ -26,6 +27,20 @@ class MySQL {
     });
     
     return result;
+  }
+  
+  static randomUUID = async (table) => {
+    const uuid = generateUUID();
+    
+    if(table){
+      const sql = `SELECT 1 FROM ${table} WHERE id='${uuid.toString()}'`;
+      const result = await MySQL.executeQuery(sql);
+      
+      if(result.length)
+        return MySQL.getRandomUUID(table);
+    }
+    
+    return uuid;
   }
   
 }

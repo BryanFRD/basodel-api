@@ -1,6 +1,5 @@
 const MySQL = require('../database/MySQL.database');
 const StringHelper = require('../helpers/StringHelper.helper');
-const { v4: generateUUID } = require('uuid');
 
 class BaseService {
   
@@ -9,23 +8,9 @@ class BaseService {
     this.table = this.name.toLowerCase();
   }
   
-  static getRandomUUID = async (table) => {
-    const uuid = generateUUID();
-    
-    if(table){
-      const sql = `SELECT 1 FROM ${table} WHERE id='${uuid.toString()}'`;
-      const result = await MySQL.executeQuery(sql);
-      
-      if(result.length)
-        return this.getRandomUUID(table);
-    }
-    
-    return uuid;
-  }
-  
   // CREATE
   insert = async (params) => {
-    const uuid = await BaseService.getRandomUUID(this.table);
+    const uuid = await MySQL.randomUUID(this.table);
     
     return {uuid};
   }
@@ -46,8 +31,8 @@ class BaseService {
   
   // DELETE
   delete = async (params) => {
-    
-    return 'delete';
+    //TODO
+    return `DELETE ${params.id} FROM ${this.table}`;
   }
   
 }
