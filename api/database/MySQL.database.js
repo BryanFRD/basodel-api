@@ -34,6 +34,7 @@ class MySQL {
     
     if(table){
       const sql = `SELECT 1 FROM ${table} WHERE id='${uuid.toString()}'`;
+      console.log(uuid.toString())
       const result = await MySQL.executeQuery(sql);
       
       if(result.length)
