@@ -1,6 +1,7 @@
 const DB = require('../db/db');
 const { DataTypes } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
+const UserAccount = require('./UserAccount.model');
 
 const UserCredential = DB.define('user_credential', {
   ...BaseModel,
@@ -17,11 +18,10 @@ const UserCredential = DB.define('user_credential', {
   password: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  userAccountId: {
-    type: DataTypes.UUID,
-    allowNull: true
   }
 });
+
+UserAccount.hasOne(UserCredential);
+UserCredential.belongsTo(UserAccount);
 
 module.exports = UserCredential;

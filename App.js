@@ -4,7 +4,6 @@ const morgan = require('morgan');
 const routers = require('./api/routers');
 const DB = require('./api/db/db');
 
-
 const start = async () => {
   const err = await DB.sync()
   .then(() => console.log('Database synchronized!'))
@@ -22,6 +21,7 @@ const start = async () => {
   for(const route in routers){
     app.use(`/${route}`, new routers[route]().router);
   }
+  
   
   app.listen(process.env.SERVER_PORT, () => console.log(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
 }

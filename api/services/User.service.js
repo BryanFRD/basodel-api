@@ -1,91 +1,48 @@
-const MySQL = require('../database/MySQL.database');
+const UserAccount = require('../models/UserAccount.model');
 const BaseService = require('./BaseService.service');
 
 class User extends BaseService {
   
-  insert = async ({body}) => {
-    const model = body?.model;
-    /*
-    if(!model?.usercredential || !model?.useraccount)
-    return {statusCode: 400}
+  insert = async (model, validate, params) => {
+    const userCredentialParam = params?.body?.model?.userCredential;
+    const userAccountParam = params?.body?.model?.userAccount;
     
-    const userCredentialId = await MySQL.randomUUID('userCredential');
-    const userAccountId = await MySQL.randomUUID('userAccount');
+    if(!userCredentialParam || !userAccountParam)
+      return {statusCode: 400, content: {error: 'Missing model'}}
     
-    model.usercredential = 
-    {
-      ...model.usercredential,
-      id: userCredentialId.toString(),
-      userAccountId: userAccountId.toString()
-    };
-    model.useraccount = {
-      ...model.useraccount,
-      id: userAccountId.toString()
-    };
+    const userCredentialValidatorError = validate.UserCredential(userCredentialParam);
+    const userAccountValidatorError = validate.UserAccount(userAccountParam)
     
-    const userCredentialSQL = this.getUserCredentialSQL(model.usercredential);
-    const userAccountSQL = this.getUserAccountSQL(model.useraccount);
-    
-    const sql = `${userCredentialSQL}; ${userAccountSQL};`;
-    */
-    /*
-    INSERT INTO 'usercredential'('id', 'email', 'login', 'password', 'createdDate', 'lastUpdatedDate', 'isDeleted', 'userAccountId') 
-    VALUES ('a','b','c','d','e','f','g','h');
-    INSERT INTO 'useraccount'('id', 'username', 'xp', 'silver', 'gold', 'createdDate', 'lastUpdatedDate', 'isDeleted', 'roleId')
-    VALUES ('a','b','c','d','e','f','g','h','i');
-    */
-    
-    // const userCredentialResponse =
-    //   await new UserCredential().insert({body: body.userCredential});
-    
-    // if(!userCredentialResponse.statusCode.toString().startsWith('2'))
-    //   return userCredentialResponse;
+    if(userCredentialValidatorError.error || userAccountValidatorError.error){
+      return {statusCode: 400, 
+        content: {
+          msg: 'Missing values in models',
+          userCredentialError: userCredentialValidatorError.error,
+          userAccountError: userAccountValidatorError.error
+        }
+      };
+    }
       
-    // const userAccountResponse =
-    //   await new UserAccount().insert({body: body.userAccount});
-    
-    // if(!userAccountResponse.statusCode.toString().startsWith('2'))
-    //   return userAccountResponse;
-    
-    return {statusCode: 418};
+    const result = model.UserCredential.create(
+      {...userCredentialParam,
+        include: [userAccountParam]},
+      {include: UserAccount})
+      .then(model => ({statusCode: 201, content: {model}}))
+      .catch(err => ({statusCode: 400, content: {err}}));
+      
+    return result;
   }
   
-  select = async (params) => {
-    return {statusCode: 405};
+  select = async (model, validate, params) => {
+    return {statusCode: 405, content: {error: "Request 'user' is meant to be only used with POST"}};
   }
   
-  update = async (params) => {
-    return {statusCode: 405};
+  update = async (model, validate, params) => {
+    return {statusCode: 405, content: {error: "Request 'user' is meant to be only used with POST"}};
   }
   
-  getUserCredentialSQL = (model) => {
-    const keys = [];
-    const values = [];
-    
-    Object.entries(model).forEach(([key, value]) => {
-      keys.push(`'${key}'`);
-      values.push(`'${value}'`);
-    });
-    
-    const userCredentialSQL =
-    `INSERT INTO 'usercredential' (${keys.join(',')}) VALUES (${values.join(',')})`;
-    
-    return userCredentialSQL;
-  }
-  
-  getUserAccountSQL = (model) => {
-    const keys = [];
-    const values = [];
-    
-    Object.entries(model).forEach(([key, value]) => {
-      keys.push(`'${key}'`);
-      values.push(`'${value}'`);
-    });
-    
-    const userAccountSQL =
-    `INSERT INTO 'useraccount' (${keys.join(',')}) VALUES (${values.join(',')})`;
-    
-    return userAccountSQL;
+  delete = async (model, validate, params) => {
+    return {statusCode: 405, content: {error: "Request 'user' is meant to be only used with POST"}};
   }
   
 }

@@ -8,19 +8,13 @@ module.exports = {
     allowNull: false,
     unique: true
   },
-  createdDate: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false
-  },
-  lastUpdatedDate: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false
-  },
   isDeleted: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
     allowNull: false
   }
+}
+
+const initAssociations = () => {
+  return;
 }

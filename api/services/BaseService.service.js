@@ -24,15 +24,11 @@ class BaseService {
   
   // READ
   select = async (model, validate, params) => {
-    console.log(params);
-    
     return {statusCode: 400};
   }
   
   // UPDATE
   update = async (model, validate, params) => {
-    console.log(params);
-    
     return {statusCode: 400};
   }
   
