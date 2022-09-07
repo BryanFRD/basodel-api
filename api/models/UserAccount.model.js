@@ -1,0 +1,34 @@
+const DB = require('../db/db');
+const { DataTypes } = require("sequelize");
+const BaseModel = require('./BaseModel.model');
+
+const UserCredential = DB.define('user_account', {
+  ...BaseModel,
+  username: {
+    type: DataTypes.STRING(16),
+    allowNull: false,
+    unique: true
+  },
+  xp: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    allowNull: false,
+  },
+  silver: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    allowNull: false,
+  },
+  gold: {
+    type: DataTypes.INTEGER,
+    defaultValue: 100,
+    allowNull: false,
+  },
+  roleId: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    allowNull: false
+  }
+});
+
+module.exports = UserCredential;

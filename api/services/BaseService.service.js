@@ -8,40 +8,36 @@ class BaseService {
     this.table = this.name.toLowerCase();
   }
   
-  static sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-    {
-      host: process.env.DB_HOST,
-      port: process.env.DB_PORT,
-      dialect: 'mysql',
-    }
-  );
-  
   // CREATE
-  insert = async (params) => {
+  insert = async (model, validate, params) => {
+    const { error } = validate(params.body.model);
     
+    if(!params?.body?.model || error)
+      return {statusCode: 400, content: {error}};
+      
+    const result = await model.create({...params.body.model})
+    .then(model => ({statusCode: 201, content: {model}}))
+    .catch(err => ({statusCode: 400, content: {err}}));
     
-    return {statusCode: 400};
+    return result;
   }
   
   // READ
-  select = async (params) => {
+  select = async (model, validate, params) => {
     console.log(params);
     
     return {statusCode: 400};
   }
   
   // UPDATE
-  update = async (params) => {
+  update = async (model, validate, params) => {
     console.log(params);
     
     return {statusCode: 400};
   }
   
   // DELETE
-  delete = async (params) => {
+  delete = async (model, validate, params) => {
     //TODO
     return {statusCode: 405, content: `DELETE ${params.id} FROM ${this.table}`};
   }
