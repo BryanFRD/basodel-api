@@ -25,7 +25,7 @@ class User extends BaseService {
       
     const result = model.UserCredential.create(
       {...userCredentialParam,
-        include: [userAccountParam]},
+        userAccountId: {...userAccountParam}},
       {include: UserAccount})
       .then(model => ({statusCode: 201, content: {model}}))
       .catch(err => ({statusCode: 400, content: {err}}));
@@ -34,15 +34,15 @@ class User extends BaseService {
   }
   
   select = async (model, validate, params) => {
-    return {statusCode: 405, content: {error: "Request 'user' is meant to be only used with POST"}};
+    return {statusCode: 405, content: {err: "Request 'user' is meant to be only used with POST"}};
   }
   
   update = async (model, validate, params) => {
-    return {statusCode: 405, content: {error: "Request 'user' is meant to be only used with POST"}};
+    return {statusCode: 405, content: {err: "Request 'user' is meant to be only used with POST"}};
   }
   
   delete = async (model, validate, params) => {
-    return {statusCode: 405, content: {error: "Request 'user' is meant to be only used with POST"}};
+    return {statusCode: 405, content: {err: "Request 'user' is meant to be only used with POST"}};
   }
   
 }

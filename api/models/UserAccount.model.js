@@ -26,8 +26,8 @@ const UserAccount = DB.define('user_account', {
     allowNull: false,
   },
   roleId: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
     allowNull: false
   }
 });

@@ -35,7 +35,7 @@ class BaseService {
   // DELETE
   delete = async (model, validate, params) => {
     //TODO
-    return {statusCode: 405, content: `DELETE ${params.id} FROM ${this.table}`};
+    return {statusCode: 405, content: {err: `DELETE ${params.id} FROM ${this.table}`}};
   }
   
 }
