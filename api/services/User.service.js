@@ -18,7 +18,10 @@ class User extends BaseService {
       id: userCredentialId.toString(),
       userAccountId: userAccountId.toString()
     };
-    model.useraccount.id = userAccountId.toString();
+    model.useraccount = {
+      ...model.useraccount,
+      id: userAccountId.toString()
+    };
     
     const userCredentialSQL = this.getUserCredentialSQL(model.usercredential);
     const userAccountSQL = this.getUserAccountSQL(model.useraccount);

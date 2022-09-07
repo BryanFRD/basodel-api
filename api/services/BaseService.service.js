@@ -1,4 +1,5 @@
 const MySQL = require('../database/MySQL.database');
+const DateHelper = require('../helpers/DateHelper.helper');
 const StringHelper = require('../helpers/StringHelper.helper');
 
 class BaseService {
@@ -7,6 +8,8 @@ class BaseService {
     this.name = this.constructor.name;
     this.table = this.name.toLowerCase();
   }
+  
+  
   
   // CREATE
   insert = async (params) => {
@@ -33,6 +36,18 @@ class BaseService {
   delete = async (params) => {
     //TODO
     return {statusCode: 405, content: `DELETE ${params.id} FROM ${this.table}`};
+  }
+  
+  toSQLString = (key, value) => {
+    if(key.toString().endWith('Date')){
+      DateHelper.toSQL(new Date(value));
+    }
+    
+    return value;
+  }
+  
+  fromSQLString = (value) => {
+    
   }
   
 }

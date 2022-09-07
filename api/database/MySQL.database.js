@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const { Sequelize } = require('sequelize');
 const { v4: generateUUID } = require('uuid');
 
 class MySQL {
