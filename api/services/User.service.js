@@ -5,7 +5,7 @@ class User extends BaseService {
   
   insert = async ({body}) => {
     const model = body?.model;
-    
+    /*
     if(!model?.usercredential || !model?.useraccount)
     return {statusCode: 400}
     
@@ -27,7 +27,7 @@ class User extends BaseService {
     const userAccountSQL = this.getUserAccountSQL(model.useraccount);
     
     const sql = `${userCredentialSQL}; ${userAccountSQL};`;
-    
+    */
     /*
     INSERT INTO 'usercredential'('id', 'email', 'login', 'password', 'createdDate', 'lastUpdatedDate', 'isDeleted', 'userAccountId') 
     VALUES ('a','b','c','d','e','f','g','h');
@@ -47,7 +47,7 @@ class User extends BaseService {
     // if(!userAccountResponse.statusCode.toString().startsWith('2'))
     //   return userAccountResponse;
     
-    return {statusCode: 418, content: {sql}};
+    return {statusCode: 418};
   }
   
   select = async (params) => {

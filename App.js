@@ -1,5 +1,4 @@
 require('dotenv').config();
-require('./api/database/MySQL.database').getConnection();
 const express = require('express');
 const morgan = require('morgan');
 const routers = require('./api/routers');

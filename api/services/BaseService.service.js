@@ -1,6 +1,5 @@
-const MySQL = require('../database/MySQL.database');
-const DateHelper = require('../helpers/DateHelper.helper');
 const StringHelper = require('../helpers/StringHelper.helper');
+const { Sequelize } = require('sequelize');
 
 class BaseService {
   
@@ -9,11 +8,20 @@ class BaseService {
     this.table = this.name.toLowerCase();
   }
   
-  
+  static sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
+    {
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      dialect: 'mysql',
+    }
+  );
   
   // CREATE
   insert = async (params) => {
-    const uuid = await MySQL.randomUUID(this.table);
+    
     
     return {statusCode: 400};
   }
@@ -36,18 +44,6 @@ class BaseService {
   delete = async (params) => {
     //TODO
     return {statusCode: 405, content: `DELETE ${params.id} FROM ${this.table}`};
-  }
-  
-  toSQLString = (key, value) => {
-    if(key.toString().endWith('Date')){
-      DateHelper.toSQL(new Date(value));
-    }
-    
-    return value;
-  }
-  
-  fromSQLString = (value) => {
-    
   }
   
 }
