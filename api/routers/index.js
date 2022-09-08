@@ -1,3 +1,10 @@
 exports.UserCredential = require('./UserCredential.router');
 exports.UserAccount = require('./UserAccount.router');
 exports.User = require('./User.router');
+exports.ChatMessage = require('./ChatMessage.router');
+exports.GameHistory = require('./GameHistory.router');
+exports.GameHistory_UserAccount = require('./GameHistory_UserAccount.router');
+exports.Purchase = require('./Purchase.router');
+exports.Report = require('./Report.router');
+exports.ReportStatus = require('./ReportStatus.router');
+exports.Role = require('./Role.router');
