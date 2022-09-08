@@ -1,7 +1,7 @@
 const BaseController = require('./BaseController.controller');
 
-class UserAccount extends BaseController {
+class GameHistory extends BaseController {
   
 }
 
-module.exports = UserAccount;
+module.exports = GameHistory;
