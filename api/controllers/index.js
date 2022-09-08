@@ -3,7 +3,6 @@ exports.UserAccount = require('./UserAccount.controller');
 exports.User = require('./User.controller');
 exports.ChatMessage = require('./ChatMessage.controller');
 exports.GameHistory = require('./GameHistory.controller');
-exports.GameHistory_UserAccount = require('./GameHistory_UserAccount.controller');
 exports.Report = require('./Report.controller');
 exports.ReportStatus = require('./ReportStatus.controller');
 exports.Role = require('./Role.controller');

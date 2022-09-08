@@ -1,7 +1,6 @@
 exports.UserCredential = require('./UserCredential.model');
 exports.UserAccount = require('./UserAccount.model');
 exports.GameHistory = require('./GameHistory.model');
-exports.GameHistory_userAccount = require('./GameHistory_UserAccount.model');
 exports.Role = require('./Role.model');
 exports.Purchase = require('./Purchase.model');
 exports.Report = require('./Report.model');

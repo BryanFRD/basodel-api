@@ -1,8 +1,11 @@
 const DB = require('../db/db');
 const { DataTypes } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
-const UserCredential = require('./UserCredential.model');
 const Role = require('./Role.model');
+const Purchase = require('./Purchase.model');
+const GameHistory = require('./GameHistory.model');
+const Report = require('./Report.model');
+const ChatMessage = require('./ChatMessage.model');
 
 const UserAccount = DB.define('user_account', {
   ...BaseModel,
@@ -28,7 +31,20 @@ const UserAccount = DB.define('user_account', {
   }
 });
 
+
 UserAccount.hasOne(Role);
 Role.hasMany(UserAccount);
+
+UserAccount.hasMany(ChatMessage);
+ChatMessage.belongsTo(UserAccount);
+
+UserAccount.hasMany(Purchase);
+Purchase.belongsTo(UserAccount);
+
+UserAccount.hasMany(GameHistory);
+GameHistory.belongsToMany(UserAccount, {through: 'gamehistory_useraccount'});
+
+UserAccount.hasMany(Report);
+Report.belongsTo(UserAccount);
 
 module.exports = UserAccount;

@@ -3,7 +3,6 @@ exports.UserAccount = require('./UserAccount.service');
 exports.User = require('./User.service');
 exports.ChatMessage = require('./ChatMessage.service');
 exports.GameHistory = require('./GameHistory.service');
-exports.GameHistory_UserAccount = require('./GameHistory_UserAccount.service');
 exports.Purchase = require('./Purchase.service');
 exports.Report = require('./Report.service');
 exports.ReportStatus = require('./ReportStatus.service');

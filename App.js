@@ -6,7 +6,7 @@ const DB = require('./api/db/db');
 
 const start = async () => {
   const err = await DB.sync()
-  .then(() => console.log('Database synchronized!'))
+  .then(() => {console.log('Database synchronized!')})
   .catch(err => err);
   
   if(err){
