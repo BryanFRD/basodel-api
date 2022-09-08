@@ -5,7 +5,6 @@ const Test = require('../models/UserCredential.model');
 
 class User extends BaseService {
   
-  //TODO change variable location to UserCredential
   association = UserCredential.belongsTo(UserAccount);
   
   insert = async (model, validate, params) => {

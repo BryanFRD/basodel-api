@@ -24,7 +24,19 @@ class BaseService {
   
   // READ
   select = async (model, validate, params) => {
-    return {statusCode: 400};
+    if(params?.body?.where?.id){
+      const result = model.findByPk(params.body.where.id)
+        .then(value => ({statusCode: 200, content: {value}}))
+        .catch(err => ({statusCode: 400, content: {err}}));
+      
+      return result;
+    }
+    
+    const result = model.findAll(params?.body)
+      .then(value => ({statusCode: 200, content: {value}}))
+      .catch(err => ({statusCode: 400, content: {err}}));
+    
+    return result;
   }
   
   // UPDATE

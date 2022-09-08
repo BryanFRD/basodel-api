@@ -14,7 +14,3 @@ module.exports = {
     allowNull: false
   }
 }
-
-const initAssociations = () => {
-  return;
-}
