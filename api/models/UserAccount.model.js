@@ -32,4 +32,6 @@ const UserAccount = DB.define('user_account', {
   }
 });
 
+UserAccount.hasOne(UserCredential);
+
 module.exports = UserAccount;

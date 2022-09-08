@@ -26,12 +26,23 @@ class User extends BaseService {
     console.log('userCredentialParam', userCredentialParam);
     console.log('userAccountParam', userAccountParam);
       
+    
+    
+    
     const result = model.UserCredential.create(
       {...userCredentialParam,
-        userAccountId: {...userAccountParam}},
-      {include: UserAccount})
+        UserAccount: userAccountParam},
+      {include: [UserAccount]})
       .then(model => ({statusCode: 201, content: {model}}))
       .catch(err => ({statusCode: 400, content: {err}}));
+      
+      
+      
+      
+      
+      
+      
+      
       
     return result;
   }
