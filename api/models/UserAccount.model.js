@@ -2,6 +2,7 @@ const DB = require('../db/db');
 const { DataTypes } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 const UserCredential = require('./UserCredential.model');
+const Role = require('./Role.model');
 
 const UserAccount = DB.define('user_account', {
   ...BaseModel,
@@ -24,12 +25,10 @@ const UserAccount = DB.define('user_account', {
     type: DataTypes.INTEGER,
     defaultValue: 100,
     allowNull: true,
-  },
-  roleId: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0,
-    allowNull: true
   }
 });
+
+UserAccount.hasOne(Role);
+Role.hasMany(UserAccount);
 
 module.exports = UserAccount;

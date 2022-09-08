@@ -22,5 +22,6 @@ const UserCredential = DB.define('user_credential', {
 });
 
 UserAccount.hasOne(UserCredential);
+UserCredential.belongsTo(UserAccount);
 
 module.exports = UserCredential;
