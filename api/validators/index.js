@@ -1,2 +1,9 @@
 exports.UserCredential = require('./UserCredential.validator');
 exports.UserAccount = require('./UserAccount.validator');
+exports.ChatMessage = require('./UserAccount.validator');
+exports.GameHistory = require('./UserAccount.validator');
+exports.GameHistory_UserAccount = require('./UserAccount.validator');
+exports.Purchase = require('./UserAccount.validator');
+exports.Report = require('./UserAccount.validator');
+exports.ReportStatus = require('./UserAccount.validator');
+exports.Role = require('./UserAccount.validator');
