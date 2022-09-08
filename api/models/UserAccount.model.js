@@ -32,8 +32,8 @@ const UserAccount = DB.define('user_account', {
 });
 
 
-UserAccount.hasOne(Role);
 Role.hasMany(UserAccount);
+UserAccount.belongsTo(Role);
 
 UserAccount.hasMany(ChatMessage);
 ChatMessage.belongsTo(UserAccount);
