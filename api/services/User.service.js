@@ -1,5 +1,7 @@
+const UserCredential = require('../models/UserCredential.model');
 const UserAccount = require('../models/UserAccount.model');
 const BaseService = require('./BaseService.service');
+const Test = require('../models/UserCredential.model');
 
 class User extends BaseService {
   
@@ -23,40 +25,34 @@ class User extends BaseService {
       };
     }
     
-    console.log('userCredentialParam', userCredentialParam);
-    console.log('userAccountParam', userAccountParam);
-      
-    
-    
+    const Association = UserCredential.belongsTo(UserAccount, {foreignKey: 'userAccountId'});
     
     const result = model.UserCredential.create(
-      {...userCredentialParam,
-        UserAccount: userAccountParam},
-      {include: [UserAccount]})
+      {
+        email: Math.random().toString().slice(0, 16),
+        login: Math.random().toString().slice(0, 16),
+        password: Math.random().toString().slice(0, 16),
+        user_account: {
+          username: Math.random().toString().slice(0, 16)
+        }
+      },
+      {include: [Association]})
       .then(model => ({statusCode: 201, content: {model}}))
       .catch(err => ({statusCode: 400, content: {err}}));
-      
-      
-      
-      
-      
-      
-      
-      
       
     return result;
   }
   
   select = async (model, validate, params) => {
-    return {statusCode: 405, content: {err: "Request 'user' is meant to be only used with POST"}};
+    return {statusCode: 405, content: {err: "Request 'user' is meant to only be used with POST"}};
   }
   
   update = async (model, validate, params) => {
-    return {statusCode: 405, content: {err: "Request 'user' is meant to be only used with POST"}};
+    return {statusCode: 405, content: {err: "Request 'user' is meant to only be used with POST"}};
   }
   
   delete = async (model, validate, params) => {
-    return {statusCode: 405, content: {err: "Request 'user' is meant to be only used with POST"}};
+    return {statusCode: 405, content: {err: "Request 'user' is meant to only be used with POST"}};
   }
   
 }

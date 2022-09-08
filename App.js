@@ -22,7 +22,6 @@ const start = async () => {
     app.use(`/${route}`, new routers[route]().router);
   }
   
-  
   app.listen(process.env.SERVER_PORT, () => console.log(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
 }
 

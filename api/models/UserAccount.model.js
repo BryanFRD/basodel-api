@@ -13,25 +13,23 @@ const UserAccount = DB.define('user_account', {
   xp: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
-    allowNull: false,
+    allowNull: true,
   },
   silver: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
-    allowNull: false,
+    allowNull: true,
   },
   gold: {
     type: DataTypes.INTEGER,
     defaultValue: 100,
-    allowNull: false,
+    allowNull: true,
   },
   roleId: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
-    allowNull: false
+    allowNull: true
   }
 });
-
-UserAccount.hasOne(UserCredential);
 
 module.exports = UserAccount;
