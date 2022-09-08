@@ -5,6 +5,9 @@ const Test = require('../models/UserCredential.model');
 
 class User extends BaseService {
   
+  //TODO change variable location to UserCredential
+  association = UserCredential.belongsTo(UserAccount);
+  
   insert = async (model, validate, params) => {
     const userCredentialParam = params?.body?.model?.userCredential;
     const userAccountParam = params?.body?.model?.userAccount;
@@ -25,21 +28,15 @@ class User extends BaseService {
       };
     }
     
-    const Association = UserCredential.belongsTo(UserAccount, {foreignKey: 'userAccountId'});
-    
     const result = model.UserCredential.create(
       {
-        email: Math.random().toString().slice(0, 16),
-        login: Math.random().toString().slice(0, 16),
-        password: Math.random().toString().slice(0, 16),
-        user_account: {
-          username: Math.random().toString().slice(0, 16)
-        }
+        ...userCredentialParam,
+        user_account: userAccountParam
       },
-      {include: [Association]})
+      {include: [this.association]})
       .then(model => ({statusCode: 201, content: {model}}))
       .catch(err => ({statusCode: 400, content: {err}}));
-      
+    
     return result;
   }
   
