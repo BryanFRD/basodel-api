@@ -22,6 +22,9 @@ class User extends BaseService {
         }
       };
     }
+    
+    console.log('userCredentialParam', userCredentialParam);
+    console.log('userAccountParam', userAccountParam);
       
     const result = model.UserCredential.create(
       {...userCredentialParam,
