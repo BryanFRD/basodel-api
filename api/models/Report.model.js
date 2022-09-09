@@ -20,6 +20,9 @@ const Report = DB.define('report', {
 });
 
 Report.hasOne(ReportStatus);
-ReportStatus.hasMany(Report);
+ReportStatus.hasMany(Report, {foreignKey: {
+  defaultValue: 1,
+  allowNull: true
+}});
 
 module.exports = Report;

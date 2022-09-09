@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const routers = require('./api/routers');
 const DB = require('./api/db/db');
 const Role = require('./api/models/Role.model');
+const ReportStatus = require('./api/models/ReportStatus.model');
 
 const start = async () => {
   const err = await DB.sync()
@@ -27,7 +28,16 @@ const start = async () => {
   Role.findOrCreate({
     where: {id: '1'},
     defaults: {
-      title: 'Default'
+      id: '1',
+      title: 'role.default'
+    }
+  });
+  
+  ReportStatus.findOrCreate({
+    where: {id: '1'},
+    default: {
+      id: '1',
+      title: 'reportStatus.default'
     }
   })
   
