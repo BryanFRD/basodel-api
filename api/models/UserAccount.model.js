@@ -26,7 +26,7 @@ const UserAccount = DB.define('user_account', {
   },
   gold: {
     type: DataTypes.INTEGER,
-    defaultValue: 100,
+    defaultValue: 125,
     allowNull: true
   }
 });
