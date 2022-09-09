@@ -17,23 +17,25 @@ const UserAccount = DB.define('user_account', {
   xp: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
-    allowNull: true,
+    allowNull: true
   },
   silver: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
-    allowNull: true,
+    allowNull: true
   },
   gold: {
     type: DataTypes.INTEGER,
     defaultValue: 100,
-    allowNull: true,
+    allowNull: true
   }
 });
 
-
 Role.hasMany(UserAccount);
-UserAccount.belongsTo(Role);
+UserAccount.belongsTo(Role, {foreignKey: {
+  defaultValue: 1,
+  allowNull: true
+}});
 
 UserAccount.hasMany(ChatMessage);
 ChatMessage.belongsTo(UserAccount);

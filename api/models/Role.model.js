@@ -5,8 +5,8 @@ const BaseModel = require('./BaseModel.model');
 const Role = DB.define('role', {
   ...BaseModel,
   id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
     allowNull: false,
     unique: true
