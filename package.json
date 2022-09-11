@@ -5,7 +5,8 @@
   "main": "App.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon App.js"
+    "dev": "nodemon App.js",
+    "start": "node App.js"
   },
   "keywords": [
     "basodel",
@@ -14,6 +15,7 @@
   "author": "Bryan",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "joi": "^17.6.0",
