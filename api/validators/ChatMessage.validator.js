@@ -2,7 +2,10 @@ const Joi = require('joi');
 
 const ChatMessage = (value) => {
   const schema = Joi.object({
-    username: Joi.string().min(5).max(16).trim().required(),
+    message: Joi.string().max(255).trim().required(),
+    user_account: Joi.object().keys({
+      id: Joi.string().length(36).trim().required()
+    }).required()
   });
   
   return schema.validate(value);

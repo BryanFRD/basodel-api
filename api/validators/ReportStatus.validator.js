@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const ReportStatus = (value) => {
   const schema = Joi.object({
-    username: Joi.string().min(5).max(16).trim().required(),
+    title: Joi.string().max(50).trim().required(),
   });
   
   return schema.validate(value);
