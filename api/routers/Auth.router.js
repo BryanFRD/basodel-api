@@ -1,5 +1,6 @@
 const express = require('express');
 const Router = express.Router;
+const jwt = require('jsonwebtoken');
 
 class Auth {
   
@@ -14,6 +15,12 @@ class Auth {
       
       return res.status(401).send();
     });
+  }
+  
+  generateAccessToken = (userId) => {
+    //TODO Change it to 1 week '604800s'
+    const tokenDuration = '1800s';
+    return jwt.sign(userId, process.env.ACCESS_TOKEN, {expiresIn: ''});
   }
   
 }
