@@ -3,11 +3,12 @@ const BaseService = require('./BaseService.service');
 
 class UserCredential extends BaseService {
   
-  association = UserCredential.belongsTo(UserAccount);
+  // association = UserCredentialModel.belongsTo(UserAccount);
   
-  insert = (model, validate, params) => {
-    console.log(model.associations);
-  }
+  // insert = (model, validate, params) => {
+  //   console.log(UserCredentialModel);
+  //   return {statusCode: 400};
+  // }
   
 }
 

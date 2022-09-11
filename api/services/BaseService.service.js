@@ -10,16 +10,20 @@ class BaseService {
     this.table = this.name.toLowerCase();
   }
   
+  
+  
   // CREATE
   insert = async (model, validate, params) => {
-    const { error } = validate(params.body.model);
+    const { error } = validate(params?.body?.model);
     
     if(!params?.body?.model || error)
       return {statusCode: 400, content: {error}};
       
-    const result = await model.create({...params.body.model})
+    const result = await model.create(
+      {...params.body.model},
+      {include: [...Object.values(model.associations)]})
     .then(model => ({statusCode: 201, content: {model}}))
-    .catch(err => ({statusCode: 400, content: {err}}));
+    .catch(error => ({statusCode: 400, content: {error}}));
     
     return result;
   }
