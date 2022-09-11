@@ -17,9 +17,8 @@ const start = async () => {
   }
   
   const app = express();
-
-  app.use(morgan('dev')).use(express.json());
   
+  app.use(morgan('dev')).use(express.json());
   
   for(const route in routers){
     app.use(`/${route}`, new routers[route]().router);
