@@ -34,7 +34,7 @@ const UserAccount = DB.define('user_account', {
 Role.hasMany(UserAccount);
 UserAccount.belongsTo(Role, {foreignKey: {
   defaultValue: 1,
-  allowNull: true
+  allowNull: false,
 }});
 
 UserAccount.hasMany(ChatMessage);

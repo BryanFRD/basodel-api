@@ -5,6 +5,8 @@ const routers = require('./api/routers');
 const DB = require('./api/db/db');
 const Role = require('./api/models/Role.model');
 const ReportStatus = require('./api/models/ReportStatus.model');
+const UserAccount = require('./api/models/UserAccount.model');
+const UserCredential = require('./api/models/UserCredential.model');
 
 const start = async () => {
   const err = await DB.sync()
@@ -19,6 +21,7 @@ const start = async () => {
   const app = express();
 
   app.use(morgan('dev')).use(express.json());
+  
   
   for(const route in routers){
     app.use(`/${route}`, new routers[route]().router);
