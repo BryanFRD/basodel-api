@@ -1,7 +1,6 @@
 const UserCredential = require('../models/UserCredential.model');
 const UserAccount = require('../models/UserAccount.model');
 const BaseService = require('./BaseService.service');
-const Test = require('../models/UserCredential.model');
 
 class User extends BaseService {
   

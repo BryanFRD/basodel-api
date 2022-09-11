@@ -5,8 +5,6 @@ const routers = require('./api/routers');
 const DB = require('./api/db/db');
 const Role = require('./api/models/Role.model');
 const ReportStatus = require('./api/models/ReportStatus.model');
-const UserAccount = require('./api/models/UserAccount.model');
-const UserCredential = require('./api/models/UserCredential.model');
 
 const start = async () => {
   const err = await DB.sync()

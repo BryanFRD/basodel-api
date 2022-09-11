@@ -1,5 +1,7 @@
 const StringHelper = require('../helpers/StringHelper.helper');
 const { Sequelize } = require('sequelize');
+const UserCredential = require('../models/UserCredential.model');
+const UserAccount = require('../models/UserAccount.model');
 
 class BaseService {
   
