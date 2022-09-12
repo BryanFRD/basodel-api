@@ -17,9 +17,7 @@ class RefreshToken {
       const auth = req?.headers['authorization'];
       const token = auth?.split(' ')[1];
       
-      console.log(getRefreshTokens())
-      
-      if(!token || !getRefreshTokens().includes(token))
+      if(!token)
         return res.sendStatus(401);
         
       jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
@@ -31,13 +29,15 @@ class RefreshToken {
           .then(value => value)
           .catch(error => res.status(401).send({content: {error}}));
           
-          console.log('userAccount:', userAccount);
-          
           delete user.iat;
           delete user.exp;
           
           const tokenData = {
-            ...user
+            ...user,
+            isBanned: userAccount.isBanned,
+            roleId: userAccount.roleId,
+            roleLevel: userAccount.role?.level,
+            isDeleted: userAccount.isDeleted
           }
           
           console.log('tokenData:', tokenData);
@@ -45,18 +45,7 @@ class RefreshToken {
           const accessToken = generateAccessToken(tokenData);
           
           return res.status(200).send({content: {accessToken}});
-        })
-        
-        // const tokenData = {
-        //   userCredentialId: user.id,
-        //   userAccountId: user.user_account.id,
-        //   isBanned: user.user_account.isBanned,
-        //   roleId: user.user_account.roleId,
-        //   roleLevel: user.user_account.role.level,
-        //   isDeleted: user.isDeleted
-        // }
-        
-      return res.sendStatus(418);
+        });
     });
   }
   

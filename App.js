@@ -47,19 +47,12 @@ const start = async () => {
 
 start();
 
-//TODO Redis Cache ?
-const refreshTokens = [];
-
-getRefreshTokens = () => refreshTokens;
+//TODO Redis Cache pour les refreshTokens et ensuite une route logout ???
 
 generateAccessToken = (data) => {
   return jwt.sign(data, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
 }
 
 generateRefreshToken = (data) => {
-  const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN, {expiresIn: "30d"});
-  
-  refreshTokens.push(refreshToken);
-  
-  return refreshToken;
+  return jwt.sign(data, process.env.REFRESH_TOKEN, {expiresIn: "30d"});
 }
