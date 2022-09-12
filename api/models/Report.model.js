@@ -9,7 +9,10 @@ Report.init({
   ...BaseModel,
   reportedUserId: {
     type: DataTypes.UUID,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isUUID: 4
+    }
   },
   content: {
     type: DataTypes.STRING(255),
@@ -17,7 +20,11 @@ Report.init({
   },
   origin: {
     type: DataTypes.STRING(255),
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notNull: true,
+      notEmpty: true
+    }
   }
 }, {
   indexes: [{unique: true, fields: ['id']}],

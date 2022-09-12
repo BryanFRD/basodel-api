@@ -18,16 +18,35 @@ UserCredential.init({
   email: {
     type: DataTypes.STRING(50),
     allowNull: false,
+    validate: {
+      isEmail: true,
+      len: [1, 50]
+    }
   },
   login: {
     type: DataTypes.STRING(50),
     allowNull: false,
+    validate: {
+      len: [5, 50]
+    }
   },
   password: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false,
+    validate: {
+      notNull: true,
+      notEmpty: true,
+      len: [5, 255]
+    },
     get() {
       return 'password';
+    }
+  },
+  userAccountId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    validate: {
+      isUUID: 4
     }
   }
 },{

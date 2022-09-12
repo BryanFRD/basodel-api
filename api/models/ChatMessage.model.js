@@ -9,7 +9,11 @@ ChatMessage.init({
   message: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    defaultValue: ''
+    defaultValue: '',
+    validate: {
+      notNull: true,
+      notEmpty: true
+    }
   }
 }, {
   indexes: [{unique: true, fields: ['id']}],

@@ -10,12 +10,16 @@ ReportStatus.init({
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    allowNull: false,
+    allowNull: false
   },
   title: {
     type: DataTypes.STRING(50),
     allowNull: false,
-    defaultValue: ''
+    defaultValue: '',
+    validate: {
+      notNull: true,
+      notEmpty: true
+    }
   }
 }, {
   indexes: [{unique: true, fields: ['id']}],

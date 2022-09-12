@@ -8,11 +8,19 @@ GameHistory.init({
   ...BaseModel,
   title: {
     type: DataTypes.STRING(50),
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notNull: true,
+      notEmpty: true
+    }
   },
   information: {
     type: DataTypes.STRING(255),
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notNull: true,
+      notEmpty: true
+    }
   }
 }, {
   indexes: [{unique: true, fields: ['id']}],

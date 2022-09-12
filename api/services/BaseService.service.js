@@ -12,10 +12,8 @@ class BaseService {
   
   // CREATE
   insert = async (model, params) => {
-    const { error } = validate(params?.body?.model);
-    
-    if(!params?.body?.model || error)
-      return {statusCode: 400, content: {error}};
+    if(!params?.body?.model)
+      return {statusCode: 400};
       
     const result = await model.create(
       {...params.body.model},

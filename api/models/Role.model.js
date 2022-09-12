@@ -10,15 +10,23 @@ Role.init({
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    allowNull: false,
+    allowNull: false
   },
   title: {
     type: DataTypes.STRING(50),
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notNull: true,
+      notEmpty: true
+    }
   },
   level: {
     type: DataTypes.INTEGER,
-    defaultValue: '0'
+    defaultValue: 0,
+    validate: {
+      isNumeric: true,
+      min: 0
+    }
   }
 }, {
   indexes: [{unique: true, fields: ['id']}],
