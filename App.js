@@ -5,6 +5,7 @@ const routers = require('./api/routers');
 const DB = require('./api/db/db');
 const Role = require('./api/models/Role.model');
 const ReportStatus = require('./api/models/ReportStatus.model');
+const jwt = require('jsonwebtoken');
 
 const start = async () => {
   const err = await DB.sync()
@@ -45,3 +46,20 @@ const start = async () => {
 }
 
 start();
+
+//TODO Redis Cache ?
+const refreshTokens = [];
+
+getRefreshTokens = () => refreshTokens;
+
+generateAccessToken = (data) => {
+  return jwt.sign(data, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
+}
+
+generateRefreshToken = (data) => {
+  const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN, {expiresIn: "30d"});
+  
+  refreshTokens.push(refreshToken);
+  
+  return refreshToken;
+}

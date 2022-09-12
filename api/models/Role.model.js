@@ -15,6 +15,10 @@ Role.init({
   title: {
     type: DataTypes.STRING(50),
     allowNull: false
+  },
+  level: {
+    type: DataTypes.INTEGER,
+    defaultValue: '0'
   }
 }, {
   indexes: [{unique: true, fields: ['id']}],

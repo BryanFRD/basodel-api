@@ -1,8 +1,9 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const Router = express.Router;
-const jwt = require('jsonwebtoken');
 const UserCredential = require('../models/UserCredential.model');
+const Role = require('../models/Role.model');
+const UserAccount = require('../models/UserAccount.model');
 
 class Auth {
   
@@ -29,43 +30,33 @@ class Auth {
             {login: loginOrEmail}
           ]
         },
-        include: [...Object.values(UserCredential.associations)]
+        include: [
+          UserAccount,
+          {model: UserAccount, include: [Role]}
+        ]
       });
-      console.log('userCredential:', userCredential);
       
       const isAuthenticated = await userCredential?.authenticate(password);
       
       if(!isAuthenticated)
         return res.status(401).send();
       
-      const accessToken = this.generateAccessToken(userCredential.dataValues);
+      const user = userCredential.dataValues;
       
-      return res.status(200).send({content: {accessToken}});
+      const tokenData = {
+        userCredentialId: user.id,
+        userAccountId: user.user_account.id,
+        isBanned: user.user_account.isBanned,
+        roleId: user.user_account.roleId,
+        roleLevel: user.user_account.role.level,
+        isDeleted: user.user_account.isDeleted
+      }
+        
+      const accessToken = generateAccessToken(tokenData);
+      const refreshToken = generateRefreshToken(tokenData);
+      
+      return res.status(200).send({content: {accessToken, refreshToken}});
     });
-  }
-  
-  generateAccessToken = (user) => {
-    const tokenData = {
-      userCredentialId: user.id,
-      userAccountId: user.userAccountId,
-      roleId: user.user_account.dataValues.roleId,
-      isDeleted: user.isDeleted
-    }
-    
-    const tokenDuration = '1800s';
-    return jwt.sign(tokenData, process.env.ACCESS_TOKEN, {expiresIn: tokenDuration});
-  }
-  
-  generateRefreshToken = (user) => {
-    const tokenData = {
-      userCredentialId: user.id,
-      userAccountId: user.userAccountId,
-      roleId: user.user_account.dataValues.roleId,
-      isDeleted: user.isDeleted
-    }
-    
-    const tokenDuration = '1800s';
-    return jwt.sign(tokenData, process.env.REFRESH_TOKEN, {expiresIn: tokenDuration});
   }
   
 }

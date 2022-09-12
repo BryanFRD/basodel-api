@@ -29,6 +29,10 @@ UserAccount.init({
     type: DataTypes.INTEGER,
     defaultValue: 125,
     allowNull: true
+  },
+  isBanned: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 }, {
   indexes: [
