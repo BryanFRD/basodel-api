@@ -1,5 +1,5 @@
 const DB = require('../db/db');
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 const Role = require('./Role.model');
 const Purchase = require('./Purchase.model');
@@ -7,7 +7,9 @@ const GameHistory = require('./GameHistory.model');
 const Report = require('./Report.model');
 const ChatMessage = require('./ChatMessage.model');
 
-const UserAccount = DB.define('user_account', {
+class UserAccount extends Model {}
+
+UserAccount.init({
   ...BaseModel,
   username: {
     type: DataTypes.STRING(16),
@@ -29,6 +31,9 @@ const UserAccount = DB.define('user_account', {
     defaultValue: 125,
     allowNull: true
   }
+}, {
+  sequelize: DB,
+  modelName: 'user_account',
 });
 
 Role.hasMany(UserAccount);

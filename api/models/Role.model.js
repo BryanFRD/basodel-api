@@ -1,8 +1,10 @@
 const DB = require('../db/db');
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 
-const Role = DB.define('role', {
+class Role extends Model {}
+
+Role.init({
   ...BaseModel,
   id: {
     type: DataTypes.INTEGER,
@@ -15,6 +17,9 @@ const Role = DB.define('role', {
     type: DataTypes.STRING(50),
     allowNull: false
   }
+}, {
+  sequelize: DB,
+  modelName: 'role',
 });
 
 module.exports = Role;

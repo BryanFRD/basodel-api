@@ -1,8 +1,10 @@
 const DB = require('../db/db');
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 
-const Purchase = DB.define('purchase', {
+class Purchase extends Model {}
+
+Purchase.init({
   ...BaseModel,
   title: {
     type: DataTypes.STRING(50),
@@ -12,6 +14,9 @@ const Purchase = DB.define('purchase', {
     type: DataTypes.STRING(255),
     allowNull: false
   }
+}, {
+  sequelize: DB,
+  modelName: 'purchase',
 });
 
 module.exports = Purchase;

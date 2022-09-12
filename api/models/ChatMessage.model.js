@@ -1,14 +1,19 @@
 const DB = require('../db/db');
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 
-const ChatMessage = DB.define('chat_message', {
+class ChatMessage extends Model {}
+
+ChatMessage.init({
   ...BaseModel,
   message: {
     type: DataTypes.STRING(255),
     allowNull: false,
     defaultValue: ''
   }
+}, {
+  sequelize: DB,
+  modelName: 'chat_message',
 });
 
 module.exports = ChatMessage;

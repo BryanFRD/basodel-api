@@ -1,9 +1,11 @@
 const DB = require('../db/db');
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 const ReportStatus = require('./ReportStatus.model');
 
-const Report = DB.define('report', {
+class Report extends Model {}
+
+Report.init({
   ...BaseModel,
   reportedUserId: {
     type: DataTypes.UUID,
@@ -17,6 +19,9 @@ const Report = DB.define('report', {
     type: DataTypes.STRING(255),
     allowNull: false
   }
+}, {
+  sequelize: DB,
+  modelName: 'report',
 });
 
 Report.hasOne(ReportStatus);

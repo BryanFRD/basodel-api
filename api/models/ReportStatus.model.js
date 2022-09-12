@@ -1,8 +1,10 @@
 const DB = require('../db/db');
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 
-const ReportStatus = DB.define('report_status', {
+class ReportStatus extends Model {}
+
+ReportStatus.init({
   ...BaseModel,
   id: {
     type: DataTypes.INTEGER,
@@ -16,6 +18,9 @@ const ReportStatus = DB.define('report_status', {
     allowNull: false,
     defaultValue: ''
   }
+}, {
+  sequelize: DB,
+  modelName: 'report_status',
 });
 
 module.exports = ReportStatus;

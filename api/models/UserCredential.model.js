@@ -1,10 +1,19 @@
 const DB = require('../db/db');
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 const UserAccount = require('./UserAccount.model');
 const bcrypt = require('bcrypt');
 
-const UserCredential = DB.init('user_credential', {
+class UserCredential extends Model {
+  
+  authenticate = (password) => {
+    console.log(this);
+    return false;
+  }
+  
+}
+
+UserCredential.init({
   ...BaseModel,
   email: {
     type: DataTypes.STRING(50),
@@ -21,6 +30,8 @@ const UserCredential = DB.init('user_credential', {
     allowNull: false
   }
 },{
+  sequelize: DB,
+  modelName: 'user_credential',
   hooks: {
     beforeCreate: async (userCredential) => {
       if(userCredential.password){
