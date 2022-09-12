@@ -1,5 +1,4 @@
 const models = require('../models');
-const validators = require('../validators');
 const services = require('../services');
 
 class BaseController {
@@ -8,7 +7,6 @@ class BaseController {
     this.name = this.constructor.name;
     this.table = this.name;
     this.model = models[this.name];
-    this.validate = validators[this.name];
     this.service = new services[this.table]();
   }
   
