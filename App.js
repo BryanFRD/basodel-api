@@ -50,7 +50,7 @@ start();
 //TODO Redis Cache pour les refreshTokens et ensuite une route logout ???
 
 generateAccessToken = (data) => {
-  return jwt.sign(data, process.env.ACCESS_TOKEN, {expiresIn: '30s'});
+  return jwt.sign(data, process.env.ACCESS_TOKEN, {expiresIn: '15m'});
 }
 
 generateRefreshToken = (data) => {

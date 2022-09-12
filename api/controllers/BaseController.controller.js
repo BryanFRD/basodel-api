@@ -13,19 +13,19 @@ class BaseController {
   }
   
   create = async (params) => {
-    return await this.service.insert(this.model, this.validate, params);
+    return await this.service.insert(this.model, params);
   }
   
   get = async (params) => {
-    return await this.service.select(this.model, this.validate, params);
+    return await this.service.select(this.model, params);
   }
   
   update = async (params) => {
-    return await this.service.update(this.model, this.validate, params);
+    return await this.service.update(this.model, params);
   }
   
   delete = async (params) => {
-    return await this.service.delete(this.model, this.validate, params);
+    return await this.service.delete(this.model, params);
   }
   
 }

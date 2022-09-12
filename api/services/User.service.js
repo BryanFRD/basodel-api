@@ -6,25 +6,12 @@ class User extends BaseService {
   
   association = UserCredential.belongsTo(UserAccount);
   
-  insert = async (model, validate, params) => {
+  insert = async (model, params) => {
     const userCredentialParam = params?.body?.model?.userCredential;
     const userAccountParam = params?.body?.model?.userAccount;
     
     if(!userCredentialParam || !userAccountParam)
       return {statusCode: 400, content: {error: 'Missing model'}}
-    
-    const userCredentialValidatorError = validate.UserCredential(userCredentialParam);
-    const userAccountValidatorError = validate.UserAccount(userAccountParam)
-    
-    if(userCredentialValidatorError.error || userAccountValidatorError.error){
-      return {statusCode: 400, 
-        content: {
-          msg: 'Missing values in models',
-          userCredentialError: userCredentialValidatorError.error,
-          userAccountError: userAccountValidatorError.error
-        }
-      };
-    }
     
     const result = model.UserCredential.create(
       {
@@ -38,15 +25,15 @@ class User extends BaseService {
     return result;
   }
   
-  select = async (model, validate, params) => {
+  select = async (model, params) => {
     return {statusCode: 405, content: {err: "Request 'user' is meant to only be used with POST"}};
   }
   
-  update = async (model, validate, params) => {
+  update = async (model, params) => {
     return {statusCode: 405, content: {err: "Request 'user' is meant to only be used with POST"}};
   }
   
-  delete = async (model, validate, params) => {
+  delete = async (model, params) => {
     return {statusCode: 405, content: {err: "Request 'user' is meant to only be used with POST"}};
   }
   

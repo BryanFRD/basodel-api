@@ -11,7 +11,7 @@ class BaseService {
   }
   
   // CREATE
-  insert = async (model, validate, params) => {
+  insert = async (model, params) => {
     const { error } = validate(params?.body?.model);
     
     if(!params?.body?.model || error)
@@ -27,7 +27,7 @@ class BaseService {
   }
   
   // READ
-  select = async (model, validate, params) => {
+  select = async (model, params) => {
     if(params?.body?.where?.id){
       const result = model.findByPk(params.body.where.id)
         .then(value => ({statusCode: 200, content: {value}}))
@@ -44,12 +44,12 @@ class BaseService {
   }
   
   // UPDATE
-  update = async (model, validate, params) => {
+  update = async (model, params) => {
     return {statusCode: 400};
   }
   
   // DELETE
-  delete = async (model, validate, params) => {
+  delete = async (model, params) => {
     //TODO
     return {statusCode: 405, content: {err: `DELETE ${params.id} FROM ${this.table}`}};
   }
