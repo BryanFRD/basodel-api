@@ -4,7 +4,7 @@ const BaseModel = require('./BaseModel.model');
 const UserAccount = require('./UserAccount.model');
 const bcrypt = require('bcrypt');
 
-const UserCredential = DB.define('user_credential', {
+const UserCredential = DB.init('user_credential', {
   ...BaseModel,
   email: {
     type: DataTypes.STRING(50),
