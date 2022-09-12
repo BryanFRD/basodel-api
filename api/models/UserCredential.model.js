@@ -6,9 +6,11 @@ const bcrypt = require('bcrypt');
 
 class UserCredential extends Model {
   
-  authenticate = (password) => {
-    console.log(this);
-    return false;
+  authenticate = async (password) => {
+    const test = await bcrypt.compare(password, this.getDataValue('password'));
+    console.log('password:', password);
+    console.log(test, this.getDataValue('password'))
+    return test;
   }
   
 }
@@ -18,32 +20,34 @@ UserCredential.init({
   email: {
     type: DataTypes.STRING(50),
     allowNull: false,
-    unique: true
   },
   login: {
     type: DataTypes.STRING(50),
     allowNull: false,
-    unique: true
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    get() {
+      return 'password';
+    }
   }
 },{
+  indexes: [
+    {unique: true, fields: ['id']},
+    {unique: true, fields: ['email']},
+    {unique: true, fields: ['login']}
+  ],
   sequelize: DB,
   modelName: 'user_credential',
   hooks: {
     beforeCreate: async (userCredential) => {
-      if(userCredential.password){
-        const salt = await bcrypt.genSalt(10);
-        userCredential.password = await bcrypt.hash(userCredential.password, salt);
-      }
+      if(userCredential?.getDataValue('password'))
+        userCredential.password = await bcrypt.hash(userCredential.getDataValue('password'), 10);
     },
     beforeUpdate: async (userCredential) => {
-      if(userCredential.password){
-        const salt = await bcrypt.genSalt(10);
-        userCredential.password = await bcrypt.hash(userCredential.password, salt);
-      }
+      if(userCredential?.getDataValue('password'))
+        userCredential.password = await bcrypt.hash(userCredential.getDataValue('password'), 10);
     }
   }
 });

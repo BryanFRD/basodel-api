@@ -12,6 +12,7 @@ ChatMessage.init({
     defaultValue: ''
   }
 }, {
+  indexes: [{unique: true, fields: ['id']}],
   sequelize: DB,
   modelName: 'chat_message',
 });

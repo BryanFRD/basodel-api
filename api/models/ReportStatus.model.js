@@ -11,7 +11,6 @@ ReportStatus.init({
     autoIncrement: true,
     primaryKey: true,
     allowNull: false,
-    unique: true
   },
   title: {
     type: DataTypes.STRING(50),
@@ -19,6 +18,7 @@ ReportStatus.init({
     defaultValue: ''
   }
 }, {
+  indexes: [{unique: true, fields: ['id']}],
   sequelize: DB,
   modelName: 'report_status',
 });

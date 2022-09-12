@@ -14,7 +14,6 @@ UserAccount.init({
   username: {
     type: DataTypes.STRING(16),
     allowNull: false,
-    unique: true
   },
   xp: {
     type: DataTypes.INTEGER,
@@ -32,6 +31,10 @@ UserAccount.init({
     allowNull: true
   }
 }, {
+  indexes: [
+    {unique: true, fields: ['id']},
+    {unique: true, fields: ['username']}
+  ],
   sequelize: DB,
   modelName: 'user_account',
 });

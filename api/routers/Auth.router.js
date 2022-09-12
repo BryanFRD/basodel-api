@@ -3,7 +3,6 @@ const { Op } = require('sequelize');
 const Router = express.Router;
 const jwt = require('jsonwebtoken');
 const UserCredential = require('../models/UserCredential.model');
-const bcrypt = require('bcrypt');
 
 class Auth {
   
@@ -29,28 +28,35 @@ class Auth {
             {email: loginOrEmail},
             {login: loginOrEmail}
           ]
-        }
+        },
+        include: [...Object.values(UserCredential.associations)]
       });
+      console.log('userCredential:', userCredential);
       
-      if(!userCredential)
+      const isAuthenticated = await userCredential?.authenticate(password);
+      
+      if(!isAuthenticated)
         return res.status(401).send();
       
-      const isValide = await bcrypt.compare(password, userCredential.dataValues.password);
-      delete userCredential.dataValues.password;
-      
-      if(!isValide)
-        return res.status(401).send();
-        
       const accessToken = this.generateAccessToken(userCredential.dataValues);
       
       return res.status(200).send({content: {accessToken}});
     });
   }
   
-  generateAccessToken = (userId) => {
+  generateAccessToken = (user) => {
+    const tokenData = {
+      userCredentialId: user.id,
+      userAccountId: user.userAccountId,
+      roleId: user.user_account.dataValues.roleId,
+      isDeleted: user.isDeleted
+    }
+    
+    console.log(tokenData);
+    
     //TODO Change it to 1 week '604800s'
     const tokenDuration = '1800s';
-    return jwt.sign(userId, process.env.ACCESS_TOKEN, {expiresIn: tokenDuration});
+    return jwt.sign(tokenData, process.env.ACCESS_TOKEN, {expiresIn: tokenDuration});
   }
   
 }

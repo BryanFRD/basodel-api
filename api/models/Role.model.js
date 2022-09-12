@@ -11,13 +11,13 @@ Role.init({
     autoIncrement: true,
     primaryKey: true,
     allowNull: false,
-    unique: true
   },
   title: {
     type: DataTypes.STRING(50),
     allowNull: false
   }
 }, {
+  indexes: [{unique: true, fields: ['id']}],
   sequelize: DB,
   modelName: 'role',
 });

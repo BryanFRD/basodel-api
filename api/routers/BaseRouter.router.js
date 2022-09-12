@@ -13,7 +13,7 @@ class BaseRouter {
     
     this.needsAuthenticate = {
       create: false,
-      read: true,
+      read: false,
       update: true,
       delete: true,
       ...needsAuthenticate

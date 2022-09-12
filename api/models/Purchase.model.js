@@ -15,6 +15,7 @@ Purchase.init({
     allowNull: false
   }
 }, {
+  indexes: [{unique: true, fields: ['id']}],
   sequelize: DB,
   modelName: 'purchase',
 });
