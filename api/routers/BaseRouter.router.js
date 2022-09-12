@@ -12,7 +12,7 @@ class BaseRouter {
     this.controller = new controllers[this.table]();
     
     this.needsAuthenticate = {
-      create: true,
+      create: false,
       read: true,
       update: true,
       delete: true,
@@ -24,11 +24,10 @@ class BaseRouter {
   
   initializeRoutes = () => {
     // CREATE
-    const handlers = [
-      
-    ];
+    const nextFunc = (req, res, next) => { next(); }
     
     this.router.post('/',
+      this.needsAuthenticate.create ? authenticateToken : nextFunc,
       async (req, res) => {
         const response = await this.controller.create({body: req.body});
         
@@ -37,6 +36,7 @@ class BaseRouter {
     
     // READ
     this.router.get('/',
+    this.needsAuthenticate.read ? authenticateToken : nextFunc,
       async (req, res) => {
         const response = await this.controller.get({body: req.body});
         
@@ -44,6 +44,7 @@ class BaseRouter {
     });
     
     this.router.get('/:id',
+    this.needsAuthenticate.read ? authenticateToken : nextFunc,
       async (req, res) => {
         const response = await this.controller.get({id: req.params.id, body: req.body});
         
@@ -52,6 +53,7 @@ class BaseRouter {
     
     //UPDATE
     this.router.put('/',
+    this.needsAuthenticate.update ? authenticateToken : nextFunc,
       async (req, res) => {
         const response = await this.controller.update({body: req.body});
       
@@ -59,6 +61,7 @@ class BaseRouter {
     });
     
     this.router.put('/:id',
+    this.needsAuthenticate.update ? authenticateToken : nextFunc,
       async (req, res) => {
         const response = await this.controller.update({id: req.params.id, body: req.body});
       
@@ -67,6 +70,7 @@ class BaseRouter {
     
     // DELETE
     this.router.delete('/:id',
+    this.needsAuthenticate.delete ? authenticateToken : nextFunc,
       async (req, res) => {
         const response = await this.controller.delete({id: req.params.id});
       

@@ -42,7 +42,7 @@ class Auth {
         return res.status(401).send();
         
       const accessToken = this.generateAccessToken(userCredential.dataValues);
-        
+      
       return res.status(200).send({content: {accessToken}});
     });
   }

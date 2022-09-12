@@ -21,7 +21,6 @@ const start = async () => {
   app.use(morgan('dev')).use(express.json());
   
   for(const route in routers){
-    console.log(route);
     app.use(`/${route}`, new routers[route]().router);
   }
   
