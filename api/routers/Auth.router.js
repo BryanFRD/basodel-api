@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 const Router = express.Router;
 const jwt = require('jsonwebtoken');
 const UserCredential = require('../models/UserCredential.model');
+const bcrypt = require('bcrypt');
 
 class Auth {
   
@@ -14,15 +15,19 @@ class Auth {
   
   initializeRoutes = () => {
     this.router.get('/', async (req, res) => {
-      const model = req?.body?.model.loginOrEmail
-      if(!model)
+      const model = req?.body?.model;
+      
+      const loginOrEmail = model?.loginOrEmail;
+      const password = model?.password;
+      
+      if(!loginOrEmail || !password)
         return res.status(401).send();
       
       const userCredential = await UserCredential.findOne({
         where: {
           [Op.or]: [
-            {email: req.body.model.loginOrEmail},
-            {login: req.body.model.loginOrEmail}
+            {email: loginOrEmail},
+            {login: loginOrEmail}
           ]
         }
       });
@@ -30,9 +35,13 @@ class Auth {
       if(!userCredential)
         return res.status(401).send();
       
-        console.log(userCredential);
+      const isValide = await bcrypt.compare(password, userCredential.dataValues.password);
+      delete userCredential.dataValues.password;
+      
+      if(!isValide)
+        return res.status(401).send();
         
-      const accessToken = this.generateAccessToken(userCredential);
+      const accessToken = this.generateAccessToken(userCredential.dataValues);
         
       return res.status(200).send({content: {accessToken}});
     });

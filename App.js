@@ -21,6 +21,7 @@ const start = async () => {
   app.use(morgan('dev')).use(express.json());
   
   for(const route in routers){
+    console.log(route);
     app.use(`/${route}`, new routers[route]().router);
   }
   
@@ -35,7 +36,7 @@ const start = async () => {
   
   ReportStatus.findOrCreate({
     where: {id: '1'},
-    default: {
+    defaults: {
       id: '1',
       title: 'reportStatus.default'
     }

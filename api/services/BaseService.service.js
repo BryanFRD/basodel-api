@@ -10,8 +10,6 @@ class BaseService {
     this.table = this.name.toLowerCase();
   }
   
-  
-  
   // CREATE
   insert = async (model, validate, params) => {
     const { error } = validate(params?.body?.model);
