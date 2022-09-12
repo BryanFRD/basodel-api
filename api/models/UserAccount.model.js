@@ -40,7 +40,7 @@ UserAccount.init({
     {unique: true, fields: ['username']}
   ],
   sequelize: DB,
-  modelName: 'user_account',
+  modelName: 'user_account'
 });
 
 Role.hasMany(UserAccount);
