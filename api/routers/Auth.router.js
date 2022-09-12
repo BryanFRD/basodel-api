@@ -52,11 +52,20 @@ class Auth {
       isDeleted: user.isDeleted
     }
     
-    console.log(tokenData);
-    
-    //TODO Change it to 1 week '604800s'
     const tokenDuration = '1800s';
     return jwt.sign(tokenData, process.env.ACCESS_TOKEN, {expiresIn: tokenDuration});
+  }
+  
+  generateRefreshToken = (user) => {
+    const tokenData = {
+      userCredentialId: user.id,
+      userAccountId: user.userAccountId,
+      roleId: user.user_account.dataValues.roleId,
+      isDeleted: user.isDeleted
+    }
+    
+    const tokenDuration = '1800s';
+    return jwt.sign(tokenData, process.env.REFRESH_TOKEN, {expiresIn: tokenDuration});
   }
   
 }
