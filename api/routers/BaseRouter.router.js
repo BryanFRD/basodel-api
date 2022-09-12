@@ -12,8 +12,8 @@ class BaseRouter {
     this.controller = new controllers[this.table]();
     
     this.needsAuthenticate = {
-      create: false,
-      read: false,
+      create: true,
+      read: true,
       update: true,
       delete: true,
       ...needsAuthenticate
