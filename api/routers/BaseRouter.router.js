@@ -23,45 +23,43 @@ class BaseRouter {
   }
   
   initializeRoutes = () => {
-    
     // CREATE
-    this.router.post('/',
-      this.needsAuthenticate.create ?? authenticateToken,
-      async (req, res) => {
-      const response = await this.controller.create({body: req.body});
+    const handlers = [
       
-      res.status(response?.statusCode ?? res.statusCode).send(response.content);
+    ];
+    
+    this.router.post('/',
+      async (req, res) => {
+        const response = await this.controller.create({body: req.body});
+        
+        res.status(response?.statusCode ?? res.statusCode).send(response.content);
     });
     
     // READ
     this.router.get('/',
-      this.needsAuthenticate.read ?? authenticateToken,
       async (req, res) => {
-      const response = await this.controller.get({body: req.body});
-      
-      res.status(response?.statusCode ?? res.statusCode).send(response.content);
+        const response = await this.controller.get({body: req.body});
+        
+        res.status(response?.statusCode ?? res.statusCode).send(response.content);
     });
     
     this.router.get('/:id',
-      this.needsAuthenticate.read ??
-      authenticateToken, async (req, res) => {
-      const response = await this.controller.get({id: req.params.id, body: req.body});
-      
-      res.status(response?.statusCode ?? res.statusCode).send(response.content);
+      async (req, res) => {
+        const response = await this.controller.get({id: req.params.id, body: req.body});
+        
+        res.status(response?.statusCode ?? res.statusCode).send(response.content);
     });
     
     //UPDATE
     this.router.put('/',
-      this.needsAuthenticate.update ??
-      authenticateToken, async (req, res) => {
+      async (req, res) => {
         const response = await this.controller.update({body: req.body});
       
         res.status(response?.statusCode ?? res.statusCode).send(response.content);
     });
     
     this.router.put('/:id',
-      this.needsAuthenticate.update ??
-      authenticateToken, async (req, res) => {
+      async (req, res) => {
         const response = await this.controller.update({id: req.params.id, body: req.body});
       
         res.status(response?.statusCode ?? res.statusCode).send(response.content);
@@ -69,7 +67,6 @@ class BaseRouter {
     
     // DELETE
     this.router.delete('/:id',
-      this.needsAuthenticate.delete ?? authenticateToken,
       async (req, res) => {
         const response = await this.controller.delete({id: req.params.id});
       
