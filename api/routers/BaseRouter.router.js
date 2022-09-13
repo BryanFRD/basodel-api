@@ -1,7 +1,7 @@
 const express = require('express');
 const Router = express.Router;
 const controllers = require('../controllers');
-const authenticateToken = require('../middlewares/AuthenticateToken');
+const authenticateToken = require('../middlewares/AuthenticateToken.middleware');
 
 class BaseRouter {
   

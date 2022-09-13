@@ -7,6 +7,7 @@ const DB = require('./api/db/db');
 const Role = require('./api/models/Role.model');
 const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
+const logger = require('./api/middlewares/Logger.middleware');
 
 const start = async () => {
   const err = await DB.sync()
@@ -25,7 +26,7 @@ const start = async () => {
     optionsSuccessStatus: 200
   }
   
-  app.use(cors(corsOptions)).use(morgan('dev')).use(express.json());
+  app.use(logger).use(cors(corsOptions)).use(morgan('dev')).use(express.json());
   
   for(const route in routers){
     app.use(`/${route}`, new routers[route]().router);

@@ -39,7 +39,7 @@ class Auth {
       const isAuthenticated = await userCredential?.authenticate(password);
       
       if(!isAuthenticated)
-        return res.status(401).send();
+        return res.status(401).send('error.authentication');
       
       const user = userCredential.dataValues;
       
