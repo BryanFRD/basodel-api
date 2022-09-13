@@ -12,14 +12,21 @@ class BaseService {
   
   // CREATE
   insert = async (model, params) => {
-    if(!params?.body?.model)
-      return {statusCode: 400};
+    if(!params?.body?.model){
+      return {
+        statusCode: 400,
+        content: {
+          error: 'error.somethingWentWrong',
+          devError: 'model undefined'
+        }
+      }
+    }
       
     const result = await model.create(
       {...params.body.model},
       {include: [...Object.values(model.associations)]})
-    .then(model => ({statusCode: 201, content: {model}}))
-    .catch(error => ({statusCode: 400, content: {error}}));
+        .then(model => ({statusCode: 201, content: {model}}))
+        .catch(error => ({statusCode: 400, content: {error}}));
     
     return result;
   }

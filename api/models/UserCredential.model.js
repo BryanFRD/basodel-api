@@ -19,7 +19,9 @@ UserCredential.init({
     type: DataTypes.STRING(50),
     allowNull: false,
     validate: {
-      isEmail: true,
+      isEmail: {
+        msg: 'validator.email'
+      },
       len: [1, 50]
     }
   },
