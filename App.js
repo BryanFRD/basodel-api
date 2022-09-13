@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 const routers = require('./api/routers');
 const DB = require('./api/db/db');
@@ -19,7 +20,12 @@ const start = async () => {
   
   const app = express();
   
-  app.use(morgan('dev')).use(express.json());
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200
+  }
+  
+  app.use(cors(corsOptions)).use(morgan('dev')).use(express.json());
   
   for(const route in routers){
     app.use(`/${route}`, new routers[route]().router);
