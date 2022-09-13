@@ -17,7 +17,7 @@ UserAccount.init({
     validate: {
       notNull: true,
       notEmpty: true,
-      len: [5, 16]
+      len: [4, 16]
     }
   },
   xp: {

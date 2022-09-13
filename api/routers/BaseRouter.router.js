@@ -24,7 +24,9 @@ class BaseRouter {
   
   initializeRoutes = () => {
     // CREATE
-    const nextFunc = (req, res, next) => { next(); }
+    const nextFunc = (req, res, next) => { 
+      console.log(res);
+      next(); }
     
     this.router.post('/',
       this.needsAuthenticate.create ? authenticateToken : nextFunc,

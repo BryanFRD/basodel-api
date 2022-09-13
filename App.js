@@ -21,6 +21,11 @@ const start = async () => {
   
   const app = express();
   
+  /* TODO
+    Problème quand on créé un compte, si une var dans user_credential existe ça n'empeche pas la création de user_account
+    Avoir plus d'information les prob de création de compte
+  */
+  
   const corsOptions = {
     origin: 'http://localhost:3000',
     optionsSuccessStatus: 200

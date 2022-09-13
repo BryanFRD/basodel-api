@@ -21,7 +21,7 @@ class Auth {
       const password = model?.password;
       
       if(!loginOrEmail || !password)
-        return res.status(401).send();
+        return res.sendStatus(401);
       
       const userCredential = await UserCredential.findOne({
         where: {

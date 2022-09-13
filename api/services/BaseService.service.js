@@ -12,6 +12,7 @@ class BaseService {
   
   // CREATE
   insert = async (model, params) => {
+    console.log('params:', params.body.model);
     if(!params?.body?.model){
       return {
         statusCode: 400,
@@ -27,7 +28,7 @@ class BaseService {
       {include: [...Object.values(model.associations)]})
         .then(model => ({statusCode: 201, content: {model}}))
         .catch(error => ({statusCode: 400, content: {error}}));
-    
+        
     return result;
   }
   
@@ -43,13 +44,14 @@ class BaseService {
     
     const result = model.findAll(params?.body)
       .then(value => ({statusCode: 200, content: {value}}))
-      .catch(err => ({statusCode: 400, content: {err}}));
+      .catch(error => ({statusCode: 400, content: {error}}));
     
     return result;
   }
   
   // UPDATE
   update = async (model, params) => {
+    //TODO
     return {statusCode: 400};
   }
   

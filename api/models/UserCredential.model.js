@@ -21,15 +21,14 @@ UserCredential.init({
     validate: {
       isEmail: {
         msg: 'validator.email'
-      },
-      len: [1, 50]
+      }
     }
   },
   login: {
     type: DataTypes.STRING(50),
     allowNull: false,
     validate: {
-      len: [5, 50]
+      len: [4, 50]
     }
   },
   password: {
@@ -38,7 +37,7 @@ UserCredential.init({
     validate: {
       notNull: true,
       notEmpty: true,
-      len: [5, 255]
+      len: [4, 255]
     },
     get() {
       return 'password';
