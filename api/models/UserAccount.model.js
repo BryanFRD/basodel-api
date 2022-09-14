@@ -51,11 +51,10 @@ UserAccount.init({
   }
 }, {
   indexes: [
-    {unique: true, fields: ['id']},
-    {unique: true, fields: ['username']}
+    {unique: true, fields: [{name: 'username'}]}
   ],
   sequelize: DB,
-  modelName: 'user_account'
+  modelName: 'user_account',
 });
 
 Role.hasMany(UserAccount);

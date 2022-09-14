@@ -7,7 +7,6 @@ const DB = require('./api/db/db');
 const Role = require('./api/models/Role.model');
 const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
-const logger = require('./api/middlewares/Logger.middleware');
 
 const start = async () => {
   const err = await DB.sync()
@@ -21,17 +20,12 @@ const start = async () => {
   
   const app = express();
   
-  /* TODO
-    Problème quand on créé un compte, si une var dans user_credential existe ça n'empeche pas la création de user_account
-    Avoir plus d'information les prob de création de compte
-  */
-  
   const corsOptions = {
     origin: 'http://localhost:3000',
     optionsSuccessStatus: 200
   }
   
-  app.use(logger).use(cors(corsOptions)).use(morgan('dev')).use(express.json());
+  app.use(cors(corsOptions)).use(morgan('dev')).use(express.json());
   
   for(const route in routers){
     app.use(`/${route}`, new routers[route]().router);

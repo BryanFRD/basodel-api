@@ -22,7 +22,6 @@ ReportStatus.init({
     }
   }
 }, {
-  indexes: [{unique: true, fields: ['id']}],
   sequelize: DB,
   modelName: 'report_status',
 });

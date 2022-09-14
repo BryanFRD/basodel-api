@@ -1,7 +1,4 @@
-const StringHelper = require('../helpers/StringHelper.helper');
-const { Sequelize } = require('sequelize');
-const UserCredential = require('../models/UserCredential.model');
-const UserAccount = require('../models/UserAccount.model');
+const DB = require('../db/db');
 
 class BaseService {
   
@@ -12,7 +9,6 @@ class BaseService {
   
   // CREATE
   insert = async (model, params) => {
-    console.log('params:', params.body.model);
     if(!params?.body?.model){
       return {
         statusCode: 400,
@@ -22,12 +18,25 @@ class BaseService {
         }
       }
     }
-      
+    
+    const transaction = await DB.transaction();
+    
     const result = await model.create(
       {...params.body.model},
-      {include: [...Object.values(model.associations)]})
-        .then(model => ({statusCode: 201, content: {model}}))
-        .catch(error => ({statusCode: 400, content: {error}}));
+      {
+        transaction: transaction,
+        include: [...Object.values(model.associations)]
+      })
+        .then(async model => {
+          await transaction.commit();
+          return {statusCode: 201, content: {model}}
+        })
+        .catch(async error => {
+          await transaction.rollback();
+          return {statusCode: 400, content: {error}}
+        });
+      
+        console.log(result);
         
     return result;
   }

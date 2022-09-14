@@ -19,15 +19,15 @@ UserCredential.init({
     type: DataTypes.STRING(50),
     allowNull: false,
     validate: {
-      isEmail: {
-        msg: 'validator.email'
-      }
+      notNull: true,
+      isEmail: true
     }
   },
   login: {
     type: DataTypes.STRING(50),
     allowNull: false,
     validate: {
+      notNull: true,
       len: [4, 50]
     }
   },
@@ -42,19 +42,12 @@ UserCredential.init({
     get() {
       return 'password';
     }
-  },
-  userAccountId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    validate: {
-      isUUID: 4
-    }
   }
 },{
   indexes: [
-    {unique: true, fields: ['id']},
-    {unique: true, fields: ['email']},
-    {unique: true, fields: ['login']}
+    {unique: true, fields: [{name:'email'}]},
+    {unique: true, fields: [{name:'login'}]},
+    {unique: true, fields: [{name:'userAccountId'}]}
   ],
   sequelize: DB,
   modelName: 'user_credential',

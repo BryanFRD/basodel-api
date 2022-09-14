@@ -23,7 +23,6 @@ GameHistory.init({
     }
   }
 }, {
-  indexes: [{unique: true, fields: ['id']}],
   sequelize: DB,
   modelName: 'game_history',
 });

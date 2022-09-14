@@ -16,7 +16,6 @@ ChatMessage.init({
     }
   }
 }, {
-  indexes: [{unique: true, fields: ['id']}],
   sequelize: DB,
   modelName: 'chat_message',
 });
