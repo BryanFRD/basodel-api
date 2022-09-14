@@ -40,8 +40,6 @@ class RefreshToken {
             isDeleted: userAccount.isDeleted
           }
           
-          console.log('tokenData:', tokenData);
-          
           const accessToken = generateAccessToken(tokenData);
           
           return res.status(200).send({content: {accessToken}});

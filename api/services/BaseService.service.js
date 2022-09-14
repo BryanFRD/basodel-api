@@ -35,8 +35,6 @@ class BaseService {
           await transaction.rollback();
           return {statusCode: 400, content: {error}}
         });
-      
-        console.log(result);
         
     return result;
   }
