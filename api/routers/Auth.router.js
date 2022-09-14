@@ -14,7 +14,7 @@ class Auth {
   }
   
   initializeRoutes = () => {
-    this.router.get('/', async (req, res) => {
+    this.router.post('/', async (req, res) => {
       const model = req?.body?.model;
       
       const loginOrEmail = model?.loginOrEmail;
@@ -44,8 +44,7 @@ class Auth {
       const user = userCredential.dataValues;
       
       const tokenData = {
-        userCredentialId: user.id,
-        userAccountId: user.user_account.id,
+        id: user.user_account.id,
         isBanned: user.user_account.isBanned,
         roleId: user.user_account.roleId,
         roleLevel: user.user_account.role.level,
@@ -55,7 +54,7 @@ class Auth {
       const accessToken = generateAccessToken(tokenData);
       const refreshToken = generateRefreshToken(tokenData);
       
-      return res.status(200).send({content: {accessToken, refreshToken}});
+      return res.status(200).send({content: {accessToken, refreshToken, user_account: user.user_account}});
     });
   }
   

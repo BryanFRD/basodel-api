@@ -24,16 +24,18 @@ class RefreshToken {
         if(err)
           return res.sendStatus(401);
         
-        const userAccount = await UserAccount.findByPk(user.userAccountId,
+        const userAccount = await UserAccount.findByPk(user.id,
           {include: [Role]})
-          .then(value => value)
           .catch(error => res.status(401).send({content: {error}}));
+          
+          if(!userAccount)
+            return res.sendStatus(401);
           
           delete user.iat;
           delete user.exp;
           
           const tokenData = {
-            ...user,
+            id: userAccount.id,
             isBanned: userAccount.isBanned,
             roleId: userAccount.roleId,
             roleLevel: userAccount.role?.level,
@@ -42,7 +44,7 @@ class RefreshToken {
           
           const accessToken = generateAccessToken(tokenData);
           
-          return res.status(200).send({content: {accessToken}});
+          return res.status(200).send({content: {accessToken, userAccount}});
         });
     });
   }

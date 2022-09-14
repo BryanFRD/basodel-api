@@ -12,12 +12,12 @@ class UserAccount extends Model {}
 UserAccount.init({
   ...BaseModel,
   username: {
-    type: DataTypes.STRING(16),
+    type: DataTypes.STRING(12),
     allowNull: false,
     validate: {
       notNull: true,
       notEmpty: true,
-      len: [4, 16]
+      len: [4, 12]
     }
   },
   xp: {
