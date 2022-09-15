@@ -9,22 +9,10 @@ class BaseService {
   
   // CREATE
   insert = async (model, params) => {
-    if(!params?.body?.model){
-      return {
-        statusCode: 400,
-        content: {
-          error: 'error.somethingWentWrong',
-          devError: 'model undefined'
-        }
-      }
-    }
-    
     const transaction = await DB.transaction();
     
-    delete params.body.model.id;
-    
     const result = await model.create(
-      {...params.body.model},
+      {...params.model},
       {
         transaction: transaction,
         include: [...Object.values(model.associations)]
@@ -43,15 +31,15 @@ class BaseService {
   
   // READ
   select = async (model, params) => {
-    if(params?.body?.where?.id){
-      const result = model.findByPk(params.body.where.id)
+    if(params.id){
+      const result = model.findByPk(params.id)
         .then(value => ({statusCode: 200, content: {value}}))
         .catch(err => ({statusCode: 400, content: {err}}));
       
       return result;
     }
     
-    const result = model.findAll(params?.body)
+    const result = model.findAll(params.where)
       .then(value => ({statusCode: 200, content: {value}}))
       .catch(error => ({statusCode: 400, content: {error}}));
     
