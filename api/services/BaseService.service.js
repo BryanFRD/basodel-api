@@ -21,6 +21,8 @@ class BaseService {
     
     const transaction = await DB.transaction();
     
+    delete params.body.model.id;
+    
     const result = await model.create(
       {...params.body.model},
       {
