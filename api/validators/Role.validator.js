@@ -1,7 +1,5 @@
-const BaseValidator = require("./BaseValidator.validator");
-
-class RoleValidator extends BaseValidator {
+class Role {
   
 }
 
-module.exports = RoleValidator;
+module.exports = Role;

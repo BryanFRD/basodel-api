@@ -1,5 +1,6 @@
 const models = require('../models');
 const services = require('../services');
+const validators = require('../validators');
 
 class BaseController {
   
@@ -8,6 +9,7 @@ class BaseController {
     this.table = this.name;
     this.model = models[this.name];
     this.service = new services[this.table]();
+    this.validator = new validators[this.name]();
   }
   
   create = async (params) => {

@@ -7,6 +7,7 @@ const DB = require('./api/db/db');
 const Role = require('./api/models/Role.model');
 const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
+const Joi = require('joi');
 
 const start = async () => {
   const err = await DB.sync()

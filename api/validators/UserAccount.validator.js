@@ -1,7 +1,7 @@
-const BaseValidator = require('./BaseValidator.validator');
-
-class UserAccountValidator extends BaseValidator {
+class UserAccount {
+  
+  
   
 }
 
-module.exports = UserAccountValidator;
+module.exports = UserAccount;
