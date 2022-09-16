@@ -5,10 +5,7 @@ module.exports = {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
-    allowNull: false,
-    validate: {
-      isUUID: 4
-    }
+    allowNull: false
   },
   isDeleted: {
     type: DataTypes.BOOLEAN,

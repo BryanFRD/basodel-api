@@ -12,7 +12,7 @@ class BaseService {
     const transaction = await DB.transaction();
     
     const result = await model.create(
-      {...params.model},
+      {...params.body.model},
       {
         transaction: transaction,
         include: [...Object.values(model.associations)]
@@ -23,7 +23,7 @@ class BaseService {
         })
         .catch(async error => {
           await transaction.rollback();
-          return {statusCode: 400, content: {error}}
+          return {statusCode: 400}
         });
         
     return result;
@@ -32,14 +32,14 @@ class BaseService {
   // READ
   select = async (model, params) => {
     if(params.id){
-      const result = model.findByPk(params.id)
+      const result = model.findByPk(params.body.id)
         .then(value => ({statusCode: 200, content: {value}}))
         .catch(err => ({statusCode: 400, content: {err}}));
       
       return result;
     }
     
-    const result = model.findAll(params.where)
+    const result = model.findAll(params.body)
       .then(value => ({statusCode: 200, content: {value}}))
       .catch(error => ({statusCode: 400, content: {error}}));
     

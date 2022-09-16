@@ -7,9 +7,9 @@ class BaseController {
   constructor(){
     this.name = this.constructor.name;
     this.table = this.name;
-    this.model = models[this.name];
+    this.model = models[this.table];
     this.service = new services[this.table]();
-    this.validator = new validators[this.name]();
+    this.validator = new validators[this.table]();
   }
   
   create = async (params) => {

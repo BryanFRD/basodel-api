@@ -17,28 +17,15 @@ UserCredential.init({
   ...BaseModel,
   email: {
     type: DataTypes.STRING(50),
-    allowNull: false,
-    validate: {
-      notNull: true,
-      isEmail: true
-    }
+    allowNull: false
   },
   login: {
     type: DataTypes.STRING(50),
-    allowNull: false,
-    validate: {
-      notNull: true,
-      len: [4, 50]
-    }
+    allowNull: false
   },
   password: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    validate: {
-      notNull: true,
-      notEmpty: true,
-      len: [4, 255]
-    },
     get() {
       return 'password';
     }

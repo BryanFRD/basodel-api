@@ -37,44 +37,28 @@ class BaseRouter {
     // READ
     this.router.get('/',
     this.needsAuthenticate.read ? authenticateToken : nextFunc,
-      async (req, res) => {
-        const response = await this.controller.get({body: req.body});
+    async (req, res) => {
+      const response = await this.controller.get({body: req.body});
         
-        res.status(response?.statusCode ?? res.statusCode).send(response.content);
-    });
-    
-    this.router.get('/:id',
-    this.needsAuthenticate.read ? authenticateToken : nextFunc,
-      async (req, res) => {
-        const response = await this.controller.get({id: req.params.id, body: req.body});
-        
-        res.status(response?.statusCode ?? res.statusCode).send(response.content);
+      res.status(response?.statusCode ?? res.statusCode).send(response.content);
     });
     
     //UPDATE
     this.router.put('/',
     this.needsAuthenticate.update ? authenticateToken : nextFunc,
-      async (req, res) => {
-        const response = await this.controller.update({body: req.body});
+    async (req, res) => {
+      const response = await this.controller.update({body: req.body});
       
-        res.status(response?.statusCode ?? res.statusCode).send(response.content);
-    });
-    
-    this.router.put('/:id',
-    this.needsAuthenticate.update ? authenticateToken : nextFunc,
-      async (req, res) => {
-        const response = await this.controller.update({id: req.params.id, body: req.body});
-      
-        res.status(response?.statusCode ?? res.statusCode).send(response.content);
+      res.status(response?.statusCode ?? res.statusCode).send(response.content);
     });
     
     // DELETE
-    this.router.delete('/:id',
+    this.router.delete('/',
     this.needsAuthenticate.delete ? authenticateToken : nextFunc,
-      async (req, res) => {
-        const response = await this.controller.delete({id: req.params.id});
+    async (req, res) => {
+      const response = await this.controller.delete({body: req.body});
       
-        res.status(response?.statusCode ?? res.statusCode).send(response.content);
+      res.status(response?.statusCode ?? res.statusCode).send(response.content);
     });
   }
   
