@@ -31,7 +31,6 @@ class Auth extends BaseService {
     
     const tokenData = {
       id: user_account.id,
-      isBanned: user_account.isBanned,
       roleId: user_account.roleId,
       roleLevel: user_account.role.level,
     }
@@ -48,16 +47,17 @@ class Auth extends BaseService {
     const token = auth?.split(' ')[1];
     
     if(!token)
-      return res.sendStatus(404);
+      return res.sendStatus(401);
       
     jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
       if(err)
-        return res.sendStatus(404);
+        return res.sendStatus(401);
       
       await UserAccount.findByPk(user.id,
         {include: [Role]})
         .then(value => {
           const userAccount = value.toJSON();
+          
           const tokenData = {
             id: userAccount.id,
             roleId: userAccount.roleId,
