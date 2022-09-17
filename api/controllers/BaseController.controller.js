@@ -13,9 +13,7 @@ class BaseController {
   }
   
   create = async (req, res) => {
-    const {value, error} = await this.validator.validateCreate(req?.body?.model);
-    
-    console.log(value, error);
+    const {value, error} = this.validator.validateCreate(req?.body?.model);
     
     if(error){
       return res.status(400)

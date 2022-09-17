@@ -9,11 +9,7 @@ ChatMessage.init({
   message: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    defaultValue: '',
-    validate: {
-      notNull: true,
-      notEmpty: true
-    }
+    defaultValue: ''
   }
 }, {
   sequelize: DB,

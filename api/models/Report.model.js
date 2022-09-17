@@ -9,10 +9,7 @@ Report.init({
   ...BaseModel,
   reportedUserId: {
     type: DataTypes.UUID,
-    allowNull: false,
-    validate: {
-      isUUID: 4
-    }
+    allowNull: false
   },
   content: {
     type: DataTypes.STRING(255),
@@ -20,11 +17,7 @@ Report.init({
   },
   origin: {
     type: DataTypes.STRING(255),
-    allowNull: false,
-    validate: {
-      notNull: true,
-      notEmpty: true
-    }
+    allowNull: false
   }
 }, {
   sequelize: DB,

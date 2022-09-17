@@ -15,18 +15,10 @@ Role.init({
   title: {
     type: DataTypes.STRING(50),
     allowNull: false,
-    validate: {
-      notNull: true,
-      notEmpty: true
-    }
   },
   level: {
     type: DataTypes.INTEGER,
-    defaultValue: 0,
-    validate: {
-      isNumeric: true,
-      min: 0
-    }
+    defaultValue: 0
   }
 }, {
   sequelize: DB,

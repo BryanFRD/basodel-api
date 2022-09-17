@@ -13,37 +13,20 @@ UserAccount.init({
   ...BaseModel,
   username: {
     type: DataTypes.STRING(12),
-    allowNull: false,
-    validate: {
-      notNull: true,
-      notEmpty: true,
-      len: [4, 12]
-    }
+    allowNull: false
   },
   xp: {
     type: DataTypes.INTEGER,
-    defaultValue: 0,
-    validate: {
-      isNumeric: true,
-      min: 0
-    }
+    defaultValue: 0
   },
   silver: {
     type: DataTypes.INTEGER,
-    defaultValue: 0,
-    validate: {
-      isNumeric: true,
-      min: 0
-    }
+    defaultValue: 0
   },
   gold: {
     type: DataTypes.INTEGER,
     defaultValue: 125,
-    allowNull: true,
-    validate: {
-      isNumeric: true,
-      min: 0
-    }
+    allowNull: true
   },
   isBanned: {
     type: DataTypes.BOOLEAN,

@@ -8,19 +8,11 @@ GameHistory.init({
   ...BaseModel,
   title: {
     type: DataTypes.STRING(50),
-    allowNull: false,
-    validate: {
-      notNull: true,
-      notEmpty: true
-    }
+    allowNull: false
   },
   information: {
     type: DataTypes.STRING(255),
-    allowNull: false,
-    validate: {
-      notNull: true,
-      notEmpty: true
-    }
+    allowNull: false
   }
 }, {
   sequelize: DB,

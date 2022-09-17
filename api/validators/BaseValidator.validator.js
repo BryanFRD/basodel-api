@@ -1,24 +1,68 @@
 const Joi = require("joi");
 const Logger = require("../helpers/Logger.helper");
+const validators = require('./');
 
 class BaseValidator {
   
+  static #defaultSchema = Joi.object();
   
-  
-  validateCreate = async (model) => {
-    let schema = this.schemaCreatse;
-    console.log('schema:', schema);
+  validateCreate = (model) => {
+    let schema = validators[this.constructor.name].schemaCreate;
+    const useDefaultSchema = !schema;
     
-    
-    
-    if(!schema){
-      schema = Joi.object();
+    if(useDefaultSchema){
+      schema = BaseValidator.#defaultSchema;
       
-      Logger.warn(`Using default schema`);
+      Logger.warn(`Using default CREATE schema`);
     }
     
-    return await this.schemaCreate.validateAsync(model, {
-      stripUnknown: true,
+    return schema.validate(model, {
+      stripUnknown: !useDefaultSchema
+    });
+  }
+  
+  validateGet = (model) => {
+    let schema = validators[this.constructor.name].schemaGet;
+    const useDefaultSchema = !schema;
+    
+    if(useDefaultSchema){
+      schema = BaseValidator.#defaultSchema;
+      
+      Logger.warn(`Using default GET schema`);
+    }
+    
+    return schema.validate(model, {
+      stripUnknown: !useDefaultSchema,
+    });
+  }
+  
+  validateUpdate = (model) => {
+    let schema = validators[this.constructor.name].schemaUpdate;
+    const useDefaultSchema = !schema;
+    
+    if(useDefaultSchema){
+      schema = BaseValidator.#defaultSchema;
+      
+      Logger.warn(`Using default UPDATE schema`);
+    }
+    
+    return schema.validate(model, {
+      stripUnknown: !useDefaultSchema,
+    });
+  }
+  
+  validateDelete = (model) => {
+    let schema = validators[this.constructor.name].schemaDelete;
+    const useDefaultSchema = !schema;
+    
+    if(useDefaultSchema){
+      schema = BaseValidator.#defaultSchema;
+      
+      Logger.warn(`Using default DELETE schema`);
+    }
+    
+    return schema.validate(model, {
+      stripUnknown: !useDefaultSchema,
     });
   }
   

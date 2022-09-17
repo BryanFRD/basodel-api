@@ -28,16 +28,22 @@ class Logger {
   static #BgCyan = "\x1b[46m";
   static #BgWhite = "\x1b[47m";
   
+  static #prefix = 'BasodelAPI : ';
+  
   static log = (...messages) => {
-    console.log(...messages);
+    console.log(...messages, `${this.#Reset}`);
   }
   
   static error = (...messages) => {
-    console.error(`${this.#FgRed}%s`, ...messages);
+    console.error(`${this.#FgRed}%s`, ...messages, `${this.#Reset}`);
   }
   
   static warn = (...messages) => {
-    console.warn(`${this.#FgYellow}%s`, ...messages);
+    console.warn(`${this.#FgYellow}%s`, ...messages, `${this.#Reset}`);
+  }
+  
+  static info = (...messages) => {
+    console.info(`${this.#FgBlue}%s`, ...messages, `${this.#Reset}`);
   }
   
 }

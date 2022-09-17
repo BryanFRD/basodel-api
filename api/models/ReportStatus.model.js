@@ -15,11 +15,7 @@ ReportStatus.init({
   title: {
     type: DataTypes.STRING(50),
     allowNull: false,
-    defaultValue: '',
-    validate: {
-      notNull: true,
-      notEmpty: true
-    }
+    defaultValue: ''
   }
 }, {
   sequelize: DB,

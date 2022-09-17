@@ -50,7 +50,7 @@ const start = async () => {
     }
   })
   
-  app.listen(process.env.SERVER_PORT, () => console.log(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
+  app.listen(process.env.SERVER_PORT, () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
 }
 
 start();
