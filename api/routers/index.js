@@ -7,4 +7,3 @@ exports.Report = require('./Report.router');
 exports.ReportStatus = require('./ReportStatus.router');
 exports.Role = require('./Role.router');
 exports.Auth = require('./Auth.router');
-exports.RefreshToken = require('./RefreshToken.router')

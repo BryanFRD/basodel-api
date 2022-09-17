@@ -21,19 +21,19 @@ class BaseController {
     }
     
     req.body.model = value;
-    return await this.service.insert(this.model, req, res);
+    return await this.service.create(this.model, req, res);
   }
   
-  get = async (req, res) => {
-    const {value, error} = await this.validator.validateGet(req?.body?.model);
+  select = async (req, res) => {
+    const {value, error} = await this.validator.validateSelect(req?.body?.model);
     
     if(error){
       return res.status(400)
-        .send({error: `error.${this.table}.get.${error?.details[0]?.context?.key}`});
+        .send({error: `error.${this.table}.select.${error?.details[0]?.context?.key}`});
     }
     
     req.body.model = value;
-    return await this.service.insert(this.model, req, res);
+    return await this.service.select(this.model, req, res);
   }
   
   update = async (req, res) => {
@@ -45,7 +45,7 @@ class BaseController {
     }
     
     req.body.model = value;
-    return await this.service.insert(this.model, req, res);
+    return await this.service.update(this.model, req, res);
   }
   
   delete = async (req, res) => {
@@ -57,7 +57,7 @@ class BaseController {
     }
     
     req.body.model = value;
-    return await this.service.insert(this.model, req, res);
+    return await this.service.delete(this.model, req, res);
   }
   
 }

@@ -4,6 +4,8 @@ const BaseModel = require('./BaseModel.model');
 
 class Role extends Model {}
 
+//TODO get id 0 if selected id doesn't exist
+
 Role.init({
   ...BaseModel,
   id: {

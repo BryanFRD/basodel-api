@@ -1,17 +1,14 @@
-const DB = require('../database/db');
+const BaseService = require('./BaseService.service');
+const { Op } = require('sequelize');
 const Role = require('../models/Role.model');
 const UserAccount = require('../models/UserAccount.model');
 const UserCredential = require('../models/UserCredential.model');
+const jwt = require('jsonwebtoken');
 
-class Auth {
-  
-  constructor(){
-    this.name = this.constructor.name;
-    this.table = this.name.toLowerCase();
-  }
+class Auth extends BaseService {
   
   // CREATE
-  insert = async (model, req, res) => {
+  create = async (model, req, res) => {
     const userCredential = await UserCredential.findOne({
       where: {
         [Op.or]: [
@@ -25,31 +22,54 @@ class Auth {
       ]
     });
     
-    const isAuthenticated = await userCredential?.authenticate(password);
+    const isAuthenticated = await userCredential?.authenticate(req.body.model.password);
     
     if(!isAuthenticated)
       return res.status(401).send({error: 'error.authentication'});
     
-    const user = userCredential.dataValues;
+    const {user_account} = userCredential.toJSON();
     
     const tokenData = {
-      id: user.user_account.id,
-      isBanned: user.user_account.isBanned,
-      roleId: user.user_account.roleId,
-      roleLevel: user.user_account.role.level,
-      isDeleted: user.user_account.isDeleted
+      id: user_account.id,
+      isBanned: user_account.isBanned,
+      roleId: user_account.roleId,
+      roleLevel: user_account.role.level,
     }
       
     const accessToken = generateAccessToken(tokenData);
     const refreshToken = generateRefreshToken(tokenData);
     
-    return res.status(200).send({accessToken, refreshToken, user_account: user.user_account});
+    return res.status(200).send({accessToken, refreshToken, userAccount: user_account});
   }
   
   // READ
   select = async (model, req, res) => {
+    const auth = req?.headers['authorization'];
+    const token = auth?.split(' ')[1];
     
-    return res.sendStatus(200);
+    if(!token)
+      return res.sendStatus(404);
+      
+    jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
+      if(err)
+        return res.sendStatus(404);
+      
+      await UserAccount.findByPk(user.id,
+        {include: [Role]})
+        .then(value => {
+          const userAccount = value.toJSON();
+          const tokenData = {
+            id: userAccount.id,
+            roleId: userAccount.roleId,
+            roleLevel: userAccount.role.level
+          }
+          
+          const accessToken = generateAccessToken(tokenData);
+          
+          res.status(200).send({accessToken, userAccount});
+        })
+        .catch(error => res.status(404).send({error}));
+      });
   }
   
   // DELETE

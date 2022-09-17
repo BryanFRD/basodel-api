@@ -4,6 +4,8 @@ const BaseModel = require('./BaseModel.model');
 
 class ReportStatus extends Model {}
 
+//TODO get id 0 if selected id doesn't exist
+
 ReportStatus.init({
   ...BaseModel,
   id: {

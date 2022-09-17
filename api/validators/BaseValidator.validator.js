@@ -21,8 +21,8 @@ class BaseValidator {
     });
   }
   
-  validateGet = (model) => {
-    let schema = validators[this.constructor.name].schemaGet;
+  validateSelect = (model) => {
+    let schema = validators[this.constructor.name].schemaSelect;
     const useDefaultSchema = !schema;
     
     if(useDefaultSchema){

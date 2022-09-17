@@ -8,7 +8,7 @@ class BaseService {
   }
   
   // CREATE
-  insert = async (model, req, res) => {
+  create = async (model, req, res) => {
     const transaction = await DB.transaction();
     
     const result = await model.create(

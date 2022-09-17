@@ -36,7 +36,7 @@ class BaseRouter {
     this.router.get('/',
     this.needsAuthenticate.read ? authenticateToken : nextFunc,
     async (req, res) => {
-      return await this.controller.get(req, res);
+      return await this.controller.select(req, res);
     });
     
     //UPDATE
