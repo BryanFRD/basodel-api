@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 class UserCredential {
   
-  validateCreation = (model) => {
+  validateGet = (model) => {
     const schema = Joi.object({
       email: Joi.string().email().strict().required(),
       login: Joi.string().min(5).max(50).alphanum().required(),

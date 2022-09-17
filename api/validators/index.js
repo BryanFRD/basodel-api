@@ -6,3 +6,4 @@ exports.Purchase = require('./Purchase.validator');
 exports.Report = require('./Report.validator');
 exports.ReportStatus = require('./ReportStatus.validator');
 exports.Role = require('./Role.validator');
+exports.Auth = require('./Auth.validator');

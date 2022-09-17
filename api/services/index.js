@@ -6,3 +6,4 @@ exports.Purchase = require('./Purchase.service');
 exports.Report = require('./Report.service');
 exports.ReportStatus = require('./ReportStatus.service');
 exports.Role = require('./Role.service');
+exports.Auth = require('./Auth.service');

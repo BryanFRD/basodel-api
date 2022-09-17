@@ -29,36 +29,28 @@ class BaseRouter {
     this.router.post('/',
       this.needsAuthenticate.create ? authenticateToken : nextFunc,
       async (req, res) => {
-        const response = await this.controller.create({body: req.body});
-        
-        res.status(response?.statusCode ?? res.statusCode).send(response.content);
+        return await this.controller.create(req, res);
     });
     
     // READ
     this.router.get('/',
     this.needsAuthenticate.read ? authenticateToken : nextFunc,
     async (req, res) => {
-      const response = await this.controller.get({body: req.body});
-        
-      res.status(response?.statusCode ?? res.statusCode).send(response.content);
+      return await this.controller.get(req, res);
     });
     
     //UPDATE
     this.router.put('/',
     this.needsAuthenticate.update ? authenticateToken : nextFunc,
     async (req, res) => {
-      const response = await this.controller.update({body: req.body});
-      
-      res.status(response?.statusCode ?? res.statusCode).send(response.content);
+      return await this.controller.update(req, res);
     });
     
     // DELETE
     this.router.delete('/',
     this.needsAuthenticate.delete ? authenticateToken : nextFunc,
     async (req, res) => {
-      const response = await this.controller.delete({body: req.body});
-      
-      res.status(response?.statusCode ?? res.statusCode).send(response.content);
+      return await this.controller.delete(req, res);
     });
   }
   
