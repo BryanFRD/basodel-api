@@ -12,60 +12,54 @@ class BaseController {
     this.validator = new validators[this.table]();
   }
   
-  create = async (params) => {
-    const validate = this.validator.validateCreate(params?.body?.model);
-    if(!params?.body?.model || validate.error){
-      return {
-        statusCode: 400,
-        content: {
-          errorMessage: `error.${this.table}.create.${validate?.error?.details[0]?.path?.pop()}`
-        }
-      }
+  create = async (req, res) => {
+    const {value, error} = await this.validator.validateCreate(req?.body?.model);
+    
+    console.log(value, error);
+    
+    if(error){
+      return res.status(400)
+        .send({error: `error.${this.table}.create.${error?.details[0]?.context?.key}`});
     }
     
-    return await this.service.insert(this.model, params);
+    req.body.model = value;
+    return await this.service.insert(this.model, req, res);
   }
   
-  get = async (params) => {
-    const validate = this.validator.validateGet(params?.body?.model);
-    if(!params?.body?.model || validate.error){
-      return {
-        statusCode: 400,
-        content: {
-          errorMessage: `error.${this.table}.create.${validate?.error?.details[0]?.path?.pop()}`
-        }
-      }
+  get = async (req, res) => {
+    const {value, error} = await this.validator.validateGet(req?.body?.model);
+    
+    if(error){
+      return res.status(400)
+        .send({error: `error.${this.table}.get.${error?.details[0]?.context?.key}`});
     }
     
-    return await this.service.select(this.model, params);
+    req.body.model = value;
+    return await this.service.insert(this.model, req, res);
   }
   
-  update = async (params) => {
-    const validate = this.validator.validateUpdate(params?.body?.model);
-    if(!params?.body?.model || validate.error){
-      return {
-        statusCode: 400,
-        content: {
-          errorMessage: `error.${this.table}.create.${validate?.error?.details[0]?.path?.pop()}`
-        }
-      }
+  update = async (req, res) => {
+    const {value, error} = await this.validator.validateUpdate(req?.body?.model);
+    
+    if(error){
+      return res.status(400)
+        .send({error: `error.${this.table}.update.${error?.details[0]?.context?.key}`});
     }
     
-    return await this.service.update(this.model, params);
+    req.body.model = value;
+    return await this.service.insert(this.model, req, res);
   }
   
-  delete = async (params) => {
-    const validate = this.validator.validateDelete(params?.body?.model);
-    if(!params?.body?.model || validate.error){
-      return {
-        statusCode: 400,
-        content: {
-          errorMessage: `error.${this.table}.create.${validate?.error?.details[0]?.path?.pop()}`
-        }
-      }
+  delete = async (req, res) => {
+    const {value, error} = await this.validator.validateDelete(req?.body?.model);
+    
+    if(error){
+      return res.status(400)
+        .send({error: `error.${this.table}.delete.${error?.details[0]?.context?.key}`});
     }
     
-    return await this.service.delete(this.model, params);
+    req.body.model = value;
+    return await this.service.insert(this.model, req, res);
   }
   
 }

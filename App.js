@@ -8,14 +8,15 @@ const Role = require('./api/models/Role.model');
 const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
+const Logger = require('./api/helpers/Logger.helper');
 
 const start = async () => {
   const err = await DB.sync()
-  .then(() => {console.log('Database synchronized!')})
+  .then(() => {Logger.log('Database synchronized!')})
   .catch(err => err);
   
   if(err){
-    console.log(`Error while trying to synchronize with the database! \nError: ${err}`);
+    Logger.error(`Error while trying to synchronize with the database! \nError: ${err}`);
     return;
   }
   

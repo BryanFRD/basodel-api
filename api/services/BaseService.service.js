@@ -8,11 +8,11 @@ class BaseService {
   }
   
   // CREATE
-  insert = async (model, params) => {
+  insert = async (model, req, res) => {
     const transaction = await DB.transaction();
     
     const result = await model.create(
-      {...params.body.model},
+      {...req.body.model},
       {
         transaction: transaction,
         include: [...Object.values(model.associations)]
@@ -23,39 +23,40 @@ class BaseService {
         })
         .catch(async error => {
           await transaction.rollback();
-          return {statusCode: 400}
+          return {statusCode: 400, content: {error}}
         });
-        
-    return result;
+    
+    return res.status(result.statusCode).send(result.content);
   }
   
   // READ
-  select = async (model, params) => {
-    if(params.id){
-      const result = model.findByPk(params.body.id)
+  select = async (model, req, res) => {
+    //TODO Verifier toutes les valeurs (req.body.where, etc...)
+    if(req.body.id){
+      const result = model.findByPk(req.body.id)
         .then(value => ({statusCode: 200, content: {value}}))
         .catch(err => ({statusCode: 400, content: {err}}));
       
-      return result;
+      return res.status(result.statusCode).send(result.content);
     }
     
-    const result = model.findAll(params.body)
+    const result = model.findAll(req.body.where)
       .then(value => ({statusCode: 200, content: {value}}))
       .catch(error => ({statusCode: 400, content: {error}}));
-    
-    return result;
+      
+    return res.status(result.statusCode).send(result.content);
   }
   
   // UPDATE
-  update = async (model, params) => {
+  update = async (model, req, res) => {
     //TODO
-    return {statusCode: 400};
+    return res.sendStatus(400);
   }
   
   // DELETE
-  delete = async (model, params) => {
+  delete = async (model, req, res) => {
     //TODO
-    return {statusCode: 405, content: {err: `DELETE ${params.id} FROM ${this.table}`}};
+    return res.status(405).send(`DELETE ${params.id} FROM ${this.table}`);
   }
   
 }

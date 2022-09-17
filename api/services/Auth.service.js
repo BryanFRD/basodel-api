@@ -1,6 +1,7 @@
 const DB = require('../database/db');
 const Role = require('../models/Role.model');
 const UserAccount = require('../models/UserAccount.model');
+const UserCredential = require('../models/UserCredential.model');
 
 class Auth {
   
@@ -10,12 +11,12 @@ class Auth {
   }
   
   // CREATE
-  insert = async (model, params) => {
+  insert = async (model, req, res) => {
     const userCredential = await UserCredential.findOne({
       where: {
         [Op.or]: [
-          {email: params.email},
-          {login: params.login}
+          {email: req.body.model.email},
+          {login: req.body.model.login}
         ]
       },
       include: [
@@ -27,7 +28,7 @@ class Auth {
     const isAuthenticated = await userCredential?.authenticate(password);
     
     if(!isAuthenticated)
-      return res.status(401).send('error.authentication');
+      return res.status(401).send({error: 'error.authentication'});
     
     const user = userCredential.dataValues;
     
@@ -42,19 +43,19 @@ class Auth {
     const accessToken = generateAccessToken(tokenData);
     const refreshToken = generateRefreshToken(tokenData);
     
-    return res.status(200).send({content: {accessToken, refreshToken, user_account: user.user_account}});
+    return res.status(200).send({accessToken, refreshToken, user_account: user.user_account});
   }
   
   // READ
-  select = async (model, params) => {
+  select = async (model, req, res) => {
     
-    return result;
+    return res.sendStatus(200);
   }
   
   // DELETE
-  delete = async (model, params) => {
+  delete = async (model, req, res) => {
     //TODO Delete token from cache
-    return {statusCode: 405, content: {err: `DELETE ${params.id} FROM ${this.table}`}};
+    return res.status(405).send({message: `DELETE ${params.id} FROM ${this.table}`});
   }
   
 }

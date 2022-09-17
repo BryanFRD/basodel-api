@@ -1,26 +1,21 @@
 const Joi = require("joi");
+const BaseValidator = require("./BaseValidator.validator");
 
-class UserCredential {
+class UserCredential extends BaseValidator {
   
-  validateCreate = (model) => {
-    const schema = Joi.object({
-      email: Joi.string().email().strict(),
-      login: Joi.string().min(5).max(50).alphanum(),
-      password: Joi.string().pattern(
-        new RegExp(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,50}$/))
-        .required()
-      }).xor('email', 'login');
-    
-    return schema.validate(model);
-  }
+  schemaCreate = Joi.object({
+    email: Joi.string().email(),
+    login: Joi.string().min(5).max(50).alphanum(),
+    password: Joi.string().pattern(
+      new RegExp(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,50}$/))
+      .required()
+    }).xor('email', 'login');
   
-  validateGet = (model) => {
-    const schema = Joi.object({
-      refreshToken: Joi.string().required()
-    });
     
-    return schema.validate(model);
-  }
+  //TODO replace min with the length of a token
+  schemaGet = Joi.object({
+    refreshToken: Joi.string().min(5).required()
+  });
   
 }
 
