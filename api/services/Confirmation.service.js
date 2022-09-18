@@ -5,13 +5,16 @@ const BaseService = require('./BaseService.service');
 class Confirmation extends BaseService {
   
   selectWithToken = async (req, res) => {
-    jwt.verify(req.params.token, process.env.EMAIL_TOKEN, (err, email) => {
-      UserCredential.update({emailConfirmed: true}, {where: {id: email.id}});
+    await jwt.verify(req.params.token, process.env.EMAIL_TOKEN, async (err, email) => {
+      if(err)
+        return;
       
-      res.redirect(`${process.env.APP_URL}/confirmation?confirmed=true`);
+      await UserCredential.update({emailConfirmed: true}, {where: {id: email.id}});
+      
+      res.redirect(`${process.env.APP_URL}confirmation?confirmed=true`);
     });
     
-    res.redirect(`${process.env.APP_URL}/confirmation?confirmed=false`);
+    res.redirect(`${process.env.APP_URL}confirmation?confirmed=false`);
   }
   
   // OVERIDES
