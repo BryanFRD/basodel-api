@@ -7,7 +7,6 @@ const DB = require('./api/database/db');
 const Role = require('./api/models/Role.model');
 const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
-const Joi = require('joi');
 const Logger = require('./api/helpers/Logger.helper');
 
 const start = async () => {
