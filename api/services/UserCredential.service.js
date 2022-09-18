@@ -1,4 +1,5 @@
 const DB = require('../database/db');
+const Mailer = require('../mails/Mailer.mail');
 const BaseService = require('./BaseService.service');
 
 class UserCredential extends BaseService {
@@ -14,9 +15,11 @@ class UserCredential extends BaseService {
       })
         .then(async model => {
           await transaction.commit();
-          const {id} = model.toJSON();
+          const {id, email} = model.toJSON();
           
-          emailToken = generateEmailToken({id});
+          const emailToken = generateEmailToken({id});
+          
+          Mailer.sendConfirmationEmail(`${process.env.API_URL}confirmation/${emailToken}`, email);
           
           return {statusCode: 201, content: {message: 'message.emailSent'}};
         })

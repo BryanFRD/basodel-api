@@ -1,16 +1,17 @@
 const jwt = require('jsonwebtoken');
+const UserCredential = require('../models/UserCredential.model');
 const BaseService = require('./BaseService.service');
 
 class Confirmation extends BaseService {
   
   selectWithToken = async (req, res) => {
-    const token = req?.params?.token;
-    
-    jwt.verify(token, process.env.EMAIL_TOKEN, (err, email) => {
+    jwt.verify(req.params.token, process.env.EMAIL_TOKEN, (err, email) => {
+      UserCredential.update({emailConfirmed: true}, {where: {id: email.id}});
       
-    })
+      res.redirect(`${process.env.APP_URL}/confirmation?confirmed=true`);
+    });
     
-    res.sendStatus(400)
+    res.redirect(`${process.env.APP_URL}/confirmation?confirmed=false`);
   }
   
   // OVERIDES
