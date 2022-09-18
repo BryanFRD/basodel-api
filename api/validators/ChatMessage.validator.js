@@ -1,4 +1,6 @@
-class ChatMessage {
+const BaseValidator = require("./BaseValidator.validator");
+
+class ChatMessage extends BaseValidator {
   
   
   

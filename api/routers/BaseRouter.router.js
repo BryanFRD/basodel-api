@@ -34,23 +34,24 @@ class BaseRouter {
     
     // READ
     this.router.get('/',
-    this.needsAuthenticate.read ? authenticateToken : nextFunc,
-    async (req, res) => {
-      return await this.controller.select(req, res);
+      this.needsAuthenticate.read ? authenticateToken : nextFunc,
+      async (req, res) => {
+        return await this.controller.select(req, res);
     });
+    
     
     //UPDATE
     this.router.put('/',
-    this.needsAuthenticate.update ? authenticateToken : nextFunc,
-    async (req, res) => {
-      return await this.controller.update(req, res);
+      this.needsAuthenticate.update ? authenticateToken : nextFunc,
+      async (req, res) => {
+        return await this.controller.update(req, res);
     });
     
     // DELETE
     this.router.delete('/',
-    this.needsAuthenticate.delete ? authenticateToken : nextFunc,
-    async (req, res) => {
-      return await this.controller.delete(req, res);
+      this.needsAuthenticate.delete ? authenticateToken : nextFunc,
+      async (req, res) => {
+        return await this.controller.delete(req, res);
     });
   }
   

@@ -1,4 +1,6 @@
-class Role {
+const BaseValidator = require("./BaseValidator.validator");
+
+class Role extends BaseValidator {
   
 }
 

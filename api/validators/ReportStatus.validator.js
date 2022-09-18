@@ -1,4 +1,6 @@
-class ReportStatus {
+const BaseValidator = require("./BaseValidator.validator");
+
+class ReportStatus extends BaseValidator {
   
   
   

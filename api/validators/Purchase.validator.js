@@ -1,4 +1,6 @@
-class Purchase {
+const BaseValidator = require("./BaseValidator.validator");
+
+class Purchase extends BaseValidator {
   
   
   

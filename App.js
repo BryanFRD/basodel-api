@@ -10,14 +10,14 @@ const jwt = require('jsonwebtoken');
 const Logger = require('./api/helpers/Logger.helper');
 
 const start = async () => {
-  const err = await DB.sync()
-  .then(() => {Logger.log('Database synchronized!')})
-  .catch(err => err);
+  // const err = await DB.sync()
+  //   .then(() => {Logger.log('Database synchronized!')})
+  //   .catch(err => err);
   
-  if(err){
-    Logger.error(`Error while trying to synchronize with the database! \nError: ${err}`);
-    return;
-  }
+  // if(err){
+  //   Logger.error(`Error while trying to synchronize with the database! \nError: ${err}`);
+  //   return;
+  // }
   
   const app = express();
   

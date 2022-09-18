@@ -7,3 +7,4 @@ exports.ReportStatus = require('./ReportStatus.controller');
 exports.Role = require('./Role.controller');
 exports.Purchase = require('./Purchase.controller');
 exports.Auth = require('./Auth.controller');
+exports.Confirmation = require('./Confirmation.controller');

@@ -1,9 +1,9 @@
 const BaseValidator = require("./BaseValidator.validator");
 
-class Report extends BaseValidator {
+class Confirmation extends BaseValidator {
   
   
   
 }
 
-module.exports = Report;
+module.exports = Confirmation;
