@@ -22,23 +22,30 @@ class Auth extends BaseService {
       ]
     });
     
-    const isAuthenticated = await userCredential?.authenticate(req.body.model.password);
+    if(!userCredential)
+      res.status(404).send({error: 'error.auth.create.notFound'});
+    
+    if(!userCredential.emailConfirmed)
+      return res.status(401).send({error: 'error.auth.create.confirmEmail'});
+    
+    const isAuthenticated = await userCredential.authenticate(req.body.model.password);
     
     if(!isAuthenticated)
-      return res.status(401).send({error: 'error.authentication'});
+      return res.status(401).send({error: 'error.auth.create.authentication'});
     
-    const {user_account} = userCredential.toJSON();
+    const uc = userCredential.toJSON();
     
     const tokenData = {
-      id: user_account.id,
-      roleId: user_account.roleId,
-      roleLevel: user_account.role.level,
+      userCredentialId: uc.id,
+      id: uc.user_account.id,
+      roleId: uc.user_account.roleId,
+      roleLevel: uc.user_account.role.level,
     }
-      
+    
     const accessToken = generateAccessToken(tokenData);
     const refreshToken = generateRefreshToken(tokenData);
     
-    return res.status(200).send({accessToken, refreshToken, userAccount: user_account});
+    return res.status(200).send({accessToken, refreshToken, userAccount: uc.user_account});
   }
   
   // READ
@@ -53,20 +60,27 @@ class Auth extends BaseService {
       if(err)
         return res.sendStatus(401);
       
-      await UserAccount.findByPk(user.id,
-        {include: [Role]})
+      await UserCredential.findByPk(user.userCredentialId,
+        {include: [
+          UserAccount,
+          {model: UserAccount, include: [Role]}
+        ]})
         .then(value => {
-          const userAccount = value.toJSON();
+          const uc = value.toJSON();
+          
+          if(!uc.emailConfirmed)
+            return res.status(401).send({error: 'error.auth.get.confirmEmail'});
           
           const tokenData = {
-            id: userAccount.id,
-            roleId: userAccount.roleId,
-            roleLevel: userAccount.role.level
+            userCredentialId: uc.id,
+            id: uc.user_account.id,
+            roleId: uc.user_account.roleId,
+            roleLevel: uc.user_account.role.level,
           }
           
           const accessToken = generateAccessToken(tokenData);
           
-          res.status(200).send({accessToken, userAccount});
+          res.status(200).send({accessToken, userAccount: uc.user_account});
         })
         .catch(error => res.status(404).send({error}));
       });

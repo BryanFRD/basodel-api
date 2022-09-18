@@ -10,14 +10,14 @@ const jwt = require('jsonwebtoken');
 const Logger = require('./api/helpers/Logger.helper');
 
 const start = async () => {
-  // const err = await DB.sync()
-  //   .then(() => {Logger.log('Database synchronized!')})
-  //   .catch(err => err);
+  const err = await DB.sync()
+    .then(() => {Logger.log('Database synchronized!')})
+    .catch(err => err);
   
-  // if(err){
-  //   Logger.error(`Error while trying to synchronize with the database! \nError: ${err}`);
-  //   return;
-  // }
+  if(err){
+    Logger.error(`Error while trying to synchronize with the database! \nError: ${err}`);
+    return;
+  }
   
   const app = express();
   
@@ -57,9 +57,13 @@ start();
 //TODO Redis Cache pour les refreshTokens et ensuite une route logout ???
 
 generateAccessToken = (data) => {
-  return jwt.sign(data, process.env.ACCESS_TOKEN, {expiresIn: '15m'});
+  return jwt.sign(data, process.env.ACCESS_TOKEN, {expiresIn: '1d'});
 }
 
 generateRefreshToken = (data) => {
-  return jwt.sign(data, process.env.REFRESH_TOKEN, {expiresIn: "30d"});
+  return jwt.sign(data, process.env.REFRESH_TOKEN, {expiresIn: '30d'});
+}
+
+generateEmailToken = (data) => {
+  return jwt.sign(data, process.env.EMAIL_TOKEN, {expiresIn: '7d'});
 }
