@@ -7,6 +7,7 @@ class BaseController {
   constructor(){
     this.name = this.constructor.name;
     this.table = this.name;
+    this.prefix = this.name.toLocaleLowerCase();
     this.model = models[this.table];
     this.service = new services[this.table]();
     this.validator = new validators[this.table]();
@@ -14,10 +15,13 @@ class BaseController {
   
   create = async (req, res) => {
     const {value, error} = this.validator.validateCreate(req?.body?.model);
+    console.log('value:', value);
+    console.log('error:', error);
     
     if(error){
-      return res.status(400)
-        .send({error: `error.${this.table}.create.${error?.details[0]?.context?.key}`});
+      const key = error?.details[0]?.context?.key?.toLowerCase();
+      
+      return res.status(400).send({error: `error.${this.prefix}.create.${key}`});
     }
     
     req.body.model = value;
@@ -28,8 +32,9 @@ class BaseController {
     const {value, error} = await this.validator.validateSelect(req?.body?.model);
     
     if(error){
-      return res.status(400)
-        .send({error: `error.${this.table}.select.${error?.details[0]?.context?.key}`});
+      const key = error?.details[0]?.context?.key?.toLowerCase();
+      
+      return res.status(400).send({error: `error.${this.prefix}.select.${key}`});
     }
     
     req.body.model = value;
@@ -40,8 +45,9 @@ class BaseController {
     const {value, error} = await this.validator.validateUpdate(req?.body?.model);
     
     if(error){
-      return res.status(400)
-        .send({error: `error.${this.table}.update.${error?.details[0]?.context?.key}`});
+      const key = error?.details[0]?.context?.key?.toLowerCase();
+      
+      return res.status(400).send({error: `error.${this.prefix}.update.${key}`});
     }
     
     req.body.model = value;
@@ -52,8 +58,9 @@ class BaseController {
     const {value, error} = await this.validator.validateDelete(req?.body?.model);
     
     if(error){
-      return res.status(400)
-        .send({error: `error.${this.table}.delete.${error?.details[0]?.context?.key}`});
+      const key = error?.details[0]?.context?.key?.toLowerCase();
+      
+      return res.status(400).send({error: `error.${this.prefix}.delete.${key}`});
     }
     
     req.body.model = value;

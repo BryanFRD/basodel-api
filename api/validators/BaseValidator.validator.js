@@ -4,7 +4,7 @@ const validators = require('./');
 
 class BaseValidator {
   
-  static #defaultSchema = Joi.object();
+  static #defaultSchema = Joi.any();
   
   validateCreate = (model) => {
     let schema = validators[this.constructor.name].schemaCreate;
