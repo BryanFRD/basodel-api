@@ -24,14 +24,14 @@ class Auth extends BaseService {
     
     if(!userCredential)
       return res.status(404).send({error: 'error.auth.create.notFound'});
+      
+    const isAuthenticated = await userCredential.authenticate(req.body.model.password);
+      
+    if(!isAuthenticated)
+      return res.status(401).send({error: 'error.auth.create.authentication'});
     
     if(!userCredential.emailConfirmed)
       return res.status(401).send({error: 'error.auth.create.confirmEmail'});
-    
-    const isAuthenticated = await userCredential.authenticate(req.body.model.password);
-    
-    if(!isAuthenticated)
-      return res.status(401).send({error: 'error.auth.create.authentication'});
     
     const uc = userCredential.toJSON();
     
