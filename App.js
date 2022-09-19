@@ -9,6 +9,7 @@ const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
 const Logger = require('./api/helpers/Logger.helper');
 const Mailer = require('./api/mails/Mailer.mail');
+const StringHelper = require('./api/helpers/StringHelper.helper');
 
 const start = async () => {
   const err = await DB.sync()
@@ -16,14 +17,17 @@ const start = async () => {
     .catch(err => err);
   
   if(err){
-    Logger.error(`Error while trying to synchronize with the database! \nError: ${err}`);
+    Logger.error(`Error while trying to synchronize with the database!\nError: ${err}`);
     return;
   }
+  
+  const test = StringHelper.clearBadWords('Batard de boobs enfoire b0rdel bastard ass hello nazi');
+  Logger.info(test);
   
   const app = express();
   
   const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: process.env.APP_URL,
     optionsSuccessStatus: 200
   }
   

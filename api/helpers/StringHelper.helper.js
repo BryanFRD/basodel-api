@@ -1,7 +1,11 @@
+const filter = require('leo-profanity');
+
+filter.add(filter.getDictionary('fr'));
+
 class StringHelper {
   
-  static toCamelCase(string){
-    return string?.charAt(0).toLowerCase() + string?.slice(1);
+  static clearBadWords(string){
+    return filter.clean(string);
   }
   
 }

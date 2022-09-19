@@ -13,7 +13,7 @@ class BaseController {
     this.validator = new validators[this.table]();
   }
   
-  create = async (req, res) => {
+  async create(req, res){
     const {value, error} = this.validator.validateCreate(req?.body?.model);
     console.log('value:', value);
     console.log('error:', error);
@@ -28,7 +28,7 @@ class BaseController {
     return await this.service.create(this.model, req, res);
   }
   
-  select = async (req, res) => {
+  async select(req, res){
     const {value, error} = await this.validator.validateSelect(req?.body?.model);
     
     if(error){
@@ -41,7 +41,7 @@ class BaseController {
     return await this.service.select(this.model, req, res);
   }
   
-  update = async (req, res) => {
+  async update(req, res){
     const {value, error} = await this.validator.validateUpdate(req?.body?.model);
     
     if(error){
@@ -54,7 +54,7 @@ class BaseController {
     return await this.service.update(this.model, req, res);
   }
   
-  delete = async (req, res) => {
+  async delete(req, res){
     const {value, error} = await this.validator.validateDelete(req?.body?.model);
     
     if(error){

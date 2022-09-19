@@ -8,7 +8,7 @@ class BaseService {
   }
   
   // CREATE
-  create = async (model, req, res) => {
+  async create(model, req, res){
     const transaction = await DB.transaction();
     
     const result = await model.create(
@@ -30,7 +30,7 @@ class BaseService {
   }
   
   // READ
-  select = async (model, req, res) => {
+  async select(model, req, res){
     //TODO Verifier toutes les valeurs (req.body.where, etc...)
     if(req.body.id){
       const result = model.findByPk(req.body.id)
@@ -48,13 +48,13 @@ class BaseService {
   }
   
   // UPDATE
-  update = async (model, req, res) => {
+  async update(model, req, res){
     //TODO
     return res.sendStatus(400);
   }
   
   // DELETE
-  delete = async (model, req, res) => {
+  async delete(model, req, res){
     //TODO
     return res.status(405).send(`DELETE ${params.id} FROM ${this.table}`);
   }
