@@ -17,13 +17,22 @@ class Confirmation extends BaseService {
     res.redirect(`${process.env.APP_URL}confirmation?confirmed=false`);
   }
   
+  select = async (model, req, res) => {
+    const code = await jwt.verify(req.params.token, process.env.EMAIL_TOKEN, async (err, email) => {
+      if(err)
+        return 400;
+      
+      await UserCredential.findByPk(email.id);
+      
+      return 200;
+    });
+    
+    res.sendStatus(result ?? 400);
+  }
+  
   // OVERIDES
   
   create = async (model, req, res) => {
-    res.sendStatus(400);
-  }
-  
-  select = async (model, req, res) => {
     res.sendStatus(400);
   }
   
