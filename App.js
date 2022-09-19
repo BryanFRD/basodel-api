@@ -19,8 +19,6 @@ const start = async () => {
     return;
   }
   
-  Logger.info(test);
-  
   const app = express();
   
   const corsOptions = {
