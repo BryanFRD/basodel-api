@@ -19,7 +19,7 @@ class UserCredential extends BaseService {
           
           const emailToken = generateEmailToken({id});
           
-          Mailer.sendConfirmationEmail(`${process.env.API_URL}confirmation/${emailToken}`, email);
+          Mailer.sendConfirmationEmail(`${process.env.APP_URL}/confirmation/${emailToken}`, email);
           
           return {statusCode: 201, content: {message: 'message.emailSent'}};
         })

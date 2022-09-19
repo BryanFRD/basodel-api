@@ -11,11 +11,8 @@ class Auth extends BaseValidator {
   
   static schemaCreate = Joi.object({
     login: this.#loginOrEmailAlternatives,
-    email: this.#loginOrEmailAlternatives,
-    password: Joi.string().pattern(
-      new RegExp(/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,50}$/))
-      .required()
-    });
+    email: this.#loginOrEmailAlternatives
+  });
   
 }
 

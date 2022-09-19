@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const Logger = require('./api/helpers/Logger.helper');
 
 const start = async () => {
-  const err = await DB.sync()
+  const err = await DB.sync({force:true})
     .then(() => {Logger.log('Database synchronized!')})
     .catch(err => err);
   

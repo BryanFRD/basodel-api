@@ -15,8 +15,6 @@ class BaseController {
   
   async create(req, res){
     const {value, error} = this.validator.validateCreate(req?.body?.model);
-    console.log('value:', value);
-    console.log('error:', error);
     
     if(error){
       const key = error?.details[0]?.context?.key?.toLowerCase();

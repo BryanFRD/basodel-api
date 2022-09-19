@@ -23,7 +23,7 @@ class Auth extends BaseService {
     });
     
     if(!userCredential)
-      res.status(404).send({error: 'error.auth.create.notFound'});
+      return res.status(404).send({error: 'error.auth.create.notFound'});
     
     if(!userCredential.emailConfirmed)
       return res.status(401).send({error: 'error.auth.create.confirmEmail'});
@@ -38,6 +38,7 @@ class Auth extends BaseService {
     const tokenData = {
       userCredentialId: uc.id,
       id: uc.user_account.id,
+      isBanned: uc.user_account.isBanned,
       roleId: uc.user_account.roleId,
       roleLevel: uc.user_account.role.level,
     }
@@ -68,12 +69,16 @@ class Auth extends BaseService {
         .then(value => {
           const uc = value.toJSON();
           
+          if(!uc)
+            return res.status(401).send({error: 'error.auth.get.notFound'});
+          
           if(!uc.emailConfirmed)
             return res.status(401).send({error: 'error.auth.get.confirmEmail'});
           
           const tokenData = {
             userCredentialId: uc.id,
             id: uc.user_account.id,
+            isBanned: uc.user_account.isBanned,
             roleId: uc.user_account.roleId,
             roleLevel: uc.user_account.role.level,
           }

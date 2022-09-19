@@ -1,33 +1,43 @@
 const jwt = require('jsonwebtoken');
+const Mailer = require('../mails/Mailer.mail');
+const Role = require('../models/Role.model');
+const UserAccount = require('../models/UserAccount.model');
 const UserCredential = require('../models/UserCredential.model');
 const BaseService = require('./BaseService.service');
 
 class Confirmation extends BaseService {
   
   selectWithToken = async (req, res) => {
-    await jwt.verify(req.params.token, process.env.EMAIL_TOKEN, async (err, email) => {
+    jwt.verify(req.params.token, process.env.EMAIL_TOKEN, async (err, email) => {
       if(err)
         return;
       
       await UserCredential.update({emailConfirmed: true}, {where: {id: email.id}});
-      
-      res.redirect(`${process.env.APP_URL}confirmation?confirmed=true`);
     });
-    
-    res.redirect(`${process.env.APP_URL}confirmation?confirmed=false`);
   }
   
-  select = async (model, req, res) => {
-    const code = await jwt.verify(req.params.token, process.env.EMAIL_TOKEN, async (err, email) => {
-      if(err)
-        return 400;
-      
-      await UserCredential.findByPk(email.id);
-      
-      return 200;
+  update = async (model, req, res) => {
+    const userCredential = await UserCredential.findOne({
+      where: {
+        [Op.or]: [
+          {email: req.body.model.email},
+          {login: req.body.model.login}
+        ]
+      },
+      include: [
+        UserAccount,
+        {model: UserAccount, include: [Role]}
+      ]
     });
     
-    res.sendStatus(result ?? 400);
+    if(!userCredential && !userCredential.emailConfirmed)
+      return res.status(400).send({error: userCredential ? 'error.confirmation.update.notFound' : 'error.confirmation.update.alreadyConfirmed'});
+      
+    const emailToken = generateEmailToken({id});
+      
+    Mailer.sendConfirmationEmail(`${process.env.APP_URL}/confirmation/${emailToken}`, userCredential.email);
+    
+    res.status(201).send({message: 'message.confirmation.update.sent'});
   }
   
   // OVERIDES
@@ -36,7 +46,7 @@ class Confirmation extends BaseService {
     res.sendStatus(400);
   }
   
-  update = async (model, req, res) => {
+  select = async (model, req, res) => {
     res.sendStatus(400);
   }
   
