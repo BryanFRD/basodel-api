@@ -7,19 +7,8 @@ const BaseService = require('./BaseService.service');
 
 class Confirmation extends BaseService {
   
-  selectWithToken = async (req, res) => {
-    jwt.verify(req.params.token, process.env.EMAIL_TOKEN, async (err, email) => {
-      if(err)
-        return res.sendStatus(400);
-      
-      const userCredential = await UserCredential.update({emailConfirmed: true}, {where: {id: email.id}});
-      console.log('userCredential:', userCredential);
-      
-      res.sendStatus(200);
-    });
-  }
   
-  update = async (model, req, res) => {
+  create = async (model, req, res) => {
     const userCredential = await UserCredential.findOne({
       where: {
         [Op.or]: [
@@ -34,20 +23,28 @@ class Confirmation extends BaseService {
     });
     
     if(!userCredential && !userCredential.emailConfirmed)
-      return res.status(400).send({error: userCredential ? 'error.confirmation.update.notFound' : 'error.confirmation.update.alreadyConfirmed'});
-      
+    return res.status(400).send({error: userCredential ? 'error.confirmation.update.notFound' : 'error.confirmation.update.alreadyConfirmed'});
+    
     const emailToken = generateEmailToken({id});
-      
+    
     Mailer.sendConfirmationEmail(`${process.env.APP_URL}/confirmation/${emailToken}`, userCredential.email);
     
     res.status(201).send({message: 'message.confirmation.update.sent'});
   }
   
-  // OVERIDES
-  
-  create = async (model, req, res) => {
-    res.sendStatus(400);
+  update = async (model, req, res) => {
+    jwt.verify(req.body.token, process.env.EMAIL_TOKEN, async (err, email) => {
+      if(err)
+        return res.sendStatus(400);
+      
+      const userCredential = await UserCredential.update({emailConfirmed: true}, {where: {id: email.id}});
+      console.log('userCredential:', userCredential);
+      
+      res.sendStatus(200);
+    });
   }
+  
+  // OVERIDES
   
   select = async (model, req, res) => {
     res.sendStatus(400);
