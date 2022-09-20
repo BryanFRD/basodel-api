@@ -46,6 +46,10 @@ class Logger {
     console.info(`${this.#FgBlue}%s`, ...messages, `${this.#Reset}`);
   }
   
+  static sql = (...messages) => {
+    console.log(`${this.#FgBlack}%s`, ...messages, `${this.#Reset}`);
+  }
+  
 }
 
 module.exports = Logger;

@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+const { Server } = require('socket.io');
 const cors = require('cors');
+const http = require('http');
 const morgan = require('morgan');
 const routers = require('./api/routers');
 const DB = require('./api/database/db');
@@ -8,9 +10,10 @@ const Role = require('./api/models/Role.model');
 const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
 const Logger = require('./api/helpers/Logger.helper');
+const events = require('./api/events');
 
 const start = async () => {
-  const err = await DB.sync({force: true})
+  const err = await DB.sync({force: false})
     .then(() => {Logger.log('Database synchronized!')})
     .catch(err => err);
   
@@ -49,12 +52,24 @@ const start = async () => {
     }
   })
   
-  app.listen(process.env.SERVER_PORT, () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
+  const server = http.createServer(app);
+  
+  const io = new Server(server, {cors: corsOptions});
+  
+  server.listen(process.env.SERVER_PORT, () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
+  
+  io.on('connection', (socket) => {
+    Logger.info(`New user with id: ${socket.id}`);
+    
+    for(const event in events){
+      new events[event](io, socket).getEvents().forEach(({name, handler}) => {
+        socket.on(name, handler);
+      })
+    }
+  })
 }
 
 start();
-
-//TODO Redis Cache pour les refreshTokens et ensuite une route logout ???
 
 generateAccessToken = (data) => {
   return jwt.sign(data, process.env.ACCESS_TOKEN, {expiresIn: '1d'});

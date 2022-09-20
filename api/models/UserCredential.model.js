@@ -37,9 +37,9 @@ UserCredential.init({
   }
 },{
   indexes: [
-    {unique: true, fields: [{name:'email'}]},
-    {unique: true, fields: [{name:'login'}]},
-    {unique: true, fields: [{name:'userAccountId'}]}
+    {unique: true, fields: ['email']},
+    {unique: true, fields: ['login']},
+    {unique: true, fields: ['userAccountId']}
   ],
   sequelize: DB,
   modelName: 'user_credential',

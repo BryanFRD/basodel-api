@@ -33,14 +33,13 @@ class Confirmation extends BaseService {
   }
   
   update = async (model, req, res) => {
-    jwt.verify(req.body.token, process.env.EMAIL_TOKEN, async (err, email) => {
+    await jwt.verify(req.body.token, process.env.EMAIL_TOKEN, async (err, email) => {
       if(err)
         return res.sendStatus(400);
       
       const userCredential = await UserCredential.update({emailConfirmed: true}, {where: {id: email.id}});
-      console.log('userCredential:', userCredential);
       
-      res.sendStatus(200);
+      return res.sendStatus(200);
     });
   }
   

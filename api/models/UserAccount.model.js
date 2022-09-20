@@ -34,7 +34,7 @@ UserAccount.init({
   }
 }, {
   indexes: [
-    {unique: true, fields: [{name: 'username'}]}
+    {unique: true, fields: ['username']}
   ],
   sequelize: DB,
   modelName: 'user_account',

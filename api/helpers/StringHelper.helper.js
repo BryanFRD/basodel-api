@@ -8,6 +8,15 @@ class StringHelper {
     return filter.clean(string);
   }
   
+  static retrieveColumnFromSQLError(sqlMessage){
+    const arr = /'(\w*)'$/.exec(sqlMessage);
+    
+    if(arr)
+      return arr[0].replaceAll('\'', '')
+      
+    return undefined;
+  }
+  
 }
 
 module.exports = StringHelper;
