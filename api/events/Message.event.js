@@ -12,9 +12,7 @@ class Message extends BaseEvent {
   }
   
   sendMessage = (data) => {
-    console.log('data:', data);
     data.message = StringHelper.clearBadWords(data.message);
-    
     this.io.emit('receiveMessage', data);
   }
   
