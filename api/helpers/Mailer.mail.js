@@ -39,15 +39,17 @@ class Mailer {
     return this.#transporter;
   }
   
-  static sendConfirmationEmail = (confirmationURL, sendTo) => {
-    const transporter = this.getTransporter();
-    
-    if(!transporter){
+  static #sendMail = (options) => {    
+    if(!this.getTransporter()){
       Logger.error('Couldn\'t get transporter!');
       return;
     }
     
-    transporter.sendMail({
+    this.getTransporter().sendMail(options);
+  }
+  
+  static sendConfirmationEmail = (confirmationURL, sendTo) => {
+    this.#sendMail({
       from: `"Basodel" <${process.env.EMAIL_USER}>`,
       to: sendTo,
       subject: 'Valider votre mail.',
