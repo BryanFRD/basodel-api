@@ -31,19 +31,19 @@ class Logger {
   static #prefix = 'BasodelAPI : ';
   
   static log = (...messages) => {
-    console.log(...messages, `${this.#Reset}`);
+    console.log(...messages);
   }
   
   static error = (...messages) => {
-    console.error(`${this.#FgRed}%s`, ...messages, `${this.#Reset}`);
+    console.log(`${this.#FgRed}%s`, ...messages, `${this.#Reset}`);
   }
   
   static warn = (...messages) => {
-    console.warn(`${this.#FgYellow}%s`, ...messages, `${this.#Reset}`);
+    console.log(`${this.#FgYellow}%s`, ...messages, `${this.#Reset}`);
   }
   
   static info = (...messages) => {
-    console.info(`${this.#FgBlue}%s`, ...messages, `${this.#Reset}`);
+    console.log(`${this.#FgBlue}%s`, ...messages, `${this.#Reset}`);
   }
   
   static sql = (...messages) => {

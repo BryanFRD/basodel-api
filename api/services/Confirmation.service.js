@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Mailer = require('../mails/Mailer.mail');
+const Mailer = require('../helpers/Mailer.mail');
 const Role = require('../models/Role.model');
 const UserAccount = require('../models/UserAccount.model');
 const UserCredential = require('../models/UserCredential.model');

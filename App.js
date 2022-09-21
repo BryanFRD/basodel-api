@@ -11,9 +11,10 @@ const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
 const Logger = require('./api/helpers/Logger.helper');
 const events = require('./api/events');
+const Mailer = require('./api/helpers/Mailer.mail');
 
 const start = async () => {
-  const err = await DB.sync({force: false})
+  const err = await DB.sync({force: true})
     .then(() => {Logger.log('Database synchronized!')})
     .catch(err => err);
   
@@ -59,14 +60,14 @@ const start = async () => {
   server.listen(process.env.SERVER_PORT, () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
   
   io.on('connection', (socket) => {
-    Logger.info(`New user with id: ${socket.id}`);
-    
     for(const event in events){
       new events[event](io, socket).getEvents().forEach(({name, handler}) => {
         socket.on(name, handler);
       })
     }
-  })
+  });
+  
+  Mailer.sendConfirmationEmail('test', 'bryanferrando59@gmail.com');
 }
 
 start();
