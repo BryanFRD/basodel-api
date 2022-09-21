@@ -67,7 +67,7 @@ const start = async () => {
     }
   });
   
-  Mailer.sendConfirmationEmail('test', 'bryanferrando59@gmail.com');
+  Mailer.sendConfirmationEmail('http://localhost:3001', 'bryanferrando59@gmail.com');
 }
 
 start();

@@ -8,27 +8,13 @@ class Mailer {
   static getTransporter = () => {
     if(!this.#transporter){
       try {
-        Logger.error({
+        this.#transporter = nodemailer.createTransport({
           host: process.env.EMAIL_HOST,
           port: process.env.EMAIL_PORT,
           secure: process.env.EMAIL_PORT === '465',
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        });
-        
-        this.#transporter = nodemailer.createTransport({
-          // host: process.env.EMAIL_HOST,
-          // port: process.env.EMAIL_PORT,
-          // secure: process.env.EMAIL_PORT === '465',
-          // auth: {
-          //   user: process.env.EMAIL_USER,
-          //   pass: process.env.EMAIL_PASS
-          // }
-          host: 'smtp.ethereal.email',
-          port: 587,
           auth: {
-              user: 'modesto63@ethereal.email',
-              pass: 'CT6K24JVwb3s8BRXeS'
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
           }
         });
       } catch (error) {
@@ -39,7 +25,7 @@ class Mailer {
     return this.#transporter;
   }
   
-  static #sendMail = (options) => {    
+  static #sendMail = (options) => {
     if(!this.getTransporter()){
       Logger.error('Couldn\'t get transporter!');
       return;
