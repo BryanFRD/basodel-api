@@ -14,7 +14,7 @@ const events = require('./api/events');
 const Mailer = require('./api/helpers/Mailer.mail');
 
 const start = async () => {
-  const err = await DB.sync({force: true})
+  const err = await DB.sync({force: false})
     .then(() => {Logger.log('Database synchronized!')})
     .catch(err => err);
   
@@ -51,7 +51,7 @@ const start = async () => {
       id: '1',
       title: 'reportStatus.default'
     }
-  })
+  });
   
   const server = http.createServer(app);
   
@@ -67,7 +67,7 @@ const start = async () => {
     }
   });
   
-  Mailer.sendConfirmationEmail('http://localhost:3001', 'bryanferrando59@gmail.com');
+  // Mailer.sendConfirmationEmail('http://localhost:3001', 'bryanferrando59@gmail.com');
 }
 
 start();
