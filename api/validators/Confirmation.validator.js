@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const BaseValidator = require("./BaseValidator.validator");
 
-class Confirmation extends BaseValidator {
+class ConfirmationValidator extends BaseValidator {
   
   static #loginOrEmailAlternatives = Joi.alternatives(
     Joi.string().email(),
@@ -15,4 +15,4 @@ class Confirmation extends BaseValidator {
   
 }
 
-module.exports = Confirmation;
+module.exports = ConfirmationValidator;

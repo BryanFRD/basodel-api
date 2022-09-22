@@ -1,15 +1,15 @@
 const DB = require('../database/db');
 const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
-const Role = require('./Role.model');
-const Purchase = require('./Purchase.model');
-const GameHistory = require('./GameHistory.model');
-const Report = require('./Report.model');
-const ChatMessage = require('./ChatMessage.model');
+const RoleModel = require('./Role.model');
+const PurchaseModel = require('./Purchase.model');
+const GameHistoryModel = require('./GameHistory.model');
+const ReportModel = require('./Report.model');
+const ChatMessageModel = require('./ChatMessage.model');
 
-class UserAccount extends Model {}
+class UserAccountModel extends Model {}
 
-UserAccount.init({
+UserAccountModel.init({
   ...BaseModel,
   username: {
     type: DataTypes.STRING(12),
@@ -40,22 +40,22 @@ UserAccount.init({
   modelName: 'user_account',
 });
 
-Role.hasMany(UserAccount);
-UserAccount.belongsTo(Role, {foreignKey: {
+RoleModel.hasMany(UserAccountModel);
+UserAccountModel.belongsTo(RoleModel, {foreignKey: {
   defaultValue: 1,
   allowNull: false,
 }});
 
-UserAccount.hasMany(ChatMessage);
-ChatMessage.belongsTo(UserAccount);
+UserAccountModel.hasMany(ChatMessageModel);
+ChatMessageModel.belongsTo(UserAccountModel);
 
-UserAccount.hasMany(Purchase);
-Purchase.belongsTo(UserAccount);
+UserAccountModel.hasMany(PurchaseModel);
+PurchaseModel.belongsTo(UserAccountModel);
 
-UserAccount.hasMany(GameHistory);
-GameHistory.belongsToMany(UserAccount, {through: 'gamehistory_useraccount'});
+UserAccountModel.hasMany(GameHistoryModel);
+GameHistoryModel.belongsToMany(UserAccountModel, {through: 'gamehistory_useraccount'});
 
-UserAccount.hasMany(Report);
-Report.belongsTo(UserAccount);
+UserAccountModel.hasMany(ReportModel);
+ReportModel.belongsTo(UserAccountModel);
 
-module.exports = UserAccount;
+module.exports = UserAccountModel;

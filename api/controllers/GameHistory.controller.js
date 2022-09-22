@@ -1,5 +1,5 @@
 const BaseController = require('./BaseController.controller');
 
-class GameHistory extends BaseController {}
+class GameHistoryController extends BaseController {}
 
-module.exports = GameHistory;
+module.exports = GameHistoryController;

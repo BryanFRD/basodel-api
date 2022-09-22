@@ -1,11 +1,11 @@
 const DB = require('../database/db');
 const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
-const ReportStatus = require('./ReportStatus.model');
+const ReportStatusModel = require('./ReportStatus.model');
 
-class Report extends Model {}
+class ReportModel extends Model {}
 
-Report.init({
+ReportModel.init({
   ...BaseModel,
   reportedUserId: {
     type: DataTypes.UUID,
@@ -24,10 +24,10 @@ Report.init({
   modelName: 'report',
 });
 
-Report.hasOne(ReportStatus);
-ReportStatus.hasMany(Report, {foreignKey: {
+ReportModel.hasOne(ReportStatusModel);
+ReportStatusModel.hasMany(ReportModel, {foreignKey: {
   defaultValue: 1,
   allowNull: true
 }});
 
-module.exports = Report;
+module.exports = ReportModel;

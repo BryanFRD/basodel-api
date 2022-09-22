@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const BaseValidator = require("./BaseValidator.validator");
 
-class Auth extends BaseValidator {
+class AuthValidator extends BaseValidator {
   
   //TODO Trouver une meilleurs solution
   static #loginOrEmailAlternatives = Joi.alternatives(
@@ -19,4 +19,4 @@ class Auth extends BaseValidator {
   
 }
 
-module.exports = Auth;
+module.exports = AuthValidator;

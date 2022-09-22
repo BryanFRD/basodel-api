@@ -1,5 +1,5 @@
 const BaseRouter = require('./BaseRouter.router');
 
-class GameHistory extends BaseRouter {}
+class GameHistoryRouter extends BaseRouter {}
 
-module.exports = GameHistory;
+module.exports = GameHistoryRouter;

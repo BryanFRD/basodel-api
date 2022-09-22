@@ -5,7 +5,7 @@ const UserAccount = require('../models/UserAccount.model');
 const UserCredential = require('../models/UserCredential.model');
 const jwt = require('jsonwebtoken');
 
-class Auth extends BaseService {
+class AuthService extends BaseService {
   
   // CREATE
   create = async (model, req, res) => {
@@ -99,4 +99,4 @@ class Auth extends BaseService {
   
 }
 
-module.exports = Auth;
+module.exports = AuthService;

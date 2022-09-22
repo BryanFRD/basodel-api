@@ -1,9 +1,9 @@
 const BaseValidator = require("./BaseValidator.validator");
 
-class ChatMessage extends BaseValidator {
+class ChatMessageValidator extends BaseValidator {
   
   
   
 }
 
-module.exports = ChatMessage;
+module.exports = ChatMessageValidator;

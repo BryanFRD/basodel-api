@@ -1,5 +1,5 @@
 const BaseController = require('./BaseController.controller');
 
-class UserAccount extends BaseController {}
+class UserAccountController extends BaseController {}
 
-module.exports = UserAccount;
+module.exports = UserAccountController;

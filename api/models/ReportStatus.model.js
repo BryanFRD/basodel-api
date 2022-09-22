@@ -2,11 +2,11 @@ const DB = require('../database/db');
 const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 
-class ReportStatus extends Model {}
+class ReportStatusModel extends Model {}
 
 //TODO get id 0 if selected id doesn't exist
 
-ReportStatus.init({
+ReportStatusModel.init({
   ...BaseModel,
   id: {
     type: DataTypes.INTEGER,
@@ -24,4 +24,4 @@ ReportStatus.init({
   modelName: 'report_status',
 });
 
-module.exports = ReportStatus;
+module.exports = ReportStatusModel;

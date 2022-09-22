@@ -1,5 +1,5 @@
 const BaseService = require('./BaseService.service');
 
-class ReportStatus extends BaseService {}
+class ReportStatusService extends BaseService {}
 
-module.exports = ReportStatus;
+module.exports = ReportStatusService;

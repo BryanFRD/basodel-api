@@ -1,5 +1,5 @@
 const BaseController = require("./BaseController.controller");
 
-class Confirmation extends BaseController {}
+class ConfirmationController extends BaseController {}
 
-module.exports = Confirmation;
+module.exports = ConfirmationController;

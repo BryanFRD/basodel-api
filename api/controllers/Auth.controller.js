@@ -1,5 +1,5 @@
 const BaseController = require("./BaseController.controller");
 
-class Auth extends BaseController {}
+class AuthController extends BaseController {}
 
-module.exports = Auth;
+module.exports = AuthController;

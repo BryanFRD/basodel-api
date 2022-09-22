@@ -3,7 +3,7 @@ const StringHelper = require('../helpers/StringHelper.helper');
 const Mailer = require('../helpers/Mailer.mail');
 const BaseService = require('./BaseService.service');
 
-class UserCredential extends BaseService {
+class UserCredentialService extends BaseService {
   
   create = async (model, req, res) => {
     const transaction = await DB.transaction();
@@ -37,4 +37,4 @@ class UserCredential extends BaseService {
   
 }
 
-module.exports = UserCredential;
+module.exports = UserCredentialService;

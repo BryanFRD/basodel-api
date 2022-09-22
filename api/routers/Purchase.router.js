@@ -1,5 +1,5 @@
 const BaseRouter = require('./BaseRouter.router');
 
-class Purchase extends BaseRouter {}
+class PurchaseRouter extends BaseRouter {}
 
-module.exports = Purchase;
+module.exports = PurchaseRouter;

@@ -1,5 +1,5 @@
 const BaseController = require('./BaseController.controller');
 
-class ChatMessage extends BaseController {}
+class ChatMessageController extends BaseController {}
 
-module.exports = ChatMessage;
+module.exports = ChatMessageController;

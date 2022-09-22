@@ -1,9 +1,9 @@
 const BaseValidator = require("./BaseValidator.validator");
 
-class Purchase extends BaseValidator {
+class PurchaseValidator extends BaseValidator {
   
   
   
 }
 
-module.exports = Purchase;
+module.exports = PurchaseValidator;

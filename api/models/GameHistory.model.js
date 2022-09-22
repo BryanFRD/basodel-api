@@ -2,9 +2,9 @@ const DB = require('../database/db');
 const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 
-class GameHistory extends Model {}
+class GameHistoryModel extends Model {}
 
-GameHistory.init({
+GameHistoryModel.init({
   ...BaseModel,
   title: {
     type: DataTypes.STRING(50),
@@ -19,4 +19,4 @@ GameHistory.init({
   modelName: 'game_history',
 });
 
-module.exports = GameHistory;
+module.exports = GameHistoryModel;

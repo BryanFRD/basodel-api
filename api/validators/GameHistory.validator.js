@@ -1,9 +1,9 @@
 const BaseValidator = require("./BaseValidator.validator");
 
-class GameHistory extends BaseValidator {
+class GameHistoryValidator extends BaseValidator {
   
   
   
 }
 
-module.exports = GameHistory;
+module.exports = GameHistoryValidator;

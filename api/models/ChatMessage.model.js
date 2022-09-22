@@ -2,9 +2,9 @@ const DB = require('../database/db');
 const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 
-class ChatMessage extends Model {}
+class ChatMessageModel extends Model {}
 
-ChatMessage.init({
+ChatMessageModel.init({
   ...BaseModel,
   message: {
     type: DataTypes.STRING(255),
@@ -16,4 +16,4 @@ ChatMessage.init({
   modelName: 'chat_message',
 });
 
-module.exports = ChatMessage;
+module.exports = ChatMessageModel;

@@ -1,5 +1,5 @@
 const BaseRouter = require('./BaseRouter.router');
 
-class UserAccount extends BaseRouter {}
+class UserAccountRouter extends BaseRouter {}
 
-module.exports = UserAccount;
+module.exports = UserAccountRouter;

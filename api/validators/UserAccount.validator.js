@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const BaseValidator = require("./BaseValidator.validator");
 
-class UserAccount extends BaseValidator {
+class UserAccountValidator extends BaseValidator {
   
   static schemaCreate = Joi.object({
     username: Joi.string().min(5).max(12).alphanum().required()
@@ -9,4 +9,4 @@ class UserAccount extends BaseValidator {
   
 }
 
-module.exports = UserAccount;
+module.exports = UserAccountValidator;

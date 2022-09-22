@@ -1,5 +1,5 @@
 const BaseService = require('./BaseService.service');
 
-class ChatMessage extends BaseService {}
+class ChatMessageService extends BaseService {}
 
-module.exports = ChatMessage;
+module.exports = ChatMessageService;

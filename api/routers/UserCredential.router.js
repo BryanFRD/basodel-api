@@ -1,6 +1,6 @@
 const BaseRouter = require('./BaseRouter.router');
 
-class UserCredential extends BaseRouter {
+class UserCredentialRouter extends BaseRouter {
   
   constructor(){
     super({create: false});
@@ -8,4 +8,4 @@ class UserCredential extends BaseRouter {
   
 }
 
-module.exports = UserCredential;
+module.exports = UserCredentialRouter;

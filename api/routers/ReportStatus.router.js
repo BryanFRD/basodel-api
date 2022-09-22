@@ -1,5 +1,5 @@
 const BaseRouter = require('./BaseRouter.router');
 
-class ReportStatus extends BaseRouter {}
+class ReportStatusRouter extends BaseRouter {}
 
-module.exports = ReportStatus;
+module.exports = ReportStatusRouter;

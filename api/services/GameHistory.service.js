@@ -1,5 +1,5 @@
 const BaseService = require('./BaseService.service');
 
-class GameHistory extends BaseService {}
+class GameHistoryService extends BaseService {}
 
-module.exports = GameHistory;
+module.exports = GameHistoryService;

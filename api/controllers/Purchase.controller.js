@@ -1,5 +1,5 @@
 const BaseController = require('./BaseController.controller');
 
-class Purchase extends BaseController {}
+class PurchaseController extends BaseController {}
 
-module.exports = Purchase;
+module.exports = PurchaseController;

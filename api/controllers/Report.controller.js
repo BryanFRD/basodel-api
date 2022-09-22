@@ -1,5 +1,5 @@
 const BaseController = require('./BaseController.controller');
 
-class Report extends BaseController {}
+class ReportController extends BaseController {}
 
-module.exports = Report;
+module.exports = ReportController;

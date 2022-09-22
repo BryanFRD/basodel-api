@@ -5,7 +5,7 @@ const UserAccount = require('../models/UserAccount.model');
 const UserCredential = require('../models/UserCredential.model');
 const BaseService = require('./BaseService.service');
 
-class Confirmation extends BaseService {
+class ConfirmationService extends BaseService {
   
   
   create = async (model, req, res) => {
@@ -55,4 +55,4 @@ class Confirmation extends BaseService {
   
 }
 
-module.exports = Confirmation;
+module.exports = ConfirmationService;

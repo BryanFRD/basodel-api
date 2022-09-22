@@ -1,5 +1,5 @@
 const BaseRouter = require('./BaseRouter.router');
 
-class ChatMessage extends BaseRouter {}
+class ChatMessageRouter extends BaseRouter {}
 
-module.exports = ChatMessage;
+module.exports = ChatMessageRouter;

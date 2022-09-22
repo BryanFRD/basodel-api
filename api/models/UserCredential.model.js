@@ -1,10 +1,10 @@
 const DB = require('../database/db');
 const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
-const UserAccount = require('./UserAccount.model');
+const UserAccountModel = require('./UserAccount.model');
 const bcrypt = require('bcrypt');
 
-class UserCredential extends Model {
+class UserCredentialModel extends Model {
   
   authenticate = async (password) => {
     const authenticate = await bcrypt.compare(password, this.getDataValue('password'));
@@ -13,7 +13,7 @@ class UserCredential extends Model {
   
 }
 
-UserCredential.init({
+UserCredentialModel.init({
   ...BaseModel,
   email: {
     type: DataTypes.STRING(50),
@@ -55,7 +55,7 @@ UserCredential.init({
   }
 });
 
-UserAccount.hasOne(UserCredential);
-UserCredential.belongsTo(UserAccount);
+UserAccountModel.hasOne(UserCredentialModel);
+UserCredentialModel.belongsTo(UserAccountModel);
 
-module.exports = UserCredential;
+module.exports = UserCredentialModel;
