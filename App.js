@@ -33,7 +33,7 @@ const start = async () => {
   app.use(cors(corsOptions)).use(morgan('dev')).use(express.json());
   
   for(const route in routers){
-    app.use(`/${route}`, new routers[route]().router);
+    app.use(`/${route.replace('Router', '')}`, new routers[route]().router);
   }
   
   //TODO callback sur le .define pour créer cette ligne auto
@@ -66,8 +66,6 @@ const start = async () => {
       })
     }
   });
-  
-  // Mailer.sendConfirmationEmail('http://localhost:3001', 'bryanferrando59@gmail.com');
 }
 
 start();

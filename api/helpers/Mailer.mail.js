@@ -41,10 +41,12 @@ class Mailer {
       subject: 'Valider votre mail.',
       text: `Basodel\nCliquez sur le lien afin de valider la création de votre compte.\n${confirmationURL}`,
       html: `
-      <div style="display:flex;align-items:center;flex-direction:column;gap:25px;">
+      <div style="text-align: center; color: inherit;">
         <h1>Basodel</h1>
-        <span>Cliquez sur le lien afin de valider la création de votre compte.</span>
-        <a href=${confirmationURL}>${process.env.APP_URL}/confirmation</a>
+        <div style="text-align: center">
+          <div>Cliquez sur le lien afin de valider la création de votre compte.</div>
+          <a href=${confirmationURL}>${process.env.APP_URL}/confirmation</a>
+        </div>
       </div>`
     });
   }

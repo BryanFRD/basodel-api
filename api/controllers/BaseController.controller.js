@@ -6,11 +6,11 @@ class BaseController {
   
   constructor(){
     this.name = this.constructor.name;
-    this.table = this.name;
+    this.table = this.name.replace('Controller', '');
     this.prefix = this.name.toLocaleLowerCase();
-    this.model = models[this.table];
-    this.service = new services[this.table]();
-    this.validator = new validators[this.table]();
+    this.model = models[`${this.table}Model`];
+    this.service = new services[`${this.table}Service`]();
+    this.validator = new validators[`${this.table}Validator`]();
   }
   
   async create(req, res){

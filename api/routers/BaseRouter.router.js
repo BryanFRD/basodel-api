@@ -8,8 +8,8 @@ class BaseRouter {
   constructor(needsAuthenticate = {}){
     this.router = Router();
     this.name = this.constructor.name;
-    this.table = this.name;
-    this.controller = new controllers[this.table]();
+    this.table = this.name.replace('Router', '');
+    this.controller = new controllers[`${this.table}Controller`]();
     
     this.needsAuthenticate = {
       create: true,
