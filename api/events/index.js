@@ -1,1 +1,2 @@
-exports.Message = require('./Message.event');
+exports.PingEvent = require('./Ping.event');
+exports.MessageEvent = require('./Message.event');

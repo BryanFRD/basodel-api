@@ -32,19 +32,12 @@ class BaseService {
   // READ
   async select(model, req, res){
     //TODO Verifier toutes les valeurs (req.body.where, etc...)
-    if(req.body.id){
-      const result = model.findByPk(req.body.id)
-        .then(value => ({statusCode: 200, content: {value}}))
-        .catch(err => ({statusCode: 400, content: {err}}));
-      
-      return res.status(result.statusCode).send(result.content);
-    }
     
-    const result = model.findAll(req.body.where)
-      .then(value => ({statusCode: 200, content: {value}}))
-      .catch(error => ({statusCode: 400, content: {error}}));
+    const result = await model.findAll()
+    .then(value => ({statusCode: 200, content: {value}}))
+    .catch(error => ({statusCode: 400, content: {error: `error.${model.replace('Model', '')}.get.error`}}));
       
-    return res.status(result.statusCode).send(result.content);
+    return res.status(result.statusCode ?? 400).send(result.content);
   }
   
   // UPDATE

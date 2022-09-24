@@ -7,7 +7,7 @@ class BaseController {
   constructor(){
     this.name = this.constructor.name;
     this.table = this.name.replace('Controller', '');
-    this.prefix = this.name.toLocaleLowerCase();
+    this.prefix = this.table.toLocaleLowerCase();
     this.model = models[`${this.table}Model`];
     this.service = new services[`${this.table}Service`]();
     this.validator = new validators[`${this.table}Validator`]();
@@ -27,15 +27,6 @@ class BaseController {
   }
   
   async select(req, res){
-    const {value, error} = await this.validator.validateSelect(req?.body?.model);
-    
-    if(error){
-      const key = error?.details[0]?.context?.key?.toLowerCase();
-      
-      return res.status(400).send({error: `error.${this.prefix}.select.${key}`});
-    }
-    
-    req.body.model = value;
     return await this.service.select(this.model, req, res);
   }
   

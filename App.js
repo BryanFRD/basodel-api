@@ -11,7 +11,6 @@ const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
 const Logger = require('./api/helpers/Logger.helper');
 const events = require('./api/events');
-const Mailer = require('./api/helpers/Mailer.mail');
 
 const start = async () => {
   const err = await DB.sync({force: false})
@@ -63,7 +62,7 @@ const start = async () => {
     for(const event in events){
       new events[event](io, socket).getEvents().forEach(({name, handler}) => {
         socket.on(name, handler);
-      })
+      });
     }
   });
 }
@@ -71,13 +70,19 @@ const start = async () => {
 start();
 
 generateAccessToken = (data) => {
-  return jwt.sign(data, process.env.ACCESS_TOKEN, {expiresIn: '1d'});
+  return generateToken(data, 'ACCESS_TOKEN', 1);
 }
 
 generateRefreshToken = (data) => {
-  return jwt.sign(data, process.env.REFRESH_TOKEN, {expiresIn: '30d'});
+  return generateToken(data, 'REFRESH_TOKEN', 30);
 }
 
 generateEmailToken = (data) => {
-  return jwt.sign(data, process.env.EMAIL_TOKEN, {expiresIn: '7d'});
+  return generateToken(data, 'EMAIL_TOKEN', 7);
+}
+
+generateToken = (data, envKeyName, expDay) => {
+  const expires = expDay * 24 * 60 * 60;
+  console.log('expires:', expires);
+  return {token: jwt.sign(data, process.env[envKeyName], {expiresIn: expires}), expires}
 }

@@ -1,15 +1,15 @@
 const BaseService = require('./BaseService.service');
 const { Op } = require('sequelize');
-const Role = require('../models/Role.model');
-const UserAccount = require('../models/UserAccount.model');
-const UserCredential = require('../models/UserCredential.model');
+const RoleModel = require('../models/Role.model');
+const UserAccountModel = require('../models/UserAccount.model');
+const UserCredentialModel = require('../models/UserCredential.model');
 const jwt = require('jsonwebtoken');
 
 class AuthService extends BaseService {
   
   // CREATE
   create = async (model, req, res) => {
-    const userCredential = await UserCredential.findOne({
+    const userCredential = await UserCredentialModel.findOne({
       where: {
         [Op.or]: [
           {email: req.body.model.email},
@@ -17,12 +17,12 @@ class AuthService extends BaseService {
         ]
       },
       include: [
-        UserAccount,
-        {model: UserAccount, include: [Role]}
+        UserAccountModel,
+        {model: UserAccountModel, include: [RoleModel]}
       ]
     });
     
-    if(!userCredential)
+    if(!userCredential || userCredential.isDeleted)
       return res.status(404).send({error: 'error.auth.create.notFound'});
       
     const isAuthenticated = await userCredential.authenticate(req.body.model.password);
@@ -35,18 +35,10 @@ class AuthService extends BaseService {
     
     const uc = userCredential.toJSON();
     
-    const tokenData = {
-      userCredentialId: uc.id,
-      id: uc.user_account.id,
-      isBanned: uc.user_account.isBanned,
-      roleId: uc.user_account.roleId,
-      roleLevel: uc.user_account.role.level,
-    }
+    const accessToken = generateAccessToken({id: uc.user_account.id, updatedAt: Date.parse(uc.user_account.updatedAt)});
+    const refreshToken = generateRefreshToken({id: uc.id, updatedAt: Date.parse(uc.updatedAt)});
     
-    const accessToken = generateAccessToken(tokenData);
-    const refreshToken = generateRefreshToken(tokenData);
-    
-    return res.status(200).send({accessToken, refreshToken, userAccount: uc.user_account});
+    return res.status(200).send({acessToken: accessToken.token, refreshToken: refreshToken.token, expires: refreshToken.expires, userCredential: uc});
   }
   
   // READ
@@ -57,44 +49,34 @@ class AuthService extends BaseService {
     if(!token)
       return res.sendStatus(401);
       
-    jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
+    jwt.verify(token, process.env.REFRESH_TOKEN, (err, user) => {
       if(err)
         return res.sendStatus(401);
       
-      await UserCredential.findByPk(user.userCredentialId,
+      UserCredentialModel.findByPk(user.id,
         {include: [
-          UserAccount,
-          {model: UserAccount, include: [Role]}
+          UserAccountModel,
+          {model: UserAccountModel, include: [RoleModel]}
         ]})
         .then(value => {
           const uc = value.toJSON();
           
-          if(!uc)
+          if(!uc || uc.isDeleted)
             return res.status(401).send({error: 'error.auth.get.notFound'});
           
           if(!uc.emailConfirmed)
             return res.status(401).send({error: 'error.auth.get.confirmEmail'});
+            
+          if(user.updatedAt !== Date.parse(uc.updatedAt))
+            return res.sendStatus(401);
           
-          const tokenData = {
-            userCredentialId: uc.id,
-            id: uc.user_account.id,
-            isBanned: uc.user_account.isBanned,
-            roleId: uc.user_account.roleId,
-            roleLevel: uc.user_account.role.level,
-          }
+          const refreshToken = generateRefreshToken({id: uc.id, updatedAt: Date.parse(uc.updatedAt)});
+          const accessToken = generateAccessToken({id: uc.user_account.id, updatedAt: Date.parse(uc.user_account.updatedAt)});
           
-          const accessToken = generateAccessToken(tokenData);
-          
-          res.status(200).send({accessToken, userAccount: uc.user_account});
+          res.status(200).send({acessToken: accessToken.token, refreshToken: refreshToken.token, expires: refreshToken.expires, userCredential: uc});
         })
         .catch(error => res.status(404).send({error}));
       });
-  }
-  
-  // DELETE
-  delete = async (model, req, res) => {
-    //TODO Delete token from cache
-    return res.status(405).send({message: `DELETE ${params.id} FROM ${this.table}`});
   }
   
 }

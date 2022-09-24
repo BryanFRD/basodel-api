@@ -34,7 +34,7 @@ class Mailer {
     this.getTransporter().sendMail(options);
   }
   
-  static sendConfirmationEmail = (confirmationURL, sendTo) => {
+  static sendConfirmationEmail = (token, sendTo) => {
     this.#sendMail({
       from: `"Basodel" <${process.env.EMAIL_USER}>`,
       to: sendTo,
@@ -45,7 +45,7 @@ class Mailer {
         <h1>Basodel</h1>
         <div style="text-align: center">
           <div>Cliquez sur le lien afin de valider la création de votre compte.</div>
-          <a href=${confirmationURL}>${process.env.APP_URL}/confirmation</a>
+          <a href=${`${process.env.APP_URL}/confirmation/${token}`}>${process.env.APP_URL}/confirmation</a>
         </div>
       </div>`
     });
