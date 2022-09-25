@@ -58,7 +58,16 @@ const start = async () => {
   
   server.listen(process.env.SERVER_PORT, () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
   
-  io.on('connection', (socket) => {
+  io.use((socket, next) => {
+    jwt.verify(socket?.handshake?.auth?.token, process.env.ACCESS_TOKEN, (err, user) => {
+      if(err)
+        return next(new Error('AuthenticationError'));
+      
+      socket.user = user;
+      next();
+    });
+  })
+  .on('connection', (socket) => {
     for(const event in events){
       new events[event](io, socket).getEvents().forEach(({name, handler}) => {
         socket.on(name, handler);
@@ -83,6 +92,5 @@ generateEmailToken = (data) => {
 
 generateToken = (data, envKeyName, expDay) => {
   const expires = expDay * 24 * 60 * 60;
-  console.log('expires:', expires);
   return {token: jwt.sign(data, process.env[envKeyName], {expiresIn: expires}), expires}
 }

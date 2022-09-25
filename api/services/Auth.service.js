@@ -38,7 +38,13 @@ class AuthService extends BaseService {
     const accessToken = generateAccessToken({id: uc.user_account.id, updatedAt: Date.parse(uc.user_account.updatedAt)});
     const refreshToken = generateRefreshToken({id: uc.id, updatedAt: Date.parse(uc.updatedAt)});
     
-    return res.status(200).send({acessToken: accessToken.token, refreshToken: refreshToken.token, expires: refreshToken.expires, userCredential: uc});
+    return res.status(200).send({
+      accessToken: accessToken.token,
+      refreshToken: refreshToken.token,
+      accessTokenExpires: accessToken.expires,
+      refreshTokenExpires: refreshToken.expires,
+      userCredential: uc
+    });
   }
   
   // READ
@@ -73,7 +79,13 @@ class AuthService extends BaseService {
           const refreshToken = generateRefreshToken({id: uc.id, updatedAt: Date.parse(uc.updatedAt)});
           const accessToken = generateAccessToken({id: uc.user_account.id, updatedAt: Date.parse(uc.user_account.updatedAt)});
           
-          res.status(200).send({acessToken: accessToken.token, refreshToken: refreshToken.token, expires: refreshToken.expires, userCredential: uc});
+          res.status(200).send({
+            accessToken: accessToken.token,
+            refreshToken: refreshToken.token,
+            accessTokenExpires: accessToken.expires,
+            refreshTokenExpires: refreshToken.expires,
+            userCredential: uc
+          });
         })
         .catch(error => res.status(404).send({error}));
       });

@@ -19,39 +19,34 @@ class MessageEvent extends BaseEvent {
   }
   
   sendMessage = async (data) => {
+    this.io.allSockets().then((s) => console.log(s))
+    
     const {value, error} = this.chatMessageValidator.validateCreate(data);
     if(error){
-      Logger.error('ChatMessageError: Validation error -> ', error);
+      Logger.error('ChatMessageError: ', error);
       return;
     }
     
-    jwt.verify(this.socket.handshake.auth.token, process.env.ACCES_TOKEN, async (err, user) => {
-      if(err){
-        Logger.error('ChatMessageError: token expired!')
-        return;
-      }
-      
-      const userAccount = await UserAccountModel.findByPk(value.userAccountId);
+    const userAccount = await UserAccountModel.findByPk(value.userAccountId);
     
-      if(!userAccount){
-        Logger.error(`ChatMessageError: UserAccount with id ${data.userAccountId} couldn't be found!`);
-        return;
-      }
-      
-      ChatMessageModel.create(value)
-        .then(v => {
-          const json = v.toJSON();
-          
-          data.messageId = json.id;
-          data.username = userAccount.username;
-          data.message = StringHelper.clearBadWords(data.message);
-          
-          this.io.emit('receiveMessage', data);
-        })
-        .catch(error => {
-          Logger.error('sendMessage', error);
-        });
-    })
+    if(!userAccount){
+      Logger.error(`ChatMessageError: UserAccount with id ${data.userAccountId} couldn't be found!`);
+      return;
+    }
+    
+    ChatMessageModel.create(value)
+      .then(v => {
+        const json = v.toJSON();
+        
+        data.messageId = json.id;
+        data.username = userAccount.username;
+        data.message = StringHelper.clearBadWords(data.message);
+        
+        this.io.emit('receiveMessage', data);
+      })
+      .catch(error => {
+        Logger.error('sendMessage', error);
+      });
     
   }
   
