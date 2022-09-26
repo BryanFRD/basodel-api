@@ -12,14 +12,14 @@ class MessageEvent extends BaseEvent {
     super(io, socket);
     
     super.registerEvents([
-      {name: 'sendMessage', handler: this.sendMessage}
+      {name: 'sendMessage', handler: this.sendMessage, requiresAuth: true}
     ]);
     
     this.chatMessageValidator = new ChatMessageValidator();
   }
   
   sendMessage = async (data) => {
-    this.io.allSockets().then((s) => console.log(s))
+    console.log(this.socket);
     
     const {value, error} = this.chatMessageValidator.validateCreate(data);
     if(error){

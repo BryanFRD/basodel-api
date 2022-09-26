@@ -58,18 +58,19 @@ const start = async () => {
   
   server.listen(process.env.SERVER_PORT, () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
   
-  io.use((socket, next) => {
-    jwt.verify(socket?.handshake?.auth?.token, process.env.ACCESS_TOKEN, (err, user) => {
-      if(err)
-        return next(new Error('AuthenticationError'));
+  io
+  // .use((socket, next) => {
+  //   jwt.verify(socket?.handshake?.auth?.token, process.env.ACCESS_TOKEN, (err, user) => {
+  //     if(err)
+  //       return next(new Error('AuthenticationError'));
       
-      socket.user = user;
-      next();
-    });
-  })
+  //     socket.user = user;
+  //     next();
+  //   });
+  // })
   .on('connection', (socket) => {
     for(const event in events){
-      new events[event](io, socket).getEvents().forEach(({name, handler}) => {
+      new events[event](io, socket).getAllEvents().forEach(({name, handler}) => {
         socket.on(name, handler);
       });
     }
