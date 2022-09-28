@@ -3,34 +3,28 @@ const StringHelper = require('../helpers/StringHelper.helper');
 const ChatMessageModel = require('../models/ChatMessage.model');
 const BaseEvent = require('./BaseEvent.event');
 const ChatMessageValidator = require('../validators/ChatMessage.validator');
-const UserAccountModel = require('../models/UserAccount.model');
-const jwt = require('jsonwebtoken');
 
 class MessageEvent extends BaseEvent {
   
-  constructor(io, socket){
-    super(io, socket);
+  constructor(io, socket, user){
+    super(io, socket, user);
     
     super.registerEvents([
-      {name: 'sendMessage', handler: this.sendMessage, requiresAuth: true}
+      {name: 'sendMessage', handler: this.sendMessage}
     ]);
     
     this.chatMessageValidator = new ChatMessageValidator();
   }
   
   sendMessage = async (data) => {
-    console.log(this.socket);
-    
     const {value, error} = this.chatMessageValidator.validateCreate(data);
     if(error){
       Logger.error('ChatMessageError: ', error);
       return;
     }
     
-    const userAccount = await UserAccountModel.findByPk(value.userAccountId);
-    
-    if(!userAccount){
-      Logger.error(`ChatMessageError: UserAccount with id ${data.userAccountId} couldn't be found!`);
+    if(!this.user){
+      Logger.error(`ChatMessageError: UserAccount not registered!`);
       return;
     }
     
@@ -39,15 +33,15 @@ class MessageEvent extends BaseEvent {
         const json = v.toJSON();
         
         data.messageId = json.id;
-        data.username = userAccount.username;
+        data.username = this.user.username;
         data.message = StringHelper.clearBadWords(data.message);
+        data.createdAt = json.createdAt;
         
         this.io.emit('receiveMessage', data);
       })
       .catch(error => {
         Logger.error('sendMessage', error);
       });
-    
   }
   
 }

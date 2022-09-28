@@ -39,7 +39,8 @@ class Mailer {
       from: `"Basodel" <${process.env.EMAIL_USER}>`,
       to: sendTo,
       subject: 'Valider votre mail.',
-      text: `Basodel\nCliquez sur le lien afin de valider la création de votre compte.\n${confirmationURL}`,
+      text: `Basodel\nCliquez sur le lien afin de valider la création de votre compte.\n
+      ${process.env.APP_URL}/confirmation/${token}`,
       html: `
       <div style="text-align: center; color: inherit;">
         <h1>Basodel</h1>

@@ -11,6 +11,8 @@ const ReportStatus = require('./api/models/ReportStatus.model');
 const jwt = require('jsonwebtoken');
 const Logger = require('./api/helpers/Logger.helper');
 const events = require('./api/events');
+const UserAccountModel = require('./api/models/UserAccount.model');
+const { RoleModel } = require('./api/models');
 
 const start = async () => {
   const err = await DB.sync({force: false})
@@ -58,23 +60,18 @@ const start = async () => {
   
   server.listen(process.env.SERVER_PORT, () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
   
-  io
-  // .use((socket, next) => {
-  //   jwt.verify(socket?.handshake?.auth?.token, process.env.ACCESS_TOKEN, (err, user) => {
-  //     if(err)
-  //       return next(new Error('AuthenticationError'));
+  io.on('connection', (socket) => {
+    jwt.verify(socket.handshake.auth.token, process.env.ACCESS_TOKEN, async (err, user) => {
+      const userAccount = await UserAccountModel.findByPk(user?.id, {include: [RoleModel]});
+      const userJson = userAccount?.toJSON();
       
-  //     socket.user = user;
-  //     next();
-  //   });
-  // })
-  .on('connection', (socket) => {
-    for(const event in events){
-      new events[event](io, socket).getAllEvents().forEach(({name, handler}) => {
-        socket.on(name, handler);
-      });
-    }
-  });
+      for(const event in events){
+        new events[event](io, socket, userJson).getEvents().forEach(({name, handler}) => {
+          socket.on(name, handler);
+        });
+      }
+    })
+  })
 }
 
 start();

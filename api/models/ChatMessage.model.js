@@ -14,6 +14,7 @@ ChatMessageModel.init({
 }, {
   sequelize: DB,
   modelName: 'chat_message',
+  paranoid: true
 });
 
 module.exports = ChatMessageModel;

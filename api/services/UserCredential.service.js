@@ -25,11 +25,13 @@ class UserCredentialService extends BaseService {
           return {statusCode: 201, content: {message: 'message.emailSent'}};
         })
         .catch(async error => {
-          await transaction.rollback();
+          if(transaction.finished !== 'commit')
+            await transaction.rollback();
+          
           if(error?.name === 'SequelizeUniqueConstraintError')
             return {statusCode: 400, content: {error: `error.usercredential.create.${StringHelper.retrieveColumnFromSQLError(error.parent.sqlMessage)}`}}
           
-          return {statusCode: 400, content: {error}};
+          return {statusCode: 400, content: {error : 'error.usercredential.create.undefined'}};
         });
     
     return res.status(result.statusCode).send(result.content);

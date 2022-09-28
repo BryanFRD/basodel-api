@@ -35,8 +35,15 @@ class AuthService extends BaseService {
     
     const uc = userCredential.toJSON();
     
-    const accessToken = generateAccessToken({id: uc.user_account.id, updatedAt: Date.parse(uc.user_account.updatedAt)});
-    const refreshToken = generateRefreshToken({id: uc.id, updatedAt: Date.parse(uc.updatedAt)});
+    const accessToken = generateAccessToken({
+      id: uc.user_account.id,
+      updatedAt: Date.parse(uc.user_account.updatedAt)
+    });
+    
+    const refreshToken = generateRefreshToken({
+      id: uc.id,
+      updatedAt: Date.parse(uc.updatedAt)
+    });
     
     return res.status(200).send({
       accessToken: accessToken.token,
@@ -72,12 +79,19 @@ class AuthService extends BaseService {
           
           if(!uc.emailConfirmed)
             return res.status(401).send({error: 'error.auth.get.confirmEmail'});
-            
+          
           if(user.updatedAt !== Date.parse(uc.updatedAt))
             return res.sendStatus(401);
           
-          const refreshToken = generateRefreshToken({id: uc.id, updatedAt: Date.parse(uc.updatedAt)});
-          const accessToken = generateAccessToken({id: uc.user_account.id, updatedAt: Date.parse(uc.user_account.updatedAt)});
+          const refreshToken = generateRefreshToken({
+            id: uc.id,
+            updatedAt: Date.parse(uc.updatedAt)
+          });
+          
+          const accessToken = generateAccessToken({
+            id: uc.user_account.id,
+            updatedAt: Date.parse(uc.user_account.updatedAt)
+          });
           
           res.status(200).send({
             accessToken: accessToken.token,

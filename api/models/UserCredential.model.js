@@ -43,6 +43,7 @@ UserCredentialModel.init({
   ],
   sequelize: DB,
   modelName: 'user_credential',
+  paranoid: true,
   hooks: {
     beforeCreate: async (userCredential) => {
       if(userCredential?.getDataValue('password'))

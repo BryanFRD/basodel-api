@@ -17,6 +17,7 @@ PurchaseModel.init({
 }, {
   sequelize: DB,
   modelName: 'purchase',
+  paranoid: true
 });
 
 module.exports = PurchaseModel;

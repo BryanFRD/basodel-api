@@ -22,6 +22,7 @@ ReportModel.init({
 }, {
   sequelize: DB,
   modelName: 'report',
+  paranoid: true
 });
 
 ReportModel.hasOne(ReportStatusModel);

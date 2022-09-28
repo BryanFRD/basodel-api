@@ -22,6 +22,7 @@ ReportStatusModel.init({
 }, {
   sequelize: DB,
   modelName: 'report_status',
+  paranoid: true
 });
 
 module.exports = ReportStatusModel;

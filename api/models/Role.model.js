@@ -25,6 +25,7 @@ RoleModel.init({
 }, {
   sequelize: DB,
   modelName: 'role',
+  paranoid: true
 });
 
 module.exports = RoleModel;

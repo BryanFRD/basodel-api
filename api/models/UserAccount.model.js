@@ -38,13 +38,8 @@ UserAccountModel.init({
   ],
   sequelize: DB,
   modelName: 'user_account',
+  paranoid: true
 });
-
-RoleModel.hasMany(UserAccountModel);
-UserAccountModel.belongsTo(RoleModel, {foreignKey: {
-  defaultValue: 1,
-  allowNull: false,
-}});
 
 UserAccountModel.hasMany(ChatMessageModel);
 ChatMessageModel.belongsTo(UserAccountModel);
@@ -52,10 +47,29 @@ ChatMessageModel.belongsTo(UserAccountModel);
 UserAccountModel.hasMany(PurchaseModel);
 PurchaseModel.belongsTo(UserAccountModel);
 
-UserAccountModel.hasMany(GameHistoryModel);
-GameHistoryModel.belongsToMany(UserAccountModel, {through: 'gamehistory_useraccount'});
-
 UserAccountModel.hasMany(ReportModel);
 ReportModel.belongsTo(UserAccountModel);
+
+RoleModel.hasMany(UserAccountModel);
+UserAccountModel.belongsTo(RoleModel, {
+  foreignKey: {
+    defaultValue: 1,
+    allowNull: false,
+  }
+});
+
+GameHistoryModel.belongsToMany(UserAccountModel, {
+  through: 'gamehistory_useraccount'
+});
+
+UserAccountModel.belongsToMany(GameHistoryModel, {
+  through: 'gamehistory_useraccount'
+});
+
+UserAccountModel.belongsToMany(UserAccountModel, {
+  through: 'blocked_useraccount',
+  otherKey: 'blockedUserAccountId',
+  as: 'blockedUser'
+});
 
 module.exports = UserAccountModel;

@@ -1,10 +1,9 @@
-const { date } = require('joi');
 const BaseEvent = require('./BaseEvent.event');
 
 class PingEvent extends BaseEvent {
   
-  constructor(io, socket){
-    super(io, socket);
+  constructor(io, socket, user){
+    super(io, socket, user);
     
     super.registerEvents([
       {name: 'ping', handler: this.ping}

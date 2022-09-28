@@ -6,10 +6,5 @@ module.exports = {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
     allowNull: false
-  },
-  isDeleted: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-    allowNull: false
   }
 }

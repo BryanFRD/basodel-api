@@ -17,6 +17,7 @@ GameHistoryModel.init({
 }, {
   sequelize: DB,
   modelName: 'game_history',
+  paranoid: true
 });
 
 module.exports = GameHistoryModel;
