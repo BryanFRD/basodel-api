@@ -70,7 +70,7 @@ const start = async () => {
           socket.on(name, handler);
         });
       }
-    })
+    });
   })
 }
 

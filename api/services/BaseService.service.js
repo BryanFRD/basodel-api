@@ -1,4 +1,5 @@
 const DB = require('../database/db');
+const ChatMessageModel = require('../models/ChatMessage.model');
 
 class BaseService {
   
@@ -26,24 +27,48 @@ class BaseService {
           return {statusCode: 400, content: {error}}
         });
     
-    return res.status(result.statusCode).send(result.content);
+    return res.status(result.statusCode ?? 400).send(result.content);
   }
   
   // READ
   async select(model, req, res){
     //TODO Verifier toutes les valeurs (req.body.where, etc...)
     
-    const result = await model.findAll()
-    .then(value => ({statusCode: 200, content: {value}}))
-    .catch(error => ({statusCode: 400, content: {error: `error.${model.replace('Model', '')}.get.error`}}));
-      
+    console.log('req.params.params:', req.params.params);
+    if(req.params.params){
+      const result = await model.findByPk(req.params.params)
+        .then(value => ({statusCode: 200, content: {value}}))
+        .catch(error => ({statusCode: 400, content: {
+          error: `error.${model.name}.get.error`
+        }}));
+        
+        return res.status(result.statusCode ?? 400).send(result.content);
+    }
+    
+    const result = await model.findAll({
+      attributes: {exclude: ['chat_message']},
+      include: [...Object.values(model.associations)],
+      where: req.query
+    })
+      .then(value => ({statusCode: 200, content: {value}}))
+      .catch(error => ({statusCode: 400, content: {
+        error: `error.${model.name}.get.error`
+      }}));
+    
+    console.log(req.query);
+    console.log(req.params)
+    
     return res.status(result.statusCode ?? 400).send(result.content);
   }
   
   // UPDATE
   async update(model, req, res){
-    //TODO
-    return res.sendStatus(400);
+    const result = await model.findByPk(req.body.model.id)
+      .on('success', (mdl) => {
+        delete req.body.model.id;
+        mdl.update(req.body.model);
+      });
+    return res.status(result.statusCode ?? 400).send(result.content);
   }
   
   // DELETE

@@ -39,6 +39,12 @@ class BaseRouter {
         return await this.controller.select(req, res);
     });
     
+    // READ
+    this.router.get('/:params',
+    this.needsAuthenticate.read ? authenticateToken : nextFunc,
+    async (req, res) => {
+      return await this.controller.select(req, res);
+    })
     
     //UPDATE
     this.router.put('/',
