@@ -34,7 +34,6 @@ class BaseService {
   async select(model, req, res){
     //TODO Verifier toutes les valeurs (req.body.where, etc...)
     
-    console.log('req.params.params:', req.params.params);
     if(req.params.params){
       const result = await model.findByPk(req.params.params)
         .then(value => ({statusCode: 200, content: {value}}))
@@ -55,19 +54,19 @@ class BaseService {
         error: `error.${model.name}.get.error`
       }}));
     
-    console.log(req.query);
-    console.log(req.params)
-    
     return res.status(result.statusCode ?? 400).send(result.content);
   }
   
   // UPDATE
   async update(model, req, res){
     const result = await model.findByPk(req.body.model.id)
-      .on('success', (mdl) => {
-        delete req.body.model.id;
+      .then(mdl => {
         mdl.update(req.body.model);
-      });
+        
+        return {statusCode: 201, content: mdl}
+      })
+      .catch(error => ({statusCode: 400, }));
+    
     return res.status(result.statusCode ?? 400).send(result.content);
   }
   
