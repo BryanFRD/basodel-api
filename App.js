@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./api/helpers/StringHelper.helper');
 const express = require('express');
 const { Server } = require('socket.io');
 const cors = require('cors');

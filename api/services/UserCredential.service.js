@@ -1,5 +1,4 @@
 const DB = require('../database/db');
-const StringHelper = require('../helpers/StringHelper.helper');
 const Mailer = require('../helpers/Mailer.mail');
 const BaseService = require('./BaseService.service');
 
@@ -28,10 +27,13 @@ class UserCredentialService extends BaseService {
           if(transaction.finished !== 'commit')
             await transaction.rollback();
           
-          if(error?.name === 'SequelizeUniqueConstraintError')
-            return {statusCode: 400, content: {error: `error.usercredential.create.${StringHelper.retrieveColumnFromSQLError(error.parent.sqlMessage)}`}}
+          if(error?.name === 'SequelizeUniqueConstraintError'){
+            return {statusCode: 400, content: {
+              error: `error.usercredential.create.${error.parent.sqlMessage.retrieveColumnFromSQLError()}`
+            }}
+          }
           
-          return {statusCode: 400, content: {error : 'error.usercredential.create.undefined'}};
+          return {statusCode: 400, content: {error : 'error.usercredential.create.error'}};
         });
     
     return res.status(result.statusCode).send(result.content);

@@ -1,5 +1,4 @@
 const Logger = require('../helpers/Logger.helper');
-const StringHelper = require('../helpers/StringHelper.helper');
 const ChatMessageModel = require('../models/ChatMessage.model');
 const BaseEvent = require('./BaseEvent.event');
 const ChatMessageValidator = require('../validators/ChatMessage.validator');
@@ -34,7 +33,7 @@ class MessageEvent extends BaseEvent {
         
         data.messageId = json.id;
         data.username = this.user.username;
-        data.message = StringHelper.clearBadWords(data.message);
+        data.message = data.message.clearBadWords();
         data.createdAt = json.createdAt;
         
         this.io.emit('receiveMessage', data);
