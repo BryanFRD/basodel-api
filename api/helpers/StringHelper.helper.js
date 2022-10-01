@@ -7,11 +7,11 @@ String.prototype.upperCaseFirst = function(){
 }
 
 String.prototype.clearBadWords = function(){
-  return filter.clean(string);
+  return filter.clean(this);
 }
 
 String.prototype.retrieveColumnFromSQLError = function(){
-  const arr = /'(\w*)'$/.exec(sqlMessage);
+  const arr = /'(\w*)'$/.exec(this);
   
   if(arr)
     return arr[0].replaceAll('\'', '');

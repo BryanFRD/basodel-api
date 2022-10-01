@@ -44,7 +44,8 @@ class BaseService {
     const params = req.params;
     const query = (req.query.include ?? '').split(',');
     
-    const include = Object.values(model.associations).filter((mdl) => query.includes(mdl.as));
+    const include = Object.values(model.associations)
+      .filter(({as}) => query?.includes(as));
     delete req.query.include;
     
     if(params.params){
@@ -74,28 +75,36 @@ class BaseService {
   
   // UPDATE
   async update(model, req, res){
-    if(req.user.id !== req.body?.model?.id && req.user?.role?.level >= 500)
-      return res.sendStatus(401);
+    // TODO À mettre dans les enfants de cette class
+    // if(req.user.id !== req.body?.model?.id && req.user?.role?.level >= 500)
+    //   return res.sendStatus(401);
       
-    const result = await model.findByPk(req.body.model.id)
+    const include = Object.values(model.associations)
+      .filter(({as}) => req.body.include?.includes(as));
+    
+    const result = await model.findByPk(req.body.model.id, {
+      include: include
+    })
       .then(async mdl => {
-        
         if(req.body.model){
           Object.entries(req.body.model).forEach(([key, value]) => {
             if(typeof key !== 'string')
               return;
-            
-            const addFunction = mdl[`set${key.upperCaseFirst()}`];
-            if(addFunction)
+              
+            if(mdl[`set${key.upperCaseFirst()}`]){
               mdl[`set${key.upperCaseFirst()}`](value);
-          })
+              delete req.body.model[key];
+            }
+          });
         }
         
-        return await mdl.update(req.body.model)
-          .then(value => ({statusCode201, content: {value}}))
-          .catch(err => ({statusCode: 400, content: {error: `error.${model.name}.put.error`}}));
+        return await mdl.update(req.body.model, {
+          include: include
+        })
+          .then(value => ({statusCode: 200, content: {value}}))
+          .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.error`}}));
       })
-      .catch(error => ({statusCode: 400, content: {error}}));
+      .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.notFound`}}));
     
     return res.status(result.statusCode ?? 400).send(result.content);
   }
