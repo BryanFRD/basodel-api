@@ -20,7 +20,7 @@ class BaseService {
       })
         .then(async model => {
           await transaction.commit();
-          return {statusCode: 201, content: {model}}
+          return {statusCode: 201, content: {model: model.toJSON()}}
         })
         .catch(async error => {
           if(transaction.finished !== 'commit')
@@ -34,38 +34,37 @@ class BaseService {
           
           return {statusCode: 400, content: {error : `error.${model.name}.create.error`}};
         });
-    
+        
     return res.status(result.statusCode ?? 400).send(result.content);
   }
   
   // READ
   async select(model, req, res){
     //TODO Verifier toutes les valeurs (req.body.where, etc...)
-    const params = req.params;
-    const query = (req.query.include ?? '').split(',');
+    
+    const searchParams = new URLSearchParams(req.query);
     
     const include = Object.values(model.associations)
-      .filter(({as}) => query?.includes(as));
-    delete req.query.include;
+      .filter(({as}) => searchParams.getAll('include')[0]?.split(',')?.includes(as));
     
-    if(params.params){
-      const result = await model.findByPk(params.params, {
+    if(searchParams.getAll('id')){
+      const result = await model.findByPk(searchParams.getAll('id'), {
         include: include,
-        where: req.query
+        where: req.query.where
       })
-        .then(value => ({statusCode: 200, content: {value}}))
+        .then(value => ({statusCode: 200, content: {model: value.toJSON()}}))
         .catch(error => ({statusCode: 400, content: {
           error: `error.${model.name}.get.error`
         }}));
         
-        return res.status(result.statusCode ?? 400).send(result.content);
+      return res.status(result.statusCode ?? 400).send(result.content);
     }
     
     const result = await model.findAll({
       include: include,
-      where: req.query
+      where: req.query.where
     })
-      .then(value => ({statusCode: 200, content: {value}}))
+      .then(value => ({statusCode: 200, content: {model: value.toJSON()}}))
       .catch(error => ({statusCode: 400, content: {
         error: `error.${model.name}.get.error`
       }}));
@@ -78,9 +77,10 @@ class BaseService {
     // TODO À mettre dans les enfants de cette class
     // if(req.user.id !== req.body?.model?.id && req.user?.role?.level >= 500)
     //   return res.sendStatus(401);
-      
+    const searchParams = new URLSearchParams(req.query);
+    
     const include = Object.values(model.associations)
-      .filter(({as}) => req.body.include?.includes(as));
+      .filter(({as}) => searchParams.getAll('include')[0]?.split(',')?.includes(as));
     
     const result = await model.findByPk(req.body.model.id, {
       include: include
@@ -90,7 +90,7 @@ class BaseService {
           Object.entries(req.body.model).forEach(([key, value]) => {
             if(typeof key !== 'string')
               return;
-              
+            
             if(mdl[`set${key.upperCaseFirst()}`]){
               mdl[`set${key.upperCaseFirst()}`](value);
               delete req.body.model[key];
@@ -101,7 +101,7 @@ class BaseService {
         return await mdl.update(req.body.model, {
           include: include
         })
-          .then(value => ({statusCode: 200, content: {value}}))
+          .then(async value =>  ({statusCode: 200, content: {model: value.toJSON()}}))
           .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.error`}}));
       })
       .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.notFound`}}));

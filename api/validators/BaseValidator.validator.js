@@ -13,7 +13,7 @@ class BaseValidator {
     if(useDefaultSchema){
       schema = BaseValidator.#defaultSchema;
       
-      Logger.warn(`Using default CREATE schema`);
+      Logger.warn(`Using default CREATE schema (${this.constructor.name.replace('Validator', '')})`);
     }
     
     return schema.validate(model, {
@@ -28,7 +28,7 @@ class BaseValidator {
     if(useDefaultSchema){
       schema = BaseValidator.#defaultSchema;
       
-      Logger.warn(`Using default GET schema`);
+      Logger.warn(`Using default GET schema (${this.constructor.name.replace('Validator', '')})`);
     }
     
     return schema.validate(model, {
@@ -43,7 +43,7 @@ class BaseValidator {
     if(useDefaultSchema){
       schema = BaseValidator.#defaultSchema;
       
-      Logger.warn(`Using default UPDATE schema`);
+      Logger.warn(`Using default UPDATE schema (${this.constructor.name.replace('Validator', '')})`);
     }
     
     return schema.validate(model, {
@@ -58,7 +58,7 @@ class BaseValidator {
     if(useDefaultSchema){
       schema = BaseValidator.#defaultSchema;
       
-      Logger.warn(`Using default DELETE schema`);
+      Logger.warn(`Using default DELETE schema (${this.constructor.name.replace('Validator', '')})`);
     }
     
     return schema.validate(model, {

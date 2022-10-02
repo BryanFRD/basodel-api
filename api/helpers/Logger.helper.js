@@ -28,10 +28,12 @@ class Logger {
   static #BgCyan = "\x1b[46m";
   static #BgWhite = "\x1b[47m";
   
-  static #prefix = 'BasodelAPI : ';
-  
   static log = (...messages) => {
     console.log(...messages);
+  }
+  
+  static success = (...messages) => {
+    console.log(`${this.#FgGreen}%s`, ...messages, `${this.#Reset}`);
   }
   
   static error = (...messages) => {

@@ -17,7 +17,7 @@ const { RoleModel } = require('./api/models');
 
 const start = async () => {
   const err = await DB.sync({force: false})
-    .then(() => {Logger.log('Database synchronized!')})
+    .then(() => {Logger.success('Database synchronized!')})
     .catch(err => err);
   
   if(err){
@@ -56,10 +56,10 @@ const start = async () => {
   });
   
   const server = http.createServer(app);
-  
   const io = new Server(server, {cors: corsOptions});
   
-  server.listen(process.env.SERVER_PORT, () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
+  server.listen(process.env.SERVER_PORT,
+    () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
   
   io.on('connection', (socket) => {
     jwt.verify(socket.handshake.auth.token, process.env.ACCESS_TOKEN, async (err, user) => {
