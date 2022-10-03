@@ -36,7 +36,7 @@ class UserCredentialService extends BaseService {
           return {statusCode: 400, content: {error : 'error.usercredential.create.error'}};
         });
     
-    return res.status(result.statusCode).send(result.content);
+    return res.status(result.statusCode ?? 404).send(result.content);
   }
   
 }

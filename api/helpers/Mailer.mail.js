@@ -18,24 +18,31 @@ class Mailer {
           }
         });
       } catch (error) {
-        Logger.error(error);
+        Logger.error('getTransporterError: ', error);
       }
     }
     
     return this.#transporter;
   }
   
-  static #sendMail = (options) => {
+  static #sendMail = async (options) => {
     if(!this.getTransporter()){
       Logger.error('Couldn\'t get transporter!');
       return;
     }
     
-    this.getTransporter().sendMail(options);
+    
+    this.getTransporter().verify((error, success) => {
+      if(!error){
+        this.getTransporter().sendMail(options);
+      } else {
+        Logger.error('#sendMailError: ', error)
+      }
+    })
   }
   
   static sendConfirmationEmail = (token, sendTo) => {
-    this.#sendMail({
+     this.#sendMail({
       from: `"Basodel" <${process.env.EMAIL_USER}>`,
       to: sendTo,
       subject: 'Valider votre mail.',
