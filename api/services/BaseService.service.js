@@ -74,9 +74,6 @@ class BaseService {
   
   // UPDATE
   async update(model, req, res){
-    // TODO À mettre dans les enfants de cette class
-    // if(req.user.id !== req.body?.model?.id && req.user?.role?.level >= 500)
-    //   return res.sendStatus(401);
     const searchParams = new URLSearchParams(req.query);
     
     const include = Object.values(model.associations)
