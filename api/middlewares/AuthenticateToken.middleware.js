@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const RoleModel = require('../models/Role.model');
 const UserAccountModel = require('../models/UserAccount.model');
 
 const authenticateToken = (req, res, next) => {
@@ -12,7 +13,9 @@ const authenticateToken = (req, res, next) => {
     if(err)
       return res.sendStatus(401);
     
-    return await UserAccountModel.findByPk(user.id)
+    return await UserAccountModel.findByPk(user.id, {
+      include: [RoleModel]
+    })
       .then(ua => {
         const json = ua.toJSON();
         
