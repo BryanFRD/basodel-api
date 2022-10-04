@@ -22,11 +22,15 @@ class BaseController {
       return res.status(400).send({error: `error.${this.prefix}.create.${key}`});
     }
     
+    req.searchParams = Object.fromEntries(new URLSearchParams(req.query));
     req.body.model = value;
+    
     return await this.service.create(this.model, req, res);
   }
   
   async select(req, res){
+    req.searchParams = Object.fromEntries(new URLSearchParams(req.query));
+    
     return await this.service.select(this.model, req, res);
   }
   
@@ -39,7 +43,9 @@ class BaseController {
       return res.status(400).send({error: `error.${this.prefix}.update.${key}`});
     }
     
+    req.searchParams = Object.fromEntries(new URLSearchParams(req.query));
     req.body.model = value;
+    
     return await this.service.update(this.model, req, res);
   }
   
@@ -52,8 +58,14 @@ class BaseController {
       return res.status(400).send({error: `error.${this.prefix}.delete.${key}`});
     }
     
+    req.searchParams = Object.fromEntries(new URLSearchParams(req.query));
     req.body.model = value;
+    
     return await this.service.delete(this.model, req, res);
+  }
+  
+  getSearchParamsAsObject = (searchParams) => {
+    
   }
   
 }

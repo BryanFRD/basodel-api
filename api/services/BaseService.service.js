@@ -42,15 +42,13 @@ class BaseService {
   async select(model, req, res){
     //TODO Verifier toutes les valeurs (req.body.where, etc...)
     
-    const searchParams = new URLSearchParams(req.query);
-    
     const include = Object.values(model.associations)
-      .filter(({as}) => searchParams.getAll('include')[0]?.split(',')?.includes(as));
-    
-    if(searchParams.getAll('id')){
-      const result = await model.findByPk(searchParams.getAll('id'), {
+      .filter(({as}) => req.searchParams?.include?.includes(as));
+      
+    if(req.searchParams.id){
+      const result = await model.findByPk(req.searchParams.id, {
         include: include,
-        where: req.query.where
+        where: req.searchParams.where
       })
         .then(value => ({statusCode: 200, content: {model: value.toJSON()}}))
         .catch(error => ({statusCode: 400, content: {
@@ -62,7 +60,7 @@ class BaseService {
     
     const result = await model.findAll({
       include: include,
-      where: req.query.where
+      where: req.searchParams.where
     })
       .then(value => ({statusCode: 200, content: {model: value.toJSON()}}))
       .catch(error => ({statusCode: 400, content: {
@@ -74,36 +72,38 @@ class BaseService {
   
   // UPDATE
   async update(model, req, res){
-    const searchParams = new URLSearchParams(req.query);
-    
     const include = Object.values(model.associations)
-      .filter(({as}) => searchParams.getAll('include')[0]?.split(',')?.includes(as));
+      .filter(({as}) => req.searchParams?.include?.includes(as));
     
-    const result = await model.findByPk(req.body.model.id, {
-      include: include
-    })
-      .then(async mdl => {
-        if(req.body.model){
-          Object.entries(req.body.model).forEach(([key, value]) => {
-            if(typeof key !== 'string')
-              return;
-            
-            if(mdl[`set${key.upperCaseFirst()}`]){
-              mdl[`set${key.upperCaseFirst()}`](value);
-              delete req.body.model[key];
-            }
-          });
-        }
-        
-        return await mdl.update(req.body.model, {
-          include: include
-        })
-          .then(async value =>  ({statusCode: 200, content: {model: value.toJSON()}}))
-          .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.error`}}));
+    if(req.searchParams.id){
+      const result = await model.findByPk(req.searchParams.id, {
+        include: include
       })
-      .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.notFound`}}));
+        .then(async mdl => {
+          if(req.body.model){
+            Object.entries(req.body.model).forEach(([key, value]) => {
+              if(typeof key !== 'string')
+                return;
+              
+              if(mdl[`set${key.upperCaseFirst()}`]){
+                mdl[`set${key.upperCaseFirst()}`](value);
+                delete req.body.model[key];
+              }
+            });
+          }
+          
+          return await mdl.update(req.body.model, {
+            include: include
+          })
+            .then(async value =>  ({statusCode: 200, content: {model: value.toJSON()}}))
+            .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.error`}}));
+        })
+        .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.notFound`}}));
+      
+      return res.status(result.statusCode ?? 400).send(result.content);
+    }
     
-    return res.status(result.statusCode ?? 400).send(result.content);
+    return res.status(400).send(`UPDATE * FROM ${this.table}`);
   }
   
   // DELETE
