@@ -1,5 +1,4 @@
 const DB = require('../database/db');
-const ChatMessageModel = require('../models/ChatMessage.model');
 
 class BaseService {
   
@@ -92,11 +91,30 @@ class BaseService {
             });
           }
           
+          const transaction = await DB.transaction();
+          
           return await mdl.update(req.body.model, {
+            transaction: transaction,
             include: include
           })
-            .then(async value =>  ({statusCode: 200, content: {model: value.toJSON()}}))
-            .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.error`}}));
+            .then(async value =>  {
+              await transaction.commit();
+              
+              return {statusCode: 200, content: {model: value.toJSON()}}
+            })
+            .catch(async error => {
+              if(transaction.finished !== 'commit')
+                await transaction.rollback();
+              
+              if(error?.name === 'SequelizeUniqueConstraintError'){
+                return {statusCode: 400, content: {
+                  error: `error.${model.name}.create.${error.parent.sqlMessage.retrieveColumnFromSQLError()}`
+                }}
+              }
+              
+              return {statusCode: 400, content: {error : `error.${model.name}.create.error`}}; 
+            });
+              // ({statusCode: 400, content: {error: `error.${model.name}.put.error`}})
         })
         .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.notFound`}}));
       

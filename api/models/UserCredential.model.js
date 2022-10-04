@@ -7,8 +7,7 @@ const bcrypt = require('bcrypt');
 class UserCredentialModel extends Model {
   
   authenticate = async (password) => {
-    const authenticate = await bcrypt.compare(password, this.getDataValue('password'));
-    return authenticate;
+    return await bcrypt.compare(password, this.getDataValue('password'));
   }
   
 }
