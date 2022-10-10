@@ -1,7 +1,7 @@
 require('dotenv').config();
 require('./api/helpers/StringHelper.helper');
 const express = require('express');
-//? const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const http = require('http');
@@ -35,10 +35,11 @@ const start = async () => {
   
   //TODO add cookies in response
   //? (Acces-Control.Allow.Credentials: 'true' in cors AND allowCredentials: true in axios)
+  
   app
     .use(cors(corsOptions))
     .use(morgan('dev'))
-    //? .use(cookieParser())
+    // .use(cookieParser())
     .use(express.json());
   
   for(const route in routers){

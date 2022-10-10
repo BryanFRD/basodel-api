@@ -35,14 +35,15 @@ class AuthService extends BaseService {
     
     const uc = userCredential.toJSON();
     
-    const accessToken = generateAccessToken({
-      id: uc.user_account.id,
-      roleLevel: uc.user_account.role?.level ?? 0
-    });
-    
     const authToken = generateAuthToken({
       id: uc.id,
       updatedAt: Date.parse(uc.updatedAt)
+    });
+    
+    const accessToken = generateAccessToken({
+      ucId: uc.id,
+      id: uc.user_account.id,
+      roleLevel: uc.user_account.role?.level ?? 0
     });
     
     return res.status(200).send({
@@ -50,7 +51,7 @@ class AuthService extends BaseService {
       accessToken: accessToken.token,
       authTokenExpires: authToken.expires,
       accessTokenExpires: accessToken.expires,
-      userCredential: uc
+      model: uc
     });
   }
   
@@ -89,6 +90,7 @@ class AuthService extends BaseService {
           });
           
           const accessToken = generateAccessToken({
+            ucId: uc.id,
             id: uc.user_account.id,
             roleLevel: uc.user_account.role?.level ?? 0
           });
@@ -98,7 +100,7 @@ class AuthService extends BaseService {
             accessToken: accessToken.token,
             authTokenExpires: authToken.expires,
             accessTokenExpires: accessToken.expires,
-            userCredential: uc
+            model: uc
           });
         })
         .catch(error => res.status(404).send({error}));
