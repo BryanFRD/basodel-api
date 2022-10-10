@@ -37,7 +37,7 @@ class AuthService extends BaseService {
     
     const accessToken = generateAccessToken({
       id: uc.user_account.id,
-      updatedAt: Date.parse(uc.user_account.updatedAt)
+      roleLevel: uc.user_account.role?.level ?? 0
     });
     
     const refreshToken = generateRefreshToken({
@@ -90,10 +90,18 @@ class AuthService extends BaseService {
           
           const accessToken = generateAccessToken({
             id: uc.user_account.id,
-            updatedAt: Date.parse(uc.user_account.updatedAt)
+            roleLevel: uc.user_account.role?.level ?? 0
           });
           
-          res.status(200).send({
+          res.status(200)
+          .cookie('test', 'test value', {
+            domain: 'localhost',
+            secure: false,
+            httpOnly: false,
+            maxAge: Date.now() + 90,
+            sameSite: false
+          })
+          .send({
             accessToken: accessToken.token,
             refreshToken: refreshToken.token,
             accessTokenExpires: accessToken.expires,

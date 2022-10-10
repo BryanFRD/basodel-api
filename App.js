@@ -1,6 +1,7 @@
 require('dotenv').config();
 require('./api/helpers/StringHelper.helper');
 const express = require('express');
+//? const cookieParser = require('cookie-parser');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const http = require('http');
@@ -32,7 +33,13 @@ const start = async () => {
     optionsSuccessStatus: 200
   }
   
-  app.use(cors(corsOptions)).use(morgan('dev')).use(express.json());
+  //TODO add cookies in response
+  //? (Acces-Control.Allow.Credentials: 'true' in cors AND allowCredentials: true in axios)
+  app
+    .use(cors(corsOptions))
+    .use(morgan('dev'))
+    //? .use(cookieParser())
+    .use(express.json());
   
   for(const route in routers){
     app.use(`/${route.replace('Router', '')}`, new routers[route]().router);
@@ -43,7 +50,8 @@ const start = async () => {
     where: {id: '1'},
     defaults: {
       id: '1',
-      title: 'role.default'
+      title: 'role.default',
+      level: '1'
     }
   });
   
