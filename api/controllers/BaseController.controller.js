@@ -74,10 +74,16 @@ class BaseController {
       params.include = [];
     else
       params.include = params.include.split(',');
+    
+    //TODO 1 seul filtre, filtrer Object.values ???
+    if(this.model){
+      params.include.push(...this.requiredIncludes);
       
-      console.log('params.include:', params.include);
-    params.include.push(this.requiredIncludes);
-    params.include = params.include.filter((incl) => !this.exludedIncludes.includes(incl));
+      params.include = Object.values(this.model.associations)
+        .filter(({as}) => params.include?.includes(as) && !this.exludedIncludes.includes(as));
+    } else {
+      params.include = [];
+    }
     
     return params;
   }

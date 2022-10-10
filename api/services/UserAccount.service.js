@@ -15,7 +15,7 @@ class UserAccountService extends BaseService {
     const accessToken = generateAccessToken({
       ucId: req.user.ucId,
       id: req.user.id,
-      roleLevel: result.content.model.role.level ?? 0
+      roleLevel: result.content.model.role?.level ?? 0
     });
     
     result.content = {

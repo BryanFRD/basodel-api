@@ -15,7 +15,7 @@ class BaseService {
       {...req.body.model},
       {
         transaction: transaction,
-        include: [...Object.values(model.associations)]
+        include: req.searchParams?.include
       })
         .then(async model => {
           await transaction.commit();
@@ -40,14 +40,11 @@ class BaseService {
   // READ
   async select(model, req, res, sendResponse = true){
     //TODO Verifier toutes les valeurs (req.body.where, etc...)
-    
-    const include = Object.values(model.associations)
-      .filter(({as}) => req.searchParams?.include?.includes(as));
       
     if(req.searchParams.id){
       const result = await model.findByPk(req.searchParams.id, {
-        include: include,
-        where: req.searchParams.where
+        include: req.searchParams?.include,
+        where: req.searchParams?.where
       })
         .then(value => ({statusCode: 200, content: {model: value.toJSON()}}))
         .catch(error => ({statusCode: 400, content: {
@@ -58,8 +55,8 @@ class BaseService {
     }
     
     const result = await model.findAll({
-      include: include,
-      where: req.searchParams.where
+      include: req.searchParams?.include,
+      where: req.searchParams?.where
     })
       .then(value => ({statusCode: 200, content: {model: value.toJSON()}}))
       .catch(error => ({statusCode: 400, content: {
@@ -71,12 +68,10 @@ class BaseService {
   
   // UPDATE
   async update(model, req, res, sendResponse = true){
-    const include = Object.values(model.associations)
-      .filter(({as}) => req.searchParams?.include?.includes(as));
-    
     if(req.body?.model?.id){
       const result = await model.findByPk(req.body.model.id, {
-        include: include
+        include: req.searchParams?.include,
+        where: req.searchParams?.where
       })
         .then(async mdl => {
           if(req.body.model){
@@ -95,7 +90,8 @@ class BaseService {
           
           return await mdl.update(req.body.model, {
             transaction: transaction,
-            include: include
+            include: req.searchParams?.include,
+            where: req.searchParams?.where
           })
             .then(async value =>  {
               await transaction.commit();
