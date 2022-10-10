@@ -7,10 +7,23 @@ class UserAccountService extends BaseService {
   }
   
   update = async (model, req, res) => {
-    if(req.user.id !== req.body?.model?.id && req.user?.role?.level < 500)
+    if(req.user.id !== req.body?.model?.id && req.user?.roleLevel < 500)
       return res.sendStatus(401);
+      
+    const result = await super.update(model, req, res, false);
     
-    const response = super.update(model, req, res);
+    const accessToken = generateAccessToken({
+      id: result.content.model.id,
+      roleLevel: result.content.model.role.level ?? 0
+    });
+    
+    result.content = {
+      ...result.content,
+      accessToken: accessToken.token,
+      accessTokenExpires: accessToken.expires,
+    }
+    
+    super.handleResponse(res, result)
   }
   
 }

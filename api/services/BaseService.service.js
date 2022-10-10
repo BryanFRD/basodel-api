@@ -8,7 +8,7 @@ class BaseService {
   }
   
   // CREATE
-  async create(model, req, res){
+  async create(model, req, res, sendResponse = true){
     const transaction = await DB.transaction();
     
     const result = await model.create(
@@ -34,11 +34,11 @@ class BaseService {
           return {statusCode: 400, content: {error : `error.${model.name}.create.error`}};
         });
         
-    return res.status(result.statusCode ?? 400).send(result.content);
+        return this.handleResponse(res, result, sendResponse);
   }
   
   // READ
-  async select(model, req, res){
+  async select(model, req, res, sendResponse = true){
     //TODO Verifier toutes les valeurs (req.body.where, etc...)
     
     const include = Object.values(model.associations)
@@ -54,7 +54,7 @@ class BaseService {
           error: `error.${model.name}.get.error`
         }}));
         
-      return res.status(result.statusCode ?? 400).send(result.content);
+        return this.handleResponse(res, result, sendResponse);
     }
     
     const result = await model.findAll({
@@ -66,16 +66,16 @@ class BaseService {
         error: `error.${model.name}.get.error`
       }}));
     
-    return res.status(result.statusCode ?? 400).send(result.content);
+    return this.handleResponse(res, result, sendResponse);
   }
   
   // UPDATE
-  async update(model, req, res){
+  async update(model, req, res, sendResponse = true){
     const include = Object.values(model.associations)
       .filter(({as}) => req.searchParams?.include?.includes(as));
     
-    if(req.searchParams.id){
-      const result = await model.findByPk(req.searchParams.id, {
+    if(req.body?.model?.id){
+      const result = await model.findByPk(req.body.model.id, {
         include: include
       })
         .then(async mdl => {
@@ -118,16 +118,24 @@ class BaseService {
         })
         .catch(error => ({statusCode: 400, content: {error: `error.${model.name}.put.notFound`}}));
       
-      return res.status(result.statusCode ?? 400).send(result.content);
+        return this.handleResponse(res, result, sendResponse);
     }
     
-    return res.status(400).send(`UPDATE * FROM ${this.table}`);
+    return this.handleResponse(res, {statusCode: 405, content: {error: `UPDATE * FROM ${this.table}`}}, sendResponse);
   }
   
   // DELETE
-  async delete(model, req, res){
+  async delete(model, req, res, sendResponse = true){
     //TODO
-    return res.status(405).send(`DELETE ${params.id} FROM ${this.table}`);
+    
+    return this.handleResponse(res, {statusCode: 405, content: `DELETE ${params.id} FROM ${this.table}`}, sendResponse);
+  }
+  
+  handleResponse(res, result, sendResponse = true){
+    if(sendResponse)
+      return res.status(result?.statusCode ?? 400).send(result?.content);
+    
+    return result;
   }
   
 }

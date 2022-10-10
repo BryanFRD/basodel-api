@@ -85,12 +85,12 @@ const start = async () => {
 
 start();
 
-generateAccessToken = (data) => {
-  return generateToken(data, 'ACCESS_TOKEN', 1);
+generateAuthToken = (data) => {
+  return generateToken(data, 'AUTH_TOKEN', 30);
 }
 
-generateRefreshToken = (data) => {
-  return generateToken(data, 'REFRESH_TOKEN', 30);
+generateAccessToken = (data) => {
+  return generateToken(data, 'ACCESS_TOKEN', 1);
 }
 
 generateEmailToken = (data) => {

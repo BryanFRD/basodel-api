@@ -40,16 +40,16 @@ class AuthService extends BaseService {
       roleLevel: uc.user_account.role?.level ?? 0
     });
     
-    const refreshToken = generateRefreshToken({
+    const authToken = generateAuthToken({
       id: uc.id,
       updatedAt: Date.parse(uc.updatedAt)
     });
     
     return res.status(200).send({
+      authToken: authToken.token,
       accessToken: accessToken.token,
-      refreshToken: refreshToken.token,
+      authTokenExpires: authToken.expires,
       accessTokenExpires: accessToken.expires,
-      refreshTokenExpires: refreshToken.expires,
       userCredential: uc
     });
   }
@@ -62,7 +62,7 @@ class AuthService extends BaseService {
     if(!token)
       return res.sendStatus(401);
       
-    jwt.verify(token, process.env.REFRESH_TOKEN, (err, user) => {
+    jwt.verify(token, process.env.AUTH_TOKEN, (err, user) => {
       if(err)
         return res.sendStatus(401);
       
@@ -83,7 +83,7 @@ class AuthService extends BaseService {
           if(user.updatedAt !== Date.parse(uc.updatedAt))
             return res.sendStatus(401);
           
-          const refreshToken = generateRefreshToken({
+          const authToken = generateAuthToken({
             id: uc.id,
             updatedAt: Date.parse(uc.updatedAt)
           });
@@ -94,10 +94,10 @@ class AuthService extends BaseService {
           });
           
           res.status(200).send({
+            authToken: authToken.token,
             accessToken: accessToken.token,
-            refreshToken: refreshToken.token,
+            authTokenExpires: authToken.expires,
             accessTokenExpires: accessToken.expires,
-            refreshTokenExpires: refreshToken.expires,
             userCredential: uc
           });
         })
