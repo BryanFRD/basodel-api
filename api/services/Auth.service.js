@@ -93,15 +93,7 @@ class AuthService extends BaseService {
             roleLevel: uc.user_account.role?.level ?? 0
           });
           
-          res.status(200)
-          .cookie('test', 'test value', {
-            domain: 'localhost',
-            secure: false,
-            httpOnly: false,
-            maxAge: Date.now() + 90,
-            sameSite: false
-          })
-          .send({
+          res.status(200).send({
             accessToken: accessToken.token,
             refreshToken: refreshToken.token,
             accessTokenExpires: accessToken.expires,

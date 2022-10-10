@@ -47,18 +47,18 @@ const start = async () => {
   
   //TODO callback sur le .define pour créer cette ligne auto
   Role.findOrCreate({
-    where: {id: '1'},
+    where: {id: 1},
     defaults: {
-      id: '1',
+      id: 1,
       title: 'role.default',
-      level: '1'
+      level: 1
     }
   });
   
   ReportStatus.findOrCreate({
-    where: {id: '1'},
+    where: {id: 1},
     defaults: {
-      id: '1',
+      id: 1,
       title: 'reportStatus.default'
     }
   });

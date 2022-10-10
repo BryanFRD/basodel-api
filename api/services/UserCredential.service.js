@@ -8,7 +8,10 @@ class UserCredentialService extends BaseService {
     const transaction = await DB.transaction();
     
     const result = await model.create(
-      {...req.body.model},
+      {
+        ...req.body.model,
+        roleId: 1
+      },
       {
         transaction: transaction,
         include: [...Object.values(model.associations)]
