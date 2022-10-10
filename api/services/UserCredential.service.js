@@ -5,50 +5,16 @@ const BaseService = require('./BaseService.service');
 class UserCredentialService extends BaseService {
   
   create = async (model, req, res) => {
-    // const transaction = await DB.transaction();
-    //
-    // const result = await model.create(
-    //   {
-    //     ...req.body.model,
-    //     roleId: 1
-    //   },
-    //   {
-    //     transaction: transaction,
-    //     include: [...Object.values(model.associations)]
-    //   })
-    //     .then(async model => {
-    //       await transaction.commit();
-    //       const {id, email} = model.toJSON();
-          
-    //       const emailToken = generateEmailToken({id});
-          
-    //       Mailer.sendConfirmationEmail(emailToken.token, email);
-          
-    //       return {statusCode: 201, content: {message: 'message.emailSent'}};
-    //     })
-    //     .catch(async error => {
-    //       if(transaction.finished !== 'commit')
-    //         await transaction.rollback();
-          
-    //       if(error?.name === 'SequelizeUniqueConstraintError'){
-    //         return {statusCode: 400, content: {
-    //           error: `error.usercredential.create.${error.parent.sqlMessage.retrieveColumnFromSQLError()}`
-    //         }}
-    //       }
-          
-    //       return {statusCode: 400, content: {error : 'error.usercredential.create.error'}};
-    //     });
-    
     const result = await super.create(model, req, res, false);
     
-    if(result.error)
+    if(result.content.error)
       return super.handleResponse(res, result);
       
-    const emailToken = generateEmailToken({id: result.model.id});
+    const emailToken = generateEmailToken({id: result.content.model.id});
     
-    Mailer.sendConfirmationEmail(emailToken.token, result.model.email);
+    Mailer.sendConfirmationEmail(emailToken.token, result.content.model.email);
     
-    super.handleResponse(res, {statusCode: 201, message: 'message.emailSent'});
+    super.handleResponse(res, {statusCode: 201, content: {message: 'message.emailSent'}});
   }
   
   read = async (model, req, res) => {
