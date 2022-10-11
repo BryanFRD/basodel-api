@@ -2,12 +2,8 @@ const BaseService = require('./BaseService.service');
 
 class UserAccountService extends BaseService {
   
-  constructor(){
-    super();
-  }
-  
   update = async (model, req, res) => {
-    if(req.user.id !== req.body?.model?.id && req.user?.roleLevel < 500)
+    if(req.user.id !== req.body?.model?.id && req.user?.role?.level < 500)
       return res.sendStatus(401);
     
     const result = await super.update(model, req, res, false);
@@ -15,7 +11,7 @@ class UserAccountService extends BaseService {
     const accessToken = generateAccessToken({
       ucId: req.user.ucId,
       id: req.user.id,
-      roleLevel: result.content.model.role?.level ?? 0
+      role: result.content.model.role
     });
     
     result.content = {

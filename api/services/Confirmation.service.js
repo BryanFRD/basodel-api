@@ -1,46 +1,43 @@
+const DB = require('../database/db');
 const jwt = require('jsonwebtoken');
-const Mailer = require('../helpers/Mailer.mail');
-const Role = require('../models/Role.model');
-const UserAccount = require('../models/UserAccount.model');
-const UserCredential = require('../models/UserCredential.model');
+const RoleModel = require('../models/Role.model');
+const UserAccountModel = require('../models/UserAccount.model');
+const UserCredentialModel = require('../models/UserCredential.model');
 const BaseService = require('./BaseService.service');
 
 class ConfirmationService extends BaseService {
   
-  
   create = async (model, req, res) => {
-    const userCredential = await UserCredential.findOne({
-      where: {
-        [Op.or]: [
-          {email: req.body.model.email},
-          {login: req.body.model.login}
-        ]
-      },
-      include: [
-        UserAccount,
-        {model: UserAccount, include: [Role]}
-      ]
+    jwt.verify(req.searchParams.token, process.env.EMAIL_TOKEN, async (err, uc) => {
+      if(err)
+        return super.handleResponse(res, {statusCode: 400});
+      
+      delete uc.iat;
+      delete uc.exp;
+      
+      const transaction = await DB.transaction();
+      UserCredentialModel.create(uc,
+        {
+          transaction: transaction,
+          include: [UserAccountModel]
+        }
+      )
+      .then(value => {
+        transaction.commit();
+        
+        super.handleResponse(res, {statusCode: 200});
+      })
+      .catch(error => {
+        if(transaction.finished !== 'commit')
+        transaction.rollback();
+        
+        super.handleResponse(res, {statusCode: 200});
+      });
     });
-    
-    if(!userCredential && !userCredential.emailConfirmed)
-    return res.status(400).send({error: userCredential ? 'error.confirmation.update.notFound' : 'error.confirmation.update.alreadyConfirmed'});
-    
-    const emailToken = generateEmailToken({id});
-    
-    Mailer.sendConfirmationEmail(`${process.env.APP_URL}/confirmation/${emailToken}`, userCredential.email);
-    
-    res.status(201).send({message: 'message.confirmation.update.sent'});
   }
   
   update = async (model, req, res) => {
-    await jwt.verify(req.body.token, process.env.EMAIL_TOKEN, async (err, email) => {
-      if(err)
-        return res.sendStatus(400);
-      
-      const userCredential = await UserCredential.update({emailConfirmed: true}, {where: {id: email.id}});
-      
-      return res.sendStatus(200);
-    });
+    res.sendStatus(400);dfcv
   }
   
   // OVERIDES

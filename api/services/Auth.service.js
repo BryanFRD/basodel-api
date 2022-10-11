@@ -43,7 +43,7 @@ class AuthService extends BaseService {
     const accessToken = generateAccessToken({
       ucId: uc.id,
       id: uc.user_account.id,
-      roleLevel: uc.user_account.role?.level ?? 0
+      role: uc.user_account.role
     });
     
     return res.status(200).send({
@@ -92,7 +92,7 @@ class AuthService extends BaseService {
           const accessToken = generateAccessToken({
             ucId: uc.id,
             id: uc.user_account.id,
-            roleLevel: uc.user_account.role?.level ?? 0
+            role: uc.user_account.role?.level
           });
           
           res.status(200).send({

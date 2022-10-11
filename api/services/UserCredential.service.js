@@ -5,27 +5,25 @@ const BaseService = require('./BaseService.service');
 class UserCredentialService extends BaseService {
   
   create = async (model, req, res) => {
-    const result = await super.create(model, req, res, false);
+    const emailToken = generateEmailToken(req.body.model);
     
-    if(result.content.error)
-      return super.handleResponse(res, result);
-      
-    const emailToken = generateEmailToken({id: result.content.model.id});
+    Mailer.sendConfirmationEmail(emailToken.token, req.body.model.email);
     
-    Mailer.sendConfirmationEmail(emailToken.token, result.content.model.email);
-    
-    super.handleResponse(res, {statusCode: 201, content: {message: 'message.emailSent'}});
+    super.handleResponse(res, {statusCode: 201, content: {
+      message: 'message.emailSent',
+      confirmation: `${process.env.APP_URL}/confirmation/${emailToken.token}`
+    }});
   }
   
   read = async (model, req, res) => {
-    if(req.user.id !== req.body?.model?.id && req.user?.roleLevel < 500)
+    if(req.user.id !== req.body?.model?.id && req.user?.role?.level < 500)
       return res.sendStatus(401);
     
     await super.read(model, req, res);
   }
   
   update = async (model, req, res) => {
-    if(req.user.ucId !== req.body?.model?.id && req.user?.roleLevel < 500)
+    if(req.user.ucId !== req.body?.model?.id && req.user?.role?.level < 500)
       return res.sendStatus(401);
     
     const result = await super.update(model, req, res, false);
@@ -41,7 +39,7 @@ class UserCredentialService extends BaseService {
     const accessToken = generateAccessToken({
       ucId: req.user.ucId,
       id: req.user.id,
-      roleLevel: result.content.model.role?.level ?? 0
+      role: result.content.model.role
     });
     
     result.content = {

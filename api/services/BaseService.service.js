@@ -34,7 +34,7 @@ class BaseService {
           return {statusCode: 400, content: {error : `error.${model.name}.create.error`}};
         });
         
-        return this.handleResponse(res, result, sendResponse);
+    return this.handleResponse(res, result, sendResponse);
   }
   
   // READ
