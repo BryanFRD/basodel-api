@@ -30,9 +30,6 @@ class AuthService extends BaseService {
     if(!isAuthenticated)
       return res.status(401).send({error: 'error.auth.create.authentication'});
     
-    if(!userCredential.emailConfirmed)
-      return res.status(401).send({error: 'error.auth.create.confirmEmail'});
-    
     const uc = userCredential.toJSON();
     
     const authToken = generateAuthToken({
@@ -77,9 +74,6 @@ class AuthService extends BaseService {
           
           if(!uc || uc.isDeleted)
             return res.status(401).send({error: 'error.auth.get.notFound'});
-          
-          if(!uc.emailConfirmed)
-            return res.status(401).send({error: 'error.auth.get.confirmEmail'});
           
           if(user.updatedAt !== Date.parse(uc.updatedAt))
             return res.sendStatus(401);

@@ -95,6 +95,7 @@ class BaseService {
           })
             .then(async value =>  {
               await transaction.commit();
+              console.log('l:', l);
               
               return {statusCode: 200, content: {model: value.toJSON()}}
             })

@@ -56,6 +56,15 @@ const start = async () => {
     }
   });
   
+  Role.findOrCreate({
+    where: {id: 2},
+    defaults: {
+      id: 2,
+      title: 'role.admin',
+      level: 999
+    }
+  });
+  
   ReportStatus.findOrCreate({
     where: {id: 1},
     defaults: {

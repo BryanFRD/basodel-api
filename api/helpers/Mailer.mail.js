@@ -41,8 +41,8 @@ class Mailer {
     })
   }
   
-  static sendConfirmationEmail = (token, sendTo) => {
-     this.#sendMail({
+  static sendConfirmationEmail = async (token, sendTo) => {
+     await this.#sendMail({
       from: `"Basodel" <${process.env.EMAIL_USER}>`,
       to: sendTo,
       subject: 'Valider votre mail.',

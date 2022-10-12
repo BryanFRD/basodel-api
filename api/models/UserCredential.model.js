@@ -28,11 +28,6 @@ UserCredentialModel.init({
     get() {
       return 'password';
     }
-  },
-  emailConfirmed: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
   }
 },{
   indexes: [
