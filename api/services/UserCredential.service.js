@@ -15,13 +15,6 @@ class UserCredentialService extends BaseService {
     const result = await UserCredentialModel.create(
       reqModel,
       {
-      // where: {
-      //   [Sequelize.Op.or]: [
-      //     {login: reqModel.login},
-      //     {email: reqModel.email},
-      //     {'$user_account.username$': reqModel.user_account.username}
-      //   ],
-      // },
       include: [UserAccountModel],
       transaction: transaction
     })
