@@ -108,6 +108,9 @@ generateEmailToken = (data) => {
 }
 
 generateToken = (data, envKeyName, expDay) => {
+  if(!process.env[envKeyName])
+    return Logger.error(`Error in 'generateToken': env key not found: '${envKeyName}'`);
+  
   const expires = expDay * 24 * 60 * 60;
   return {token: jwt.sign(data, process.env[envKeyName], {expiresIn: expires}), expires}
 }
