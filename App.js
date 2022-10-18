@@ -15,6 +15,7 @@ const Logger = require('./api/helpers/Logger.helper');
 const events = require('./api/events');
 const UserAccountModel = require('./api/models/UserAccount.model');
 const { RoleModel } = require('./api/models');
+const authenticateToken = require('./api/middlewares/AuthenticateToken.middleware');
 
 const start = async () => {
   const err = await DB.sync({force: false})
@@ -40,7 +41,8 @@ const start = async () => {
     .use(cors(corsOptions))
     .use(morgan('dev'))
     // .use(cookieParser())
-    .use(express.json());
+    .use(express.json())
+    .use(authenticateToken);
   
   for(const route in routers){
     app.use(`/${route.replace('Router', '')}`, new routers[route]().router);

@@ -95,7 +95,6 @@ class BaseService {
           })
             .then(async value =>  {
               await transaction.commit();
-              console.log('l:', l);
               
               return {statusCode: 200, content: {model: value.toJSON()}}
             })
@@ -105,7 +104,7 @@ class BaseService {
               
               if(error?.name === 'SequelizeUniqueConstraintError'){
                 return {statusCode: 400, content: {
-                  error: `error.${model.name}.create.${error.parent.sqlMessage.retrieveColumnFromSQLError()}`
+                  error: `error.${model.name}.update.${error.parent.sqlMessage.retrieveColumnFromSQLError()}`
                 }}
               }
               

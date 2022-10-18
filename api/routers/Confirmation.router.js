@@ -1,11 +1,5 @@
 const BaseRouter = require('./BaseRouter.router');
 
-class ConfirmationRouter extends BaseRouter {
-  
-  constructor(){
-    super({create: false, read: false});
-  }
-  
-}
+class ConfirmationRouter extends BaseRouter {}
 
 module.exports = ConfirmationRouter;

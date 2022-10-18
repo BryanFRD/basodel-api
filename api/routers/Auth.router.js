@@ -1,11 +1,5 @@
 const BaseRouter = require('./BaseRouter.router');
 
-class AuthRouter extends BaseRouter {
-  
-  constructor(){
-    super({create: false, read: false});
-  }
-  
-}
+class AuthRouter extends BaseRouter {}
 
 module.exports = AuthRouter;

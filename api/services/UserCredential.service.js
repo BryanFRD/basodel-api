@@ -41,17 +41,11 @@ class UserCredentialService extends BaseService {
     return super.handleResponse(res, result);
   }
   
-  read = async (model, req, res) => {
-    if(req.user.ucId !== req.body?.model?.id && req.user?.role?.level < 500)
-      return res.sendStatus(401);
-    
+  read = async (model, req, res) => {    
     await super.read(model, req, res);
   }
   
-  update = async (model, req, res) => {
-    if(req.user.ucId !== req.body?.model?.id && req.user?.role?.level < 500)
-      return res.sendStatus(401);
-    
+  update = async (model, req, res) => {    
     const result = await super.update(model, req, res, false);
     
     if(result.error)
@@ -79,10 +73,7 @@ class UserCredentialService extends BaseService {
     super.handleResponse(res, result)
   }
   
-  delete = async (model, req, res) => {
-    if(req.user.ucId !== req.body?.model?.id && req.user?.role?.level < 500)
-      return res.sendStatus(401);
-    
+  delete = async (model, req, res) => {    
     return super.delete(model, req, res);
   }
   
