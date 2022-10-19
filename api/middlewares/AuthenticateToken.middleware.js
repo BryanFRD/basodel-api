@@ -12,11 +12,7 @@ const authenticateToken = async (req, res, next) => {
     const auth = req?.headers['authorization'];
     const token = auth?.split(' ')[1];
     
-    const user = await jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
-      console.log('err:', err);
-      return user;
-    });
-    console.log('user:', user);
+    const user = await jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => user);
     
     if(user && restrictedRoutes({user: user, body: req.body})){
       req.user = user;
