@@ -25,15 +25,12 @@ class BaseController {
       return res.status(400).send({error: `error.${this.prefix}.create.${key}`});
     }
     
-    req.searchParams = this.getSearchParamsAsObject(req);
     req.body.model = value;
     
     return await this.service.create(this.model, req, res);
   }
   
   async select(req, res){
-    req.searchParams = this.getSearchParamsAsObject(req);
-    
     return await this.service.select(this.model, req, res);
   }
   
@@ -46,7 +43,6 @@ class BaseController {
       return res.status(400).send({error: `error.${this.prefix}.update.${key}`});
     }
     
-    req.searchParams = this.getSearchParamsAsObject(req);
     req.body.model = value;
     
     return await this.service.update(this.model, req, res);
@@ -61,31 +57,9 @@ class BaseController {
       return res.status(400).send({error: `error.${this.prefix}.delete.${key}`});
     }
     
-    req.searchParams = this.getSearchParamsAsObject(req);
     req.body.model = value;
     
     return await this.service.delete(this.model, req, res);
-  }
-  
-  getSearchParamsAsObject = (req) => {
-    const params = Object.fromEntries(new URLSearchParams(req.query));
-    
-    if(!params.include)
-      params.include = [];
-    else
-      params.include = params.include.split(',');
-    
-    //TODO 1 seul filtre, filtrer Object.values ???
-    if(this.model){
-      params.include.push(...this.requiredIncludes);
-      
-      params.include = Object.values(this.model.associations)
-        .filter(({as}) => params.include?.includes(as) && !this.exludedIncludes.includes(as));
-    } else {
-      params.include = [];
-    }
-    
-    return params;
   }
   
 }

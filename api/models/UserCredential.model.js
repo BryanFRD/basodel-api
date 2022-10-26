@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 class UserCredentialModel extends Model {
   
   authenticate = async (password) => {
+    console.log('password:', bcrypt.hashSync(password, 10));
+    console.log('this.getDataValue("password"):', this.getDataValue('password'));
     return await bcrypt.compare(password, this.getDataValue('password'));
   }
   
@@ -39,13 +41,13 @@ UserCredentialModel.init({
   modelName: 'user_credential',
   paranoid: true,
   hooks: {
-    beforeCreate: async (userCredential) => {
+    beforeCreate: (userCredential) => {
       if(userCredential?.getDataValue('password'))
-        userCredential.password = await bcrypt.hash(userCredential.getDataValue('password'), 10);
+        userCredential.password = bcrypt.hashSync(userCredential.getDataValue('password'), 10);
     },
-    beforeUpdate: async (userCredential) => {
+    beforeUpdate: (userCredential) => {
       if(userCredential?.getDataValue('password'))
-        userCredential.password = await bcrypt.hash(userCredential.getDataValue('password'), 10);
+        userCredential.password = bcrypt.hashSync(userCredential.getDataValue('password'), 10);
     }
   }
 });

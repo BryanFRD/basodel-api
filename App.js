@@ -16,6 +16,7 @@ const events = require('./api/events');
 const UserAccountModel = require('./api/models/UserAccount.model');
 const { RoleModel } = require('./api/models');
 const authenticateToken = require('./api/middlewares/AuthenticateToken.middleware');
+const parseSearchParams = require('./api/middlewares/ParseSearchParams.middleware');
 
 const start = async () => {
   const err = await DB.sync({force: false})
@@ -42,6 +43,7 @@ const start = async () => {
     .use(morgan('dev'))
     // .use(cookieParser())
     .use(express.json())
+    .use(parseSearchParams)
     .use(authenticateToken);
   
   for(const route in routers){

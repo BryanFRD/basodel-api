@@ -38,7 +38,12 @@ UserAccountModel.init({
   ],
   sequelize: DB,
   modelName: 'user_account',
-  paranoid: true
+  paranoid: true,
+  hooks: {
+    beforeUpdate: (userAccount, options) => {
+      console.log('options:', options.transaction.sequelize.models.user_credential);
+    }
+  }
 });
 
 UserAccountModel.hasMany(ChatMessageModel);
