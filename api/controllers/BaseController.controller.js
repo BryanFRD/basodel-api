@@ -26,11 +26,14 @@ class BaseController {
     }
     
     req.body.model = value;
+    this.parseParams(req);
     
     return await this.service.create(this.model, req, res);
   }
   
   async select(req, res){
+    this.parseParams(req);
+    
     return await this.service.select(this.model, req, res);
   }
   
@@ -44,6 +47,7 @@ class BaseController {
     }
     
     req.body.model = value;
+    this.parseParams(req);
     
     return await this.service.update(this.model, req, res);
   }
@@ -58,8 +62,33 @@ class BaseController {
     }
     
     req.body.model = value;
+    this.parseParams(req);
     
     return await this.service.delete(this.model, req, res);
+  }
+  
+  parseParams = (req) => {
+    const params = Object.fromEntries(new URLSearchParams(req.query));
+    
+    if(!params.include)
+      params.include = [];
+    else
+      params.include = params.include.split(',');
+    
+    //TODO 1 seul filtre, filtrer Object.values ???
+    
+    //TODO Ajouter la possibiliter de mettre les includes, where etc dans le body
+    if(this.model){
+      params.include.push(...this.requiredIncludes);
+      
+      params.include = Object.values(this.model.associations)
+        .filter(({as}) => params.include?.includes(as) && !this.exludedIncludes.includes(as));
+      
+    } else {
+      params.include = [];
+    }
+    
+    req.searchParams = params;
   }
   
 }

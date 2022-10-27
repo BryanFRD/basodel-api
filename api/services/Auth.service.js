@@ -26,7 +26,7 @@ class AuthService extends BaseService {
       return res.status(404).send({error: 'error.auth.create.notFound'});
       
     const isAuthenticated = await userCredential.authenticate(req.body.model.password);
-      
+    
     if(!isAuthenticated)
       return res.status(401).send({error: 'error.auth.create.authentication'});
     

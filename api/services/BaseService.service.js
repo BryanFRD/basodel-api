@@ -1,4 +1,5 @@
 const DB = require('../database/db');
+const UserAccountModel = require('../models/UserAccount.model');
 
 class BaseService {
   
@@ -73,7 +74,9 @@ class BaseService {
         include: req.searchParams?.include,
         where: req.searchParams?.where
       })
-        .then(async mdl => {
+      .then(async mdl => {
+          console.log('req.searchParams?.include:', req.searchParams?.include);
+          console.log(req.body.model);
           if(req.body.model){
             Object.entries(req.body.model).forEach(([key, value]) => {
               if(typeof key !== 'string')
@@ -90,7 +93,10 @@ class BaseService {
           
           return await mdl.update(req.body.model, {
             transaction: transaction,
-            include: req.searchParams?.include,
+            include: [
+              ...req.searchParams?.include,
+              {model: UserAccountModel, as: 'blockedUser', through: "blocked_useraccount"}
+            ],
             where: req.searchParams?.where
           })
             .then(async value =>  {

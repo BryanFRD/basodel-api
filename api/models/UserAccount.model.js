@@ -6,6 +6,7 @@ const PurchaseModel = require('./Purchase.model');
 const GameHistoryModel = require('./GameHistory.model');
 const ReportModel = require('./Report.model');
 const ChatMessageModel = require('./ChatMessage.model');
+const BlockedUserModel = require('./BlockedUser.model');
 
 class UserAccountModel extends Model {}
 
@@ -38,12 +39,7 @@ UserAccountModel.init({
   ],
   sequelize: DB,
   modelName: 'user_account',
-  paranoid: true,
-  hooks: {
-    beforeUpdate: (userAccount, options) => {
-      console.log('options:', options.transaction.sequelize.models.user_credential);
-    }
-  }
+  paranoid: true
 });
 
 UserAccountModel.hasMany(ChatMessageModel);
@@ -72,9 +68,9 @@ UserAccountModel.belongsToMany(GameHistoryModel, {
 });
 
 UserAccountModel.belongsToMany(UserAccountModel, {
-  through: 'blocked_useraccount',
-  otherKey: 'blockedUserAccountId',
-  as: 'blockedUser'
+  through: BlockedUserModel,
+  foreignKey: 'userAccountId',
+  as: 'blockedUser',
 });
 
 module.exports = UserAccountModel;

@@ -6,3 +6,4 @@ exports.PurchaseModel = require('./Purchase.model');
 exports.ReportModel = require('./Report.model');
 exports.ReportStatusModel = require('./ReportStatus.model');
 exports.ChatMessageModel = require('./ChatMessage.model');
+exports.BlockedUserModel = require('./BlockedUser.model');

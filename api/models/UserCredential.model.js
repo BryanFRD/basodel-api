@@ -7,8 +7,6 @@ const bcrypt = require('bcrypt');
 class UserCredentialModel extends Model {
   
   authenticate = async (password) => {
-    console.log('password:', bcrypt.hashSync(password, 10));
-    console.log('this.getDataValue("password"):', this.getDataValue('password'));
     return await bcrypt.compare(password, this.getDataValue('password'));
   }
   
@@ -27,6 +25,10 @@ UserCredentialModel.init({
   password: {
     type: DataTypes.STRING(255),
     allowNull: false,
+    set(value) {
+      console.log('password changed');
+      this.setDataValue('password', bcrypt.hashSync(value, 10));
+    },
     get() {
       return 'password';
     }
@@ -39,17 +41,7 @@ UserCredentialModel.init({
   ],
   sequelize: DB,
   modelName: 'user_credential',
-  paranoid: true,
-  hooks: {
-    beforeCreate: (userCredential) => {
-      if(userCredential?.getDataValue('password'))
-        userCredential.password = bcrypt.hashSync(userCredential.getDataValue('password'), 10);
-    },
-    beforeUpdate: (userCredential) => {
-      if(userCredential?.getDataValue('password'))
-        userCredential.password = bcrypt.hashSync(userCredential.getDataValue('password'), 10);
-    }
-  }
+  paranoid: true
 });
 
 UserAccountModel.hasOne(UserCredentialModel);
