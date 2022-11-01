@@ -69,8 +69,7 @@ UserAccountModel.belongsToMany(GameHistoryModel, {
 
 UserAccountModel.belongsToMany(UserAccountModel, {
   through: BlockedUserModel,
-  foreignKey: 'userAccountId',
-  as: 'blockedUser',
+  as: 'blockedUser'
 });
 
 module.exports = UserAccountModel;

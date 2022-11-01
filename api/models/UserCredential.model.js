@@ -26,7 +26,6 @@ UserCredentialModel.init({
     type: DataTypes.STRING(255),
     allowNull: false,
     set(value) {
-      console.log('password changed');
       this.setDataValue('password', bcrypt.hashSync(value, 10));
     },
     get() {

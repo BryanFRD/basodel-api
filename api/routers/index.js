@@ -8,3 +8,4 @@ exports.ReportStatusRouter = require('./ReportStatus.router');
 exports.RoleRouter = require('./Role.router');
 exports.AuthRouter = require('./Auth.router');
 exports.ConfirmationRouter = require('./Confirmation.router');
+exports.BlockedUserRouter = require('./BlockedUser.router');

@@ -1,6 +1,5 @@
 const DB = require('../database/db');
 const jwt = require('jsonwebtoken');
-const RoleModel = require('../models/Role.model');
 const UserAccountModel = require('../models/UserAccount.model');
 const UserCredentialModel = require('../models/UserCredential.model');
 const BaseService = require('./BaseService.service');
@@ -29,7 +28,7 @@ class ConfirmationService extends BaseService {
       })
       .catch(error => {
         if(transaction.finished !== 'commit')
-        transaction.rollback();
+          transaction.rollback();
         
         super.handleResponse(res, {statusCode: 200});
       });

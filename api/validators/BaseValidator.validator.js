@@ -31,9 +31,9 @@ class BaseValidator {
       Logger.warn(`Using default GET schema (${this.constructor.name.replace('Validator', '')})`);
     }
     
-    return {schema: schema.validate(model, {
-      stripUnknown: !useDefaultSchema,
-    }), }
+    return schema.validate(model, {
+      stripUnknown: !useDefaultSchema
+    });
   }
   
   validateUpdate = (model) => {

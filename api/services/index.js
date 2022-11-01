@@ -8,3 +8,4 @@ exports.ReportStatusService = require('./ReportStatus.service');
 exports.RoleService = require('./Role.service');
 exports.AuthService = require('./Auth.service');
 exports.ConfirmationService = require('./Confirmation.service');
+exports.BlockedUserService = require('./BlockedUser.service');

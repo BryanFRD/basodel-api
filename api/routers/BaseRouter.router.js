@@ -26,7 +26,7 @@ class BaseRouter {
         return await this.controller.select(req, res);
     });
     
-    //UPDATE
+    // UPDATE
     this.router.put('/',
       async (req, res) => {
         return await this.controller.update(req, res);

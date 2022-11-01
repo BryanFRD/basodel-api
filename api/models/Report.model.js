@@ -25,7 +25,7 @@ ReportModel.init({
   paranoid: true
 });
 
-ReportModel.hasOne(ReportStatusModel);
+ReportModel.hasMany(ReportStatusModel);
 ReportStatusModel.hasMany(ReportModel, {foreignKey: {
   defaultValue: 1,
   allowNull: true

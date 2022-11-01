@@ -8,3 +8,4 @@ exports.RoleController = require('./Role.controller');
 exports.PurchaseController = require('./Purchase.controller');
 exports.AuthController = require('./Auth.controller');
 exports.ConfirmationController = require('./Confirmation.controller');
+exports.BlockedUserController = require('./BlockedUser.controller');
