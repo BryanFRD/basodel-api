@@ -16,14 +16,15 @@ class MessageEvent extends BaseEvent {
   }
   
   sendMessage = async (data) => {
-    const {value, error} = this.chatMessageValidator.validateCreate(data);
-    if(error){
-      Logger.error('ChatMessageError: ', error);
+    if(!this.user){
+      Logger.error(`ChatMessageError: UserAccount not registered!`);
       return;
     }
     
-    if(!this.user){
-      Logger.error(`ChatMessageError: UserAccount not registered!`);
+    const {value, error} = this.chatMessageValidator.validateCreate(data);
+    
+    if(error){
+      Logger.error('ChatMessageError: ', error);
       return;
     }
     

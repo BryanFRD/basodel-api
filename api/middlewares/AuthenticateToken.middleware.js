@@ -14,7 +14,7 @@ const authenticateToken = async (req, res, next) => {
     
     const user = await jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => user);
     
-    if(user && restrictedRoute({user: user, body: req.body})){
+    if(user && restrictedRoute({user, body: req.body})){
       req.user = user;
       return next();
     }
