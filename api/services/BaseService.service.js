@@ -60,10 +60,10 @@ class BaseService {
       include: req.searchParams?.include,
       where: req.searchParams?.where
     })
-      .then(value => ({statusCode: 200, content: {model: value.toJSON()}}))
-      .catch(error => ({statusCode: 400, content: {
+      .then(value => ({statusCode: 200, content: {model: value}}))
+      .catch(error => {({statusCode: 400, content: {
         error: `error.${model.name}.get.error`
-      }}));
+      }})});
     
     return this.handleResponse(res, result, sendResponse);
   }
@@ -86,6 +86,7 @@ class BaseService {
     
     return this.handleResponse(res, {statusCode: 405, content: {error: `UPDATE * FROM ${this.table}`}}, sendResponse);
   }
+  
   // async update(model, req, res, sendResponse = true){
   //   if(req.body?.model?.id){
   //     const result = await model.findByPk(req.body.model.id, {

@@ -16,6 +16,9 @@ const events = require('./api/events');
 const UserAccountModel = require('./api/models/UserAccount.model');
 const { RoleModel } = require('./api/models');
 const authenticateToken = require('./api/middlewares/AuthenticateToken.middleware');
+const { graphqlHTTP } = require('express-graphql');
+const { GraphQLSchema } = require('graphql');
+const query = require('./api/graphql/schemas/query');
 
 const start = async () => {
   const err = await DB.sync({force: false})
@@ -42,8 +45,12 @@ const start = async () => {
     .use(morgan('dev'))
     // .use(cookieParser())
     .use(express.json())
-    .use(authenticateToken);
-  
+    .use(authenticateToken)
+    .use('/graphql', graphqlHTTP({
+      schema: new GraphQLSchema({query}),
+      graphiql: true
+    }));
+    
   for(const route in routers){
     app.use(`/${route.replace('Router', '')}`, new routers[route]().router);
   }
@@ -92,7 +99,7 @@ const start = async () => {
         });
       }
     });
-  })
+  });
 }
 
 start();
