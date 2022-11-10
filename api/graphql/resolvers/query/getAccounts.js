@@ -1,4 +1,4 @@
-const { GraphQLID, GraphQLList } = require("graphql");
+const { GraphQLID, GraphQLList, GraphQLUnionType } = require("graphql");
 const UserCredentialModel = require("../../../models/UserCredential.model");
 
 const getAccounts = {

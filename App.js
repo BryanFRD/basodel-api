@@ -19,6 +19,7 @@ const authenticateToken = require('./api/middlewares/AuthenticateToken.middlewar
 const { graphqlHTTP } = require('express-graphql');
 const { GraphQLSchema } = require('graphql');
 const query = require('./api/graphql/schemas/query');
+const mutation = require('./api/graphql/schemas/mutation');
 
 const start = async () => {
   const err = await DB.sync({force: false})
@@ -47,7 +48,7 @@ const start = async () => {
     .use(express.json())
     .use(authenticateToken)
     .use('/graphql', graphqlHTTP({
-      schema: new GraphQLSchema({query}),
+      schema: new GraphQLSchema({query, mutation}),
       graphiql: true
     }));
     
