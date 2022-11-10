@@ -15,7 +15,9 @@ const createAccount = {
   resolve: async (_, {login, email, password, username}) => {
     const asJson = {login, email, password, user_account: {username}}
     
-    if(new UserCredentialValidator().validateCreate(asJson)){
+    const {error} = new UserCredentialValidator().validateCreate(asJson);
+    
+    if(!error){
       const transaction = await DB.transaction();
       try {
         const userCredential = await UserCredentialModel.create(asJson, {transaction, include: UserAccountModel});
