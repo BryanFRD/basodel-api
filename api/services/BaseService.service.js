@@ -1,6 +1,5 @@
 const DB = require('../database/db');
 const RoleModel = require('../models/Role.model');
-const UserAccountModel = require('../models/UserAccount.model');
 
 class BaseService {
   
@@ -12,6 +11,28 @@ class BaseService {
   // CREATE
   async create(model, req, res, sendResponse = true){
     const transaction = await DB.transaction();
+    
+    if(req.body.model instanceof Array){
+      const result = await model.bulkCreate(req.body.model)
+        .then(async model => {
+          await transaction.commit();
+          return {statusCode: 201, content: model};
+        })
+        .catch(async error => {
+          if(transaction.finished !== 'commit')
+            await transaction.rollback();
+          
+            if(error?.name === 'SequelizeUniqueConstraintError'){
+              return {statusCode: 400, content: {
+                error: `error.${model.name}.create.${error.parent.sqlMessage.retrieveColumnFromSQLError()}`
+              }}
+            }
+            
+            return {statusCode: 400, content: {error : `error.${model.name}.create.error`}};
+        });
+        
+        return this.handleResponse(res, result, sendResponse);
+    }
     
     const result = await model.create(
       {...req.body.model},
@@ -35,14 +56,12 @@ class BaseService {
           
           return {statusCode: 400, content: {error : `error.${model.name}.create.error`}};
         });
-        
+      
     return this.handleResponse(res, result, sendResponse);
   }
   
   // READ
   async select(model, req, res, sendResponse = true){
-    //TODO Verifier toutes les valeurs (req.body.where, etc...)
-      
     if(req.searchParams.id){
       const result = await model.findByPk(req.searchParams.id, {
         include: req.searchParams?.include,

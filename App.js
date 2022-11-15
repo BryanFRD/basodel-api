@@ -17,7 +17,7 @@ const UserAccountModel = require('./api/models/UserAccount.model');
 const { RoleModel } = require('./api/models');
 const authenticateToken = require('./api/middlewares/AuthenticateToken.middleware');
 const { graphqlHTTP } = require('express-graphql');
-const { GraphQLSchema } = require('graphql');
+const { GraphQLSchema, GraphQLObjectType } = require('graphql');
 const query = require('./api/graphql/schemas/query');
 const mutation = require('./api/graphql/schemas/mutation');
 

@@ -7,3 +7,6 @@ exports.ReportModel = require('./Report.model');
 exports.ReportStatusModel = require('./ReportStatus.model');
 exports.ChatMessageModel = require('./ChatMessage.model');
 exports.BlockedUserModel = require('./BlockedUser.model');
+exports.ArticleModel = require('./Article.model');
+exports.CategoryModel = require('./Category.model');
+exports.ImageModel = require('./Image.model');

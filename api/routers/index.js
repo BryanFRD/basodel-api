@@ -9,3 +9,6 @@ exports.RoleRouter = require('./Role.router');
 exports.AuthRouter = require('./Auth.router');
 exports.ConfirmationRouter = require('./Confirmation.router');
 exports.BlockedUserRouter = require('./BlockedUser.router');
+exports.ArticleRouter = require('./Article.router');
+exports.CategoryRouter = require('./Category.router');
+exports.ImageRouter = require('./Image.router');

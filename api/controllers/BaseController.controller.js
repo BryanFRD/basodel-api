@@ -74,7 +74,7 @@ class BaseController {
       params.include = [];
     else
       params.include = params.include.split(',');
-    
+      
     //TODO 1 seul filtre, filtrer Object.values ???
     
     //TODO Ajouter la possibiliter de mettre les includes, where etc dans le body

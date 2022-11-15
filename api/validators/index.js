@@ -9,3 +9,6 @@ exports.RoleValidator = require('./Role.validator');
 exports.AuthValidator = require('./Auth.validator');
 exports.ConfirmationValidator = require('./Confirmation.validator');
 exports.BlockedUserValidator = require('./BlockedUser.validator');
+exports.ArticleValidator = require('./Article.validator');
+exports.CategoryValidator = require('./Category.validator');
+exports.ImageValidator = require('./Image.validator');

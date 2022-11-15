@@ -9,3 +9,6 @@ exports.PurchaseController = require('./Purchase.controller');
 exports.AuthController = require('./Auth.controller');
 exports.ConfirmationController = require('./Confirmation.controller');
 exports.BlockedUserController = require('./BlockedUser.controller');
+exports.ArticleController = require('./Article.controller');
+exports.CategoryController = require('./Category.controller');
+exports.ImageController = require('./Image.controller');

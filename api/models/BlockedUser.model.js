@@ -2,9 +2,9 @@ const DB = require('../database/db');
 const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 
-class BlockedUser extends Model {}
+class BlockedUserModel extends Model {}
 
-BlockedUser.init({
+BlockedUserModel.init({
   userAccountId: {
     type: DataTypes.UUID
   },
@@ -16,4 +16,4 @@ BlockedUser.init({
   modelName: 'blocked_UserAccounts'
 });
 
-module.exports = BlockedUser;
+module.exports = BlockedUserModel;
