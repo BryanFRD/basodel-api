@@ -2,9 +2,9 @@ const DB = require('../database/db');
 const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 
-class PurchaseModel extends Model {}
+class InvoiceModel extends Model {}
 
-PurchaseModel.init({
+InvoiceModel.init({
   ...BaseModel,
   title: {
     type: DataTypes.STRING(50),
@@ -16,8 +16,10 @@ PurchaseModel.init({
   }
 }, {
   sequelize: DB,
-  modelName: 'purchase',
+  modelName: 'invoice',
   paranoid: true
 });
 
-module.exports = PurchaseModel;
+
+
+module.exports = InvoiceModel;

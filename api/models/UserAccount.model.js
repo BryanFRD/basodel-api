@@ -2,11 +2,12 @@ const DB = require('../database/db');
 const { DataTypes, Model } = require("sequelize");
 const BaseModel = require('./BaseModel.model');
 const RoleModel = require('./Role.model');
-const PurchaseModel = require('./Purchase.model');
+const PurchaseModel = require('./Invoice.model');
 const GameHistoryModel = require('./GameHistory.model');
 const ReportModel = require('./Report.model');
 const ChatMessageModel = require('./ChatMessage.model');
 const BlockedUserModel = require('./BlockedUser.model');
+const InvoiceModel = require('./Invoice.model');
 
 class UserAccountModel extends Model {}
 
@@ -18,11 +19,11 @@ UserAccountModel.init({
   },
   xp: {
     type: DataTypes.INTEGER,
-    defaultValue: 0
+    defaultValue: 1
   },
   silver: {
     type: DataTypes.INTEGER,
-    defaultValue: 0
+    defaultValue: 1000
   },
   gold: {
     type: DataTypes.INTEGER,
@@ -71,5 +72,8 @@ UserAccountModel.belongsToMany(UserAccountModel, {
   through: BlockedUserModel,
   as: 'blockedUser'
 });
+
+InvoiceModel.belongsTo(UserAccountModel);
+UserAccountModel.hasMany(InvoiceModel);
 
 module.exports = UserAccountModel;

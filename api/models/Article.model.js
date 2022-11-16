@@ -4,6 +4,7 @@ const BaseModel = require('./BaseModel.model');
 const ImageModel = require('./Image.model');
 const CategoryModel = require('./Category.model');
 const UserAccountModel = require('./UserAccount.model');
+const InvoiceModel = require('./Invoice.model');
 
 class ArticleModel extends Model {}
 
@@ -36,6 +37,7 @@ ArticleModel.init({
 UserAccountModel.belongsToMany(ArticleModel, {
   through: 'user_article'
 });
+
 ArticleModel.belongsToMany(UserAccountModel, {
   through: 'user_article'
 });
@@ -45,5 +47,9 @@ ArticleModel.belongsTo(CategoryModel);
 
 ImageModel.hasOne(ArticleModel);
 ArticleModel.belongsTo(ImageModel);
+
+ArticleModel.belongsToMany(InvoiceModel, {
+  through: 'article_invoice'
+});
 
 module.exports = ArticleModel;

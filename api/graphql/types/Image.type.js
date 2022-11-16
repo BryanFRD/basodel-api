@@ -1,5 +1,4 @@
-const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList } = require("graphql");
-const { ImageModel } = require("../../models");
+const { GraphQLObjectType, GraphQLID, GraphQLString } = require("graphql");
 
 const ImageType = new GraphQLObjectType({
   name: 'image',
