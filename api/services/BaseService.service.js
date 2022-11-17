@@ -12,7 +12,9 @@ class BaseService {
     const transaction = await DB.transaction();
     
     if(req.body.model instanceof Array){
-      const result = await model.bulkCreate(req.body.model)
+      const result = await model.bulkCreate(req.body.model,{
+        include: req.searchParams?.include
+      })
         .then(async model => {
           await transaction.commit();
           return {statusCode: 201, content: model};

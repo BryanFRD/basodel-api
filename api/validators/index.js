@@ -12,3 +12,4 @@ exports.BlockedUserValidator = require('./BlockedUser.validator');
 exports.ArticleValidator = require('./Article.validator');
 exports.CategoryValidator = require('./Category.validator');
 exports.ImageValidator = require('./Image.validator');
+exports.UserArticleValidator = require('./UserArticle.validator');

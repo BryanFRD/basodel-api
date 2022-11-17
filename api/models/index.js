@@ -10,3 +10,4 @@ exports.BlockedUserModel = require('./BlockedUser.model');
 exports.ArticleModel = require('./Article.model');
 exports.CategoryModel = require('./Category.model');
 exports.ImageModel = require('./Image.model');
+exports.UserArticleModel = require('./UserArticle.model');

@@ -12,3 +12,4 @@ exports.BlockedUserController = require('./BlockedUser.controller');
 exports.ArticleController = require('./Article.controller');
 exports.CategoryController = require('./Category.controller');
 exports.ImageController = require('./Image.controller');
+exports.UserArticleController = require('./UserArticle.controller');

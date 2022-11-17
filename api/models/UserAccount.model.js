@@ -8,6 +8,8 @@ const ReportModel = require('./Report.model');
 const ChatMessageModel = require('./ChatMessage.model');
 const BlockedUserModel = require('./BlockedUser.model');
 const InvoiceModel = require('./Invoice.model');
+const ArticleModel = require('./Article.model');
+const UserArticleModel = require('./UserArticle.model');
 
 class UserAccountModel extends Model {}
 
@@ -71,6 +73,14 @@ UserAccountModel.belongsToMany(GameHistoryModel, {
 UserAccountModel.belongsToMany(UserAccountModel, {
   through: BlockedUserModel,
   as: 'blockedUser'
+});
+
+UserAccountModel.belongsToMany(ArticleModel, {
+  through: UserArticleModel
+});
+
+ArticleModel.belongsToMany(UserAccountModel, {
+  through: UserArticleModel
 });
 
 InvoiceModel.belongsTo(UserAccountModel);

@@ -12,3 +12,4 @@ exports.BlockedUserRouter = require('./BlockedUser.router');
 exports.ArticleRouter = require('./Article.router');
 exports.CategoryRouter = require('./Category.router');
 exports.ImageRouter = require('./Image.router');
+exports.UserArticleRouter = require('./UserArticle.router');

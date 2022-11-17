@@ -18,7 +18,7 @@ class AuthService extends BaseService {
       },
       include: [
         UserAccountModel,
-        {model: UserAccountModel, include: [RoleModel, UserAccountModel.associations.blockedUser]}
+        {model: UserAccountModel, include: [RoleModel, UserAccountModel.associations.blockedUser, UserAccountModel.associations.articles]}
       ]
     });
     
@@ -67,7 +67,7 @@ class AuthService extends BaseService {
       UserCredentialModel.findByPk(user.id,
         {include: [
           UserAccountModel,
-          {model: UserAccountModel, include: [RoleModel, UserAccountModel.associations.blockedUser]}
+          {model: UserAccountModel, include: [RoleModel, UserAccountModel.associations.blockedUser, UserAccountModel.associations.articles]}
         ]})
         .then(value => {
           const uc = value.toJSON();

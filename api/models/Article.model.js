@@ -5,6 +5,7 @@ const ImageModel = require('./Image.model');
 const CategoryModel = require('./Category.model');
 const UserAccountModel = require('./UserAccount.model');
 const InvoiceModel = require('./Invoice.model');
+const UserArticleModel = require('./UserArticle.model');
 
 class ArticleModel extends Model {}
 
@@ -32,14 +33,6 @@ ArticleModel.init({
   sequelize: DB,
   modelName: 'article',
   paranoid: true
-});
-
-UserAccountModel.belongsToMany(ArticleModel, {
-  through: 'user_article'
-});
-
-ArticleModel.belongsToMany(UserAccountModel, {
-  through: 'user_article'
 });
 
 CategoryModel.hasMany(ArticleModel);

@@ -12,3 +12,4 @@ exports.BlockedUserService = require('./BlockedUser.service');
 exports.ArticleService = require('./Article.service');
 exports.CategoryService = require('./Category.service');
 exports.ImageService = require('./Image.service');
+exports.UserArticleService = require('./UserArticle.service');
