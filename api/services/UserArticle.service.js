@@ -21,13 +21,16 @@ class UserArticleService extends BaseService {
     
     if(neededSilver > user.silver || neededGold > user.gold)
       return super.handleResponse(res, {statusCode: 400, content: {error: `error.${model.name}.create.notEnoughMoney`}});
-      
+    
     user.silver -= neededSilver;
     user.gold -= neededGold;
     
     await UserAccountModel.update(user, {where: {id: user.id}});
     
-    super.create(model, req, res, true);
+    const resp = await super.create(model, req, res, false);
+    resp.statusCode = resp.content.error === 'error.user_article.create.PRIMARY' ? 200 : resp.statusCode;
+    
+    super.handleResponse(res, resp, true);
   }
   
 }

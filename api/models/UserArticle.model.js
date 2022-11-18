@@ -3,14 +3,7 @@ const { DataTypes, Model } = require("sequelize");
 
 class UserArticleModel extends Model {}
 
-UserArticleModel.init({
-  userAccountId: {
-    type: DataTypes.UUID
-  },
-  articleId: {
-    type: DataTypes.UUID
-  }
-}, {
+UserArticleModel.init({}, {
   sequelize: DB,
   modelName: 'user_article'
 });

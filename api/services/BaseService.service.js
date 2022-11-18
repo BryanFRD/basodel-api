@@ -46,7 +46,6 @@ class BaseService {
           return {statusCode: 201, content: {model: model.toJSON()}}
         })
         .catch(async error => {
-          console.log('error:', error);
           if(transaction.finished !== 'commit')
             await transaction.rollback();
           

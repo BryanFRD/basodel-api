@@ -3,14 +3,7 @@ const { DataTypes, Model } = require("sequelize");
 
 class BlockedUserModel extends Model {}
 
-BlockedUserModel.init({
-  userAccountId: {
-    type: DataTypes.UUID
-  },
-  blockedUserId: {
-    type: DataTypes.UUID
-  }
-}, {
+BlockedUserModel.init({}, {
   sequelize: DB,
   modelName: 'blocked_UserAccounts'
 });

@@ -76,11 +76,13 @@ UserAccountModel.belongsToMany(UserAccountModel, {
 });
 
 UserAccountModel.belongsToMany(ArticleModel, {
-  through: UserArticleModel
+  through: UserArticleModel,
+  uniqueKey: false
 });
 
 ArticleModel.belongsToMany(UserAccountModel, {
-  through: UserArticleModel
+  through: UserArticleModel,
+  uniqueKey: false
 });
 
 InvoiceModel.belongsTo(UserAccountModel);
