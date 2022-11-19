@@ -57,8 +57,8 @@ ReportModel.belongsTo(UserAccountModel);
 RoleModel.hasMany(UserAccountModel);
 UserAccountModel.belongsTo(RoleModel, {
   foreignKey: {
-    defaultValue: 1,
-    allowNull: false,
+    defaultValue: '1562b051-484b-43aa-ac51-0e57846668c0',
+    allowNull: false
   }
 });
 

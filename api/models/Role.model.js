@@ -8,12 +8,6 @@ class RoleModel extends Model {}
 
 RoleModel.init({
   ...BaseModel,
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false
-  },
   title: {
     type: DataTypes.STRING(50),
     allowNull: false,

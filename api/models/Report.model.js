@@ -27,7 +27,7 @@ ReportModel.init({
 
 ReportModel.hasMany(ReportStatusModel);
 ReportStatusModel.hasMany(ReportModel, {foreignKey: {
-  defaultValue: 1,
+  defaultValue: '1232b051-484b-43aa-ac51-0e57846668c0',
   allowNull: true
 }});
 

@@ -58,27 +58,27 @@ const start = async () => {
   
   //TODO callback sur le .define pour créer cette ligne auto
   Role.findOrCreate({
-    where: {id: 1},
+    where: {id: '1562b051-484b-43aa-ac51-0e57846668c0'},
     defaults: {
-      id: 1,
+      id: '1562b051-484b-43aa-ac51-0e57846668c0',
       title: 'role.default',
       level: 1
     }
   });
   
   Role.findOrCreate({
-    where: {id: 2},
+    where: {id: '5162b051-484b-43aa-ac51-0e57846668c0'},
     defaults: {
-      id: 2,
+      id: '5162b051-484b-43aa-ac51-0e57846668c0',
       title: 'role.admin',
       level: 999
     }
   });
   
   ReportStatus.findOrCreate({
-    where: {id: 1},
+    where: {id: '1232b051-484b-43aa-ac51-0e57846668c0'},
     defaults: {
-      id: 1,
+      id: '1232b051-484b-43aa-ac51-0e57846668c0',
       title: 'reportStatus.default'
     }
   });
