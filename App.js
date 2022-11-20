@@ -44,7 +44,6 @@ const start = async () => {
   app
     .use(cors(corsOptions))
     .use(morgan('dev'))
-    // .use(cookieParser())
     .use(express.json())
     .use(authenticateToken)
     .use('/graphql', graphqlHTTP({

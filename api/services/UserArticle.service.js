@@ -25,10 +25,14 @@ class UserArticleService extends BaseService {
     user.silver -= neededSilver;
     user.gold -= neededGold;
     
-    await UserAccountModel.update(user, {where: {id: user.id}});
-    
     const resp = await super.create(model, req, res, false);
+    
+    if(resp.statusCode >= 200 && resp.statusCode < 300)
+      await UserAccountModel.update(user, {where: {id: user.id}});
+    
     resp.statusCode = resp.content.error === 'error.user_article.create.PRIMARY' ? 200 : resp.statusCode;
+    
+    resp.statusCode = 401;
     
     super.handleResponse(res, resp, true);
   }
