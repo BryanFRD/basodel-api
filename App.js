@@ -1,7 +1,6 @@
 require('dotenv').config();
 require('./api/helpers/StringHelper.helper');
 const express = require('express');
-// const cookieParser = require('cookie-parser');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const http = require('http');
@@ -17,7 +16,7 @@ const UserAccountModel = require('./api/models/UserAccount.model');
 const { RoleModel } = require('./api/models');
 const authenticateToken = require('./api/middlewares/AuthenticateToken.middleware');
 const { graphqlHTTP } = require('express-graphql');
-const { GraphQLSchema, GraphQLObjectType } = require('graphql');
+const { GraphQLSchema } = require('graphql');
 const query = require('./api/graphql/schemas/query');
 const mutation = require('./api/graphql/schemas/mutation');
 
