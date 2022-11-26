@@ -11,11 +11,10 @@ class UserAccountService extends BaseService {
       role: result.content.model.role
     });
     
-    result.content = {
-      ...result.content,
-      accessToken: accessToken.token,
-      accessTokenExpires: accessToken.expires,
-    }
+    res.cookie('accessToken', accessToken.token, {
+      maxAge: accessToken.expires,
+      signed: true
+    });
     
     super.handleResponse(res, result)
   }

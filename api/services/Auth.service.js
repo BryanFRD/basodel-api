@@ -43,19 +43,22 @@ class AuthService extends BaseService {
       role: uc.user_account.role
     });
     
-    return res.status(200).send({
-      authToken: authToken.token,
-      accessToken: accessToken.token,
-      authTokenExpires: authToken.expires,
-      accessTokenExpires: accessToken.expires,
-      model: uc
+    res.cookie('authToken', authToken.token, {
+      maxAge: authToken.expires,
+      signed: true
     });
+    
+    res.cookie('accessToken', accessToken.token, {
+      maxAge: accessToken.expires,
+      signed: true
+    });
+    
+    return res.status(200).send({model: uc});
   }
   
   // READ
   select = async (model, req, res) => {
-    const auth = req?.headers['authorization'];
-    const token = auth?.split(' ')[1];
+    const token = req.signedCookies.authToken;
     
     if(!token)
       return res.sendStatus(401);
@@ -89,13 +92,17 @@ class AuthService extends BaseService {
             role: uc.user_account.role?.level
           });
           
-          res.status(200).send({
-            authToken: authToken.token,
-            accessToken: accessToken.token,
-            authTokenExpires: authToken.expires,
-            accessTokenExpires: accessToken.expires,
-            model: uc
+          res.cookie('authToken', authToken.token, {
+            maxAge: authToken.expires,
+            signed: true
           });
+          
+          res.cookie('accessToken', accessToken.token, {
+            maxAge: accessToken.expires,
+            signed: true
+          });
+          
+          res.status(200).send({model: uc});
         })
         .catch(error => res.status(404).send({error}));
       });

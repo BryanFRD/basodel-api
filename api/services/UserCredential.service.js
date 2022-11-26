@@ -62,13 +62,15 @@ class UserCredentialService extends BaseService {
       role: result.content.model.role
     });
     
-    result.content = {
-      ...result.content,
-      authToken: authToken.token,
-      accessToken: accessToken.token,
-      authTokenExpires: accessToken.expires,
-      accessTokenExpires: accessToken.expires,
-    }
+    res.cookie('authToken', authToken.token, {
+      maxAge: authToken.expires,
+      signed: true
+    });
+    
+    res.cookie('accessToken', accessToken.token, {
+      maxAge: accessToken.expires,
+      signed: true
+    });
     
     super.handleResponse(res, result)
   }

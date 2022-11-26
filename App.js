@@ -4,6 +4,7 @@ const express = require('express');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const http = require('http');
+const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const routers = require('./api/routers');
 const DB = require('./api/database/db');
@@ -34,6 +35,7 @@ const start = async () => {
   
   const corsOptions = {
     origin: process.env.APP_URL,
+    credentials: true,
     optionsSuccessStatus: 200
   }
   
@@ -42,6 +44,7 @@ const start = async () => {
   
   app
     .use(cors(corsOptions))
+    .use(cookieParser(process.env.COOKIE_SECRET))
     .use(morgan('dev'))
     .use(express.json())
     .use(authenticateToken)
@@ -119,6 +122,6 @@ generateToken = (data, envKeyName, expDay) => {
   if(!process.env[envKeyName])
     return Logger.error(`Error in 'generateToken': env key not found: '${envKeyName}'`);
   
-  const expires = expDay * 24 * 60 * 60;
+  const expires = expDay * 24 * 60 * 60 * 1000;
   return {token: jwt.sign(data, process.env[envKeyName], {expiresIn: expires}), expires}
 }

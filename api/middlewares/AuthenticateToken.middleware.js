@@ -9,10 +9,12 @@ const authenticateToken = async (req, res, next) => {
   const restrictedRoute = authConfig.RESTRICTED_ROUTES[routeName];
   
   if(restrictedRoute){
-    const auth = req?.headers['authorization'];
-    const token = auth?.split(' ')[1];
+    const token = req.signedCookies.accessToken;
     
-    const user = await jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => user);
+    const user = await jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
+      if(!err)
+        return user;
+    });
     
     if(user && restrictedRoute({user, body: req.body})){
       req.user = user;
