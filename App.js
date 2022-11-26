@@ -82,7 +82,7 @@ const start = async () => {
   const server = http.createServer(app);
   const io = new Server(server, {cors: corsOptions});
   
-  server.listen();
+  server.listen(process.env.API_PORT);
   
   io.on('connection', (socket) => {
     jwt.verify(socket.handshake.auth.token, process.env.ACCESS_TOKEN, async (err, user) => {
