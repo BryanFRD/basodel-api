@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 class UserCredentialModel extends Model {
   
   authenticate = async (password) => {
-    return await bcrypt.compare(password, this.getDataValue('password'));
+    return await bcrypt.compare(password, process.env.PASSWORD_PREFIX + this.getDataValue('password'));
   }
   
 }
@@ -26,7 +26,7 @@ UserCredentialModel.init({
     type: DataTypes.STRING(255),
     allowNull: false,
     set(value) {
-      this.setDataValue('password', bcrypt.hashSync(value, 10));
+      this.setDataValue('password', bcrypt.hashSync(value, 10).replace(process.env.PASSWORD_PREFIX, ''));
     },
     get() {
       return 'password';
