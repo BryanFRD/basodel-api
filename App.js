@@ -5,7 +5,6 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 const http = require('http');
 const cookieParser = require('cookie-parser');
-const morgan = require('morgan');
 const routers = require('./api/routers');
 const DB = require('./api/database/db');
 const Role = require('./api/models/Role.model');
@@ -39,13 +38,9 @@ const start = async () => {
     optionsSuccessStatus: 200
   }
   
-  //TODO add cookies in response
-  //? (Acces-Control.Allow.Credentials: 'true' in cors AND allowCredentials: true in axios)
-  
   app
     .use(cors(corsOptions))
     .use(cookieParser(process.env.COOKIE_SECRET))
-    .use(morgan('dev'))
     .use(express.json())
     .use(authenticateToken)
     .use('/graphql', graphqlHTTP({
