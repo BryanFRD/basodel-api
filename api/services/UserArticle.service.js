@@ -32,8 +32,6 @@ class UserArticleService extends BaseService {
     
     resp.statusCode = resp.content.error === 'error.user_article.create.PRIMARY' ? 200 : resp.statusCode;
     
-    resp.statusCode = 401;
-    
     super.handleResponse(res, resp, true);
   }
   
