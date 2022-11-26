@@ -87,8 +87,7 @@ const start = async () => {
   const server = http.createServer(app);
   const io = new Server(server, {cors: corsOptions});
   
-  server.listen(process.env.SERVER_PORT,
-    () => Logger.info(`Basodel-API started on port ${process.env.SERVER_PORT}.`));
+  server.listen();
   
   io.on('connection', (socket) => {
     jwt.verify(socket.handshake.auth.token, process.env.ACCESS_TOKEN, async (err, user) => {
