@@ -13,7 +13,7 @@ class UserAccountService extends BaseService {
     
     res.cookie('accessToken', accessToken.token, {
       maxAge: accessToken.expires,
-      signed: false
+      signed: true
     });
     
     super.handleResponse(res, result)

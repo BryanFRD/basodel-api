@@ -5,6 +5,7 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 const http = require('http');
 const cookieParser = require('cookie-parser');
+const cookie = require('cookie');
 const routers = require('./api/routers');
 const DB = require('./api/database/db');
 const Role = require('./api/models/Role.model');
@@ -85,7 +86,8 @@ const start = async () => {
   server.listen(process.env.API_PORT);
   
   io.on('connection', (socket) => {
-    jwt.verify(socket.handshake.auth.token, process.env.ACCESS_TOKEN, async (err, user) => {
+    const token = cookieParser.signedCookie(cookie.parse(socket.handshake.headers.cookie ?? '').accessToken, process.env.COOKIE_SECRET);
+    jwt.verify(token, process.env.ACCESS_TOKEN, async (err, user) => {
       const userAccount = await UserAccountModel.findByPk(user?.id, {include: [RoleModel]});
       const userJson = userAccount?.toJSON();
       

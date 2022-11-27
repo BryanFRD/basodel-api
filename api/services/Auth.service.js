@@ -99,7 +99,7 @@ class AuthService extends BaseService {
           
           res.cookie('accessToken', accessToken.token, {
             maxAge: accessToken.expires,
-            signed: false
+            signed: true
           });
           
           res.status(200).send({model: uc});
