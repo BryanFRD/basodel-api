@@ -46,7 +46,8 @@ const start = async () => {
     .use(authenticateToken)
     .use('/graphql', graphqlHTTP({
       schema: new GraphQLSchema({query, mutation}),
-      graphiql: true
+      graphiql: true,
+      context
     }));
     
   for(const route in routers){

@@ -36,7 +36,7 @@ class ConfirmationService extends BaseService {
   }
   
   update = async (model, req, res) => {
-    res.sendStatus(400);dfcv
+    res.sendStatus(400);
   }
   
   // OVERIDES
