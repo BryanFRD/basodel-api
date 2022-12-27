@@ -9,7 +9,6 @@ class UserCredentialService extends BaseService {
   
   create = async (model, req, res) => {
     const reqModel = req.body.model;
-    console.log('reqModel:', reqModel);
     
     const transaction = await DB.transaction();
     const result = await UserCredentialModel.create(
