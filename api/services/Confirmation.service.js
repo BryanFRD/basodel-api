@@ -30,7 +30,7 @@ class ConfirmationService extends BaseService {
         if(transaction.finished !== 'commit')
           transaction.rollback();
         
-        super.handleResponse(res, {statusCode: 200});
+        super.handleResponse(res, {statusCode: 400});
       });
     });
   }
