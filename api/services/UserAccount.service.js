@@ -13,7 +13,9 @@ class UserAccountService extends BaseService {
     
     res.cookie('accessToken', accessToken.token, {
       maxAge: accessToken.expires,
-      signed: true
+      signed: true,
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development"
     });
     
     super.handleResponse(res, result)

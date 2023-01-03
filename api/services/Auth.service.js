@@ -45,12 +45,16 @@ class AuthService extends BaseService {
     
     res.cookie('authToken', authToken.token, {
       maxAge: authToken.expires,
-      signed: true
+      signed: true,
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development"
     });
     
     res.cookie('accessToken', accessToken.token, {
       maxAge: accessToken.expires,
-      signed: true
+      signed: true,
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development"
     });
     
     return res.status(200).send({model: uc});
@@ -94,12 +98,16 @@ class AuthService extends BaseService {
           
           res.cookie('authToken', authToken.token, {
             maxAge: authToken.expires,
-            signed: true
+            signed: true,
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development"
           });
           
           res.cookie('accessToken', accessToken.token, {
             maxAge: accessToken.expires,
-            signed: true
+            signed: true,
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development"
           });
           
           res.status(200).send({model: uc});

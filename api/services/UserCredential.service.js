@@ -63,12 +63,16 @@ class UserCredentialService extends BaseService {
     
     res.cookie('authToken', authToken.token, {
       maxAge: authToken.expires,
-      signed: true
+      signed: true,
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development"
     });
     
     res.cookie('accessToken', accessToken.token, {
       maxAge: accessToken.expires,
-      signed: true
+      signed: true,
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development"
     });
     
     super.handleResponse(res, result)
