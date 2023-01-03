@@ -108,6 +108,14 @@ class AuthService extends BaseService {
       });
   }
   
+  // DELETE
+  delete = async (model, req, res) => {
+    res.clearCookie('accessToken');
+    res.clearCookie('authToken');
+    
+    res.sendStatus(200);
+  }
+  
 }
 
 module.exports = AuthService;
