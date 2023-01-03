@@ -15,7 +15,8 @@ class UserAccountService extends BaseService {
       maxAge: accessToken.expires,
       signed: true,
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development"
+      secure: process.env.NODE_ENV !== 'development',
+      sameSite: true
     });
     
     super.handleResponse(res, result)
