@@ -55,7 +55,7 @@ const start = async () => {
     res.status(200).send({
       key: process.env.KEY_FILEPATH,
       cert: process.env.CERT_FILEPATH,
-      httpsOptions
+      httpsOptions: !!httpsOptions
     });
   });
   
