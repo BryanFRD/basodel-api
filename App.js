@@ -52,7 +52,7 @@ const start = async () => {
   }
   
   app.get('/', (req, res) => {
-    res.send({
+    res.status(200).send({
       key: process.env.certKey,
       cert: process.env.certCert,
       httpsOptions
