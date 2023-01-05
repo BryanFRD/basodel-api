@@ -35,6 +35,12 @@ const start = async () => {
   
   let httpsOptions;
   let httpsOptionsError;
+  let test;
+  try {
+    test = fs.readFileSync(process.env.TEST ?? 'test');
+  } catch(e) {
+    test = e.message;
+  }
   try {
     httpsOptions = {
       key: fs.readFileSync(process.env.KEY_FILEPATH ?? 'key.pem'),
@@ -58,7 +64,8 @@ const start = async () => {
       key: process.env.KEY_FILEPATH,
       cert: process.env.CERT_FILEPATH,
       httpsOptions: !!httpsOptions,
-      httpsOptionsError
+      httpsOptionsError,
+      test
     });
   });
   
