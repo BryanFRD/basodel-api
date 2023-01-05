@@ -42,7 +42,7 @@ const start = async () => {
     }
   } catch(e) {
     Logger.error('HTTPS options failed to synchronize');
-    httpsOptionsError = e;
+    httpsOptionsError = e.message;
   }
   
   const app = express();
