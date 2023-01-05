@@ -37,14 +37,14 @@ const start = async () => {
   let httpsOptionsError;
   let test;
   try {
-    test = fs.readFileSync(process.env.TEST ?? 'test');
+    test = fs.readFileSync(process.env.TEST ?? 'test', 'utf8');
   } catch(e) {
     test = e.message;
   }
   try {
     httpsOptions = {
-      key: fs.readFileSync(process.env.KEY_FILEPATH ?? 'key.pem'),
-      cert: fs.readFileSync(process.env.CERT_FILEPATH ?? 'cert.pem')
+      key: fs.readFileSync(process.env.KEY_FILEPATH ?? 'key.pem', 'utf8'),
+      cert: fs.readFileSync(process.env.CERT_FILEPATH ?? 'cert.pem', 'utf8')
     }
   } catch(e) {
     Logger.error('HTTPS options failed to synchronize');
