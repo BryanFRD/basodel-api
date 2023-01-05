@@ -34,21 +34,14 @@ const start = async () => {
   }
   
   let httpsOptions;
-  let httpsOptionsError;
-  let test;
-  try {
-    test = fs.readFileSync(process.env.TEST ?? 'test', 'utf8');
-  } catch(e) {
-    test = e.message;
-  }
+  
   try {
     httpsOptions = {
       key: fs.readFileSync(process.env.KEY_FILEPATH ?? 'key.pem', 'utf8'),
       cert: fs.readFileSync(process.env.CERT_FILEPATH ?? 'cert.pem', 'utf8')
     }
-  } catch(e) {
+  } catch(exception) {
     Logger.error('HTTPS options failed to synchronize');
-    httpsOptionsError = e.message;
   }
   
   const app = express();
@@ -58,16 +51,6 @@ const start = async () => {
     credentials: true,
     optionsSuccessStatus: 200
   }
-  
-  app.get('/', (req, res) => {
-    res.status(200).send({
-      key: process.env.KEY_FILEPATH,
-      cert: process.env.CERT_FILEPATH,
-      httpsOptions: !!httpsOptions,
-      httpsOptionsError,
-      test
-    });
-  });
   
   app
     .use(cors(corsOptions))
