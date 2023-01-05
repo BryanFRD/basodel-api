@@ -34,6 +34,7 @@ const start = async () => {
   }
   
   let httpsOptions;
+  let httpsOptionsError;
   try {
     httpsOptions = {
       key: fs.readFileSync(process.env.KEY_FILEPATH ?? 'key.pem'),
@@ -41,6 +42,7 @@ const start = async () => {
     }
   } catch(e) {
     Logger.error('HTTPS options failed to synchronize');
+    httpsOptionsError = e;
   }
   
   const app = express();
@@ -55,7 +57,8 @@ const start = async () => {
     res.status(200).send({
       key: process.env.KEY_FILEPATH,
       cert: process.env.CERT_FILEPATH,
-      httpsOptions: !!httpsOptions
+      httpsOptions: !!httpsOptions,
+      httpsOptionsError
     });
   });
   
