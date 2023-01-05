@@ -3,7 +3,9 @@ require('./api/helpers/StringHelper.helper');
 const express = require('express');
 const { Server } = require('socket.io');
 const cors = require('cors');
+const fs = require('fs');
 const http = require('http');
+const https = require('https');
 const cookieParser = require('cookie-parser');
 const cookie = require('cookie');
 const routers = require('./api/routers');
@@ -23,12 +25,22 @@ const mutation = require('./api/graphql/schemas/mutation');
 
 const start = async () => {
   const err = await DB.sync({force: false})
-    .then(() => {Logger.success('Database synchronized!')})
-    .catch(err => err);
+  .then(() => {Logger.success('Database synchronized!')})
+  .catch(err => err);
   
   if(err){
     Logger.error(`Error while trying to synchronize with the database!\nError: ${err}`);
     return;
+  }
+  
+  let httpsOptions;
+  try {
+    httpsOptions = {
+      key: fs.readFileSync(process.env.certKey ?? 'key.pem'),
+      cert: fs.readFileSync(process.env.certCert ?? 'cert.pem')
+    }
+  } catch(e) {
+    Logger.error('HTTPS options failed to synchronize');
   }
   
   const app = express();
@@ -81,9 +93,12 @@ const start = async () => {
   });
   
   const server = http.createServer(app);
-  const io = new Server(server, {cors: corsOptions});
+  const httpsServer = https.createServer(httpsOptions, app);
+  
+  const io = new Server(httpsOptions ? httpsServer : server, {cors: corsOptions});
   
   server.listen(process.env.API_PORT);
+  httpsServer.listen(process.env.API_PORT_HTTPS);
   
   io.on('connection', (socket) => {
     const token = cookieParser.signedCookie(cookie.parse(socket.handshake.headers.cookie ?? '').accessToken, process.env.COOKIE_SECRET);
