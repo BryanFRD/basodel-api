@@ -51,6 +51,10 @@ const start = async () => {
     optionsSuccessStatus: 200
   }
   
+  app.get('/', (req, res) => {
+    res.send({httpsOptions});
+  });
+  
   app
     .use(cors(corsOptions))
     .use(cookieParser(process.env.COOKIE_SECRET))
