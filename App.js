@@ -25,8 +25,8 @@ const mutation = require('./api/graphql/schemas/mutation');
 
 const start = async () => {
   const err = await DB.sync({force: false})
-  .then(() => {Logger.success('Database synchronized!')})
-  .catch(err => err);
+    .then(() => {Logger.success('Database synchronized!')})
+    .catch(err => err);
   
   if(err){
     Logger.error(`Error while trying to synchronize with the database!\nError: ${err}`);
@@ -59,7 +59,7 @@ const start = async () => {
     .use(authenticateToken)
     .use('/graphql', graphqlHTTP({
       schema: new GraphQLSchema({query, mutation}),
-      graphiql: true,
+      graphiql: process.env.NODE_ENV === 'development',
     }));
     
   for(const route in routers){
@@ -109,7 +109,6 @@ const start = async () => {
       
       for(const event in events){
         new events[event](io, socket, userJson).getEvents().forEach(({name, handler}) => {
-          socket.on(name, handler);
         });
       }
     });
