@@ -109,6 +109,7 @@ const start = async () => {
       
       for(const event in events){
         new events[event](io, socket, userJson).getEvents().forEach(({name, handler}) => {
+          socket.on(name, handler);
         });
       }
     });
