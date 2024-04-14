@@ -26,7 +26,7 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "leo-profanity": "^1.6.1",
-    "mysql2": "^2.3.3",
+    "mysql2": "^3.9.4",
     "nodemailer": "^6.7.8",
     "sequelize": "^6.21.4",
     "socket.io": "^4.5.2"
